@@ -55,7 +55,7 @@ async def start(b, m):
         except UserNotParticipant:
              await StreamBot.send_photo(
                 chat_id=m.chat.id,
-                photo="https://graph.org/file/366530995fd47a006743e-4b4d613a61e1feb9ce.jpgg",
+                photo="https://ibb.co/nN1Ngf2N",
                 caption="<i>𝙹𝙾𝙸𝙽 CHANNEL 𝚃𝙾 𝚄𝚂𝙴 𝙼𝙴🔐</i>",
                 reply_markup=InlineKeyboardMarkup(
                     [
@@ -76,7 +76,7 @@ async def start(b, m):
             return
     await StreamBot.send_photo(
     chat_id=m.chat.id,
-    photo="https://images3.alphacoders.com/127/1279039.jpg",
+    photo="https://ibb.co/x8JTcqTz",
     caption=f'''
 Hi {m.from_user.mention(style="md")}! 🎉
 
@@ -188,7 +188,7 @@ async def help_handler(bot, message):
         except UserNotParticipant:
             await StreamBot.send_photo(
                 chat_id=message.chat.id,
-                photo="https://graph.org/file/721cd57c154c7f2a2b992-2bb665f9732ff027af.jpg",
+                photo="https://ibb.co/nN1Ngf2N",
                 Caption="**𝙹𝙾𝙸𝙽 𝚂𝚄𝙿𝙿𝙾𝚁𝚃 𝙶𝚁𝙾𝚄𝙿 𝚃𝙾 𝚄𝚂𝙴 ᴛʜɪs Bᴏᴛ!**\n\n__Dᴜᴇ ᴛᴏ Oᴠᴇʀʟᴏᴀᴅ, Oɴʟʏ Cʜᴀɴɴᴇʟ Sᴜʙsᴄʀɪʙᴇʀs ᴄᴀɴ ᴜsᴇ ᴛʜᴇ Bᴏᴛ!__",
                 reply_markup=InlineKeyboardMarkup(
                     [
