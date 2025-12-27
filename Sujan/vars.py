@@ -15,14 +15,14 @@ class Var(object):
     name = str(getenv('name', 'FileStreamBot')) #Optional
     SLEEP_THRESHOLD = int(getenv('SLEEP_THRESHOLD', '60')) #Leave as it is.
     WORKERS = int(getenv('WORKERS', '4')) #Leave as it is.
-    BIN_CHANNEL = int(getenv('BIN_CHANNEL', '0')) #Required
+    BIN_CHANNEL = int(getenv('BIN_CHANNEL', '-1002337612955')) #Required
     PORT = int(getenv('PORT', '3000')) #Leave as it is.
     BIND_ADRESS = str(getenv('WEB_SERVER_BIND_ADDRESS', '0.0.0.0')) #Leave as it is.
     PING_INTERVAL = int(environ.get("PING_INTERVAL", "1200"))  # 20 minutes
-    OWNER_ID = set(int(x) for x in os.environ.get("OWNER_ID", "0").split())  #Required
+    OWNER_ID = set(int(x) for x in os.environ.get("OWNER_ID", "5123039648").split())  #Required
     NO_PORT = bool(getenv('NO_PORT', False)) #Leave as it is.
     APP_NAME = None
-    OWNER_USERNAME = str(getenv('OWNER_USERNAME', ' ')) #Required
+    OWNER_USERNAME = str(getenv('OWNER_USERNAME', 'Sujan_Ch')) #Required
     if 'DYNO' in environ:
         ON_HEROKU = True
         APP_NAME = str(getenv('APP_NAME')) #Your app name or Leave as it is.
@@ -43,5 +43,5 @@ class Var(object):
         URL = URL + '/'
         
     DATABASE_URL = str(getenv('DATABASE_URL', 'mongodb+srv://xyzcinema4:xyzcinema4@cluster0.zg2ewlh.mongodb.net/?appName=Cluster0')) #Required
-    UPDATES_CHANNEL = str(getenv('UPDATES_CHANNEL', ' ')) #Required without @
+    UPDATES_CHANNEL = str(getenv('UPDATES_CHANNEL', 'Sujan_Ch')) #Required without @
     BANNED_CHANNELS = list(set(int(x) for x in str(getenv("BANNED_CHANNELS", "-1001362659779")).split())) #Leave as it is.
