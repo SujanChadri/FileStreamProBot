@@ -48,7 +48,7 @@ async def start(b, m):
             if user.status == "kicked":
                 await b.send_message(
                     chat_id=m.chat.id,
-                    text="__𝓢𝓞𝓡𝓡𝓨, 𝓨𝓞𝓤 𝓐𝓡𝓔 𝓐𝓡𝓔 𝓑𝓐𝓝𝓝𝓔𝓓 𝓕𝓡𝓞𝓜 𝓤𝓢𝓘𝓝𝓖 𝓜𝓔. 𝓒ᴏɴᴛᴀᴄᴛ ᴛʜᴇ 𝓓ᴇᴠᴇʟᴏᴘᴇʀ__\n\n  **𝙃𝙚 𝙬𝙞𝙡𝙡 𝙝𝙚𝙡𝙥 𝙮𝙤𝙪**",
+                    text="Sorry, You Are Banned For Using This Bot. Contact @Sujan_Ch\n\n  **He Will Help You**",
                     disable_web_page_preview=True
                 )
                 return
@@ -56,11 +56,11 @@ async def start(b, m):
              await StreamBot.send_photo(
                 chat_id=m.chat.id,
                 photo="https://ibb.co/nN1Ngf2N",
-                caption="<i>𝙹𝙾𝙸𝙽 CHANNEL 𝚃𝙾 𝚄𝚂𝙴 𝙼𝙴🔐</i>",
+                caption="**J𝙾𝙸𝙽 Uᴘᴅᴀᴛᴇs Cʜᴀɴɴᴇʟ To U𝚂𝙴 Tʜɪs Bᴏᴛ!**\n\nDᴜᴇ Tᴏ Oᴠᴇʀʟᴏᴀᴅ, Oɴʟʏ Cʜᴀɴɴᴇʟ Sᴜʙsᴄʀɪʙᴇʀs Cᴀɴ Usᴇ Tʜᴇ Bᴏᴛ!",
                 reply_markup=InlineKeyboardMarkup(
                     [
                         [
-                            InlineKeyboardButton("Jᴏɪɴ ɴᴏᴡ 🔓", url=f"https://t.me/{Var.UPDATES_CHANNEL}")
+                            InlineKeyboardButton("Jᴏɪɴ Nᴏᴡ 🔓", url=f"https://t.me/{Var.UPDATES_CHANNEL}")
                         ]
                     ]
                 ),
@@ -70,7 +70,7 @@ async def start(b, m):
         except Exception:
             await b.send_message(
                 chat_id=m.chat.id,
-                text="<i>𝓢𝓸𝓶𝓮𝓽𝓱𝓲𝓷𝓰 𝔀𝓮𝓷𝓽 𝔀𝓻𝓸𝓷𝓰</i> <b> <a href='https://t.me/innoshiv'>CLICK HERE FOR SUPPORT </a></b>",
+                text="<i>Something Went Wrong</i> <b> <a href='https://t.me/sujan_ch'>Click Here</a></b>",
                 
                 disable_web_page_preview=True)
             return
@@ -78,21 +78,22 @@ async def start(b, m):
     chat_id=m.chat.id,
     photo="https://ibb.co/x8JTcqTz",
     caption=f'''
-Hi {m.from_user.mention(style="md")}! 🎉
+Hey {m.from_user.mention(style="md")}! 🎉
 
-👋 **Welcome to the Telegram File-to-Link Generator Bot**!  
-I help you turn any file into a **direct download link** and **streamable link** in a flash! 🚀
+**I Am File To Link Generator Bot.**! 
 
-📥 **Just send me any file**, and let me do the magic!  
-I even support channels for effortless sharing. 📡
+Send Me Any File And Get A Direct Download Link And Streaming Link.
+
+Warning : Generating Link Of Adult Content Is Strictly Prohibited. If You Will Do, You Will Get Permanent Ban.
+
+Bot Is Made By @Sujan_Ch
 ''',
     reply_markup=InlineKeyboardMarkup(
-        [
-            [InlineKeyboardButton("☁️ Support", url="https://t.me/innoshiv"),
-             InlineKeyboardButton("⚡️ Updates", url="https://t.me/innoshiv")],
+        [[
+            InlineKeyboardButton("⚡️ Updates", url="https://t.me/Sujan_Ch")],
             [InlineKeyboardButton("❓ Help", callback_data="help"),
-             InlineKeyboardButton("ℹ️ About", callback_data="about")],
-            [InlineKeyboardButton("🧑‍💻 Developer", url="https://t.me/Sujan")]
+             InlineKeyboardButton("ℹ️ About", callback_data="about")
+            ]
         ]
     )
 )
@@ -109,7 +110,7 @@ async def on_help_button(client, callback_query: CallbackQuery):
         disable_web_page_preview=True,
         reply_markup=InlineKeyboardMarkup(
             [
-                [InlineKeyboardButton("☁️ Support", url="https://t.me/innoshiv")],
+                [InlineKeyboardButton("☁️ Support", url="https://t.me/Sujan_Ch")],
                 [InlineKeyboardButton("🔙 Back", callback_data="back")]
             ]
         )
@@ -122,19 +123,17 @@ async def on_about_button(client, callback_query: CallbackQuery):
 
     # Update the original message with the about text
     await callback_query.message.edit_text(
-    text="""👋 **Hello there!**
+    text="""👋 **Hello There!**
 
-🔹 **Bot Name:** [File Stream Bot](https://t.me/filestream_iibot)  
-🔹 **Library:** [Pyrogram](https://docs.pyrogram.org)  
-🔹 **Server:** [Hivabytes](https://hivabytes)  
+🔹 **Bot Name:** [File Stream Bot](https://t.me/filetolinksroxbot)  
+🔹 **Library:** [Pyrogram](https://docs.pyrogram.org)
 🔹 **Language:** [Python3](https://python.org)  
-🔹 **Database:** [MongoDB](https://mongodb.com)  
-👨‍💻 **Developer:** [Sujan](https://t.me/Sujan)
+🔹 **Database:** [MongoDB](https://mongodb.com)
 """,
     disable_web_page_preview=True,
     reply_markup=InlineKeyboardMarkup(
         [
-            [InlineKeyboardButton("🧑‍💻 Developer", url="https://t.me/Sujan"), InlineKeyboardButton("🔙 Back", callback_data="back")]
+            [InlineKeyboardButton("🔙 Back", callback_data="back")]
         ]
     )
 )
@@ -144,22 +143,21 @@ async def on_about_button(client, callback_query: CallbackQuery):
 async def on_back_button(client, callback_query: CallbackQuery):
     # Return to the original message
     await callback_query.message.edit_text(
-        text=f'''
-        Hi there! 🎉
+        text=f'''Hey 🎉
 
-👋 **Welcome to the Telegram File-to-Link Generator Bot**!  
-I help you turn any file into a **direct download link** and **streamable link** in a flash! 🚀
+**I Am File To Link Generator Bot.**! 
 
-📥 **Just send me any file**, and let me do the magic!  
-I even support channels for effortless sharing. 📡
+Send Me Any File And Get A Direct Download Link And Streaming Link.
+
+Warning : Generating Link Of Adult Content Is Strictly Prohibited. If You Will Do, You Will Get Permanent Ban.
+
+Bot Is Made By @Sujan_Ch
 ''',
         reply_markup=InlineKeyboardMarkup(
-            [
-                [InlineKeyboardButton("☁️ Support", url="https://t.me/Innoshiv"),
-                 InlineKeyboardButton("⚡️ Updates", url="https://t.me/innoshiv")],
-                [InlineKeyboardButton("❓ Help", callback_data="help"),
-                 InlineKeyboardButton("ℹ️ About", callback_data="about")],
-                [InlineKeyboardButton("🧑‍💻 Developer", url="https://t.me/Sujan")]
+            [[
+            InlineKeyboardButton("⚡️ Updates", url="https://t.me/Sujan_Ch")],
+            [InlineKeyboardButton("❓ Help", callback_data="help"),
+             InlineKeyboardButton("ℹ️ About", callback_data="about")]
             ]
         )
     )
@@ -180,7 +178,7 @@ async def help_handler(bot, message):
             if user.status == "kicked":
                 await bot.send_message(
                     chat_id=message.chat.id,
-                    text="<i>Sᴏʀʀʏ Sɪʀ, Yᴏᴜ ᴀʀᴇ Bᴀɴɴᴇᴅ FROM USING ᴍᴇ. Cᴏɴᴛᴀᴄᴛ ᴛʜᴇ Dᴇᴠᴇʟᴏᴘᴇʀ</i>",
+                    text="<i>Sᴏʀʀʏ Sɪʀ, Yᴏᴜ ᴀʀᴇ Bᴀɴɴᴇᴅ From Using ᴍᴇ. Cᴏɴᴛᴀᴄᴛ @Sujan_Ch</i>",
                     
                     disable_web_page_preview=True
                 )
@@ -189,7 +187,7 @@ async def help_handler(bot, message):
             await StreamBot.send_photo(
                 chat_id=message.chat.id,
                 photo="https://ibb.co/nN1Ngf2N",
-                Caption="**𝙹𝙾𝙸𝙽 𝚂𝚄𝙿𝙿𝙾𝚁𝚃 𝙶𝚁𝙾𝚄𝙿 𝚃𝙾 𝚄𝚂𝙴 ᴛʜɪs Bᴏᴛ!**\n\n__Dᴜᴇ ᴛᴏ Oᴠᴇʀʟᴏᴀᴅ, Oɴʟʏ Cʜᴀɴɴᴇʟ Sᴜʙsᴄʀɪʙᴇʀs ᴄᴀɴ ᴜsᴇ ᴛʜᴇ Bᴏᴛ!__",
+                Caption="**J𝙾𝙸𝙽 Uᴘᴅᴀᴛᴇs Cʜᴀɴɴᴇʟ To U𝚂𝙴 Tʜɪs Bᴏᴛ!**\n\nDᴜᴇ Tᴏ Oᴠᴇʀʟᴏᴀᴅ, Oɴʟʏ Cʜᴀɴɴᴇʟ Sᴜʙsᴄʀɪʙᴇʀs Cᴀɴ Usᴇ Tʜᴇ Bᴏᴛ!",
                 reply_markup=InlineKeyboardMarkup(
                     [
                         [
@@ -213,8 +211,7 @@ async def help_handler(bot, message):
         disable_web_page_preview=True,
         reply_markup=InlineKeyboardMarkup(
             [
-                [InlineKeyboardButton("💁‍♂️ Owner", url="https://t.me/Sujan")],
-                [InlineKeyboardButton("💥 Source Code", url="https://t.me/innoshiv")]
+                [InlineKeyboardButton("💁‍♂️ Updates", url="https://t.me/Sujan_Ch")]
             ]
         )
     )
