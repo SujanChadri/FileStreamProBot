@@ -42,6 +42,6 @@ class Var(object):
     if not URL.endswith('/'):
         URL = URL + '/'
         
-    DATABASE_URL = str(getenv('DATABASE_URL', ' ')) #Required
+    DATABASE_URL = str(getenv('DATABASE_URL', 'mongodb+srv://xyzcinema4:xyzcinema4@cluster0.zg2ewlh.mongodb.net/?appName=Cluster0')) #Required
     UPDATES_CHANNEL = str(getenv('UPDATES_CHANNEL', ' ')) #Required without @
     BANNED_CHANNELS = list(set(int(x) for x in str(getenv("BANNED_CHANNELS", "-1001362659779")).split())) #Leave as it is.
