@@ -106,7 +106,7 @@ UPDATES_CHANNEL=channel_username
 To start the bot, run:
 
 ```bash
-python3 -m ShivamNox.__main__
+python3 -m Sujan.__main__
 ```
 
 If everything is configured correctly, your bot will connect to Telegram and start running.
@@ -128,14 +128,6 @@ You can deploy this bot on:
 2. Create a new Heroku app.
 3. Go to **Settings → Config Vars** and add all required variables.
 4. Deploy the app.
-
----
-
-## 👤 Author
-
-**© ShivamNox**
-Telegram: [@shivamnox](https://t.me/shivamnox)
-GitHub: [github.com/ShivamNox](https://github.com/ShivamNox)
 
 ---
 
