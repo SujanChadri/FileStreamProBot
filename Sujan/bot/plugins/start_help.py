@@ -265,38 +265,51 @@ async def do_unban(bot ,  message):
     else :
         await text.edit(f"<b>ғᴀɪʟᴇᴅ ᴛᴏ ᴜɴʙᴀɴ ᴜsᴇʀ/ᴄʜᴀɴɴᴇʟ.\nʀᴇᴀsᴏɴ : {unban_chk}</b>")
 
-    elif data.startswith("sendAlert"):
-        user_id =(data.split("_")[1])
-        user_id = int(user_id.replace(' ' , ''))
-        if len(str(user_id)) == 10:
-            reason = str(data.split("_")[2])
-            try:
-                await client.send_message(user_id , f'<b>ʏᴏᴜ ᴀʀᴇ ʙᴀɴɴᴇᴅ ʙʏ ᴀᴅᴍɪɴ.\nRᴇᴀsᴏɴ : {reason}</b>')
-                await query.message.edit(f"<b>Aʟᴇʀᴛ sᴇɴᴛ ᴛᴏ <code>{user_id}</code>\nRᴇᴀsᴏɴ : {reason}</b>")
-            except Exception as e:
-                await query.message.edit(f"<b>sʀʏ ɪ ɢᴏᴛ ᴛʜɪs ᴇʀʀᴏʀ : {e}</b>")
-        else:
-            await query.message.edit(f"<b>Tʜᴇ ᴘʀᴏᴄᴇss ᴡᴀs ɴᴏᴛ ᴄᴏᴍᴘʟᴇᴛᴇᴅ ʙᴇᴄᴀᴜsᴇ ᴛʜᴇ ᴜsᴇʀ ɪᴅ ᴡᴀs ɴᴏᴛ ᴠᴀʟɪᴅ, ᴏʀ ᴘᴇʀʜᴀᴘs ɪᴛ ᴡᴀs ᴀ ᴄʜᴀɴɴᴇʟ ɪᴅ</b>")
+@StreamBot.on_callback_query()
+async def admin_callback_handler(client, query: CallbackQuery):
+    data = query.data
 
-    elif data.startswith('noAlert'):
-        user_id =(data.split("_")[1])
-        user_id = int(user_id.replace(' ' , ''))
-        await query.message.edit(f"<b>Tʜᴇ ʙᴀɴ ᴏɴ <code>{user_id}</code> ᴡᴀs ᴇxᴇᴄᴜᴛᴇᴅ sɪʟᴇɴᴛʟʏ.</b>")
+    # -------- SEND BAN ALERT --------
+    if data.startswith("sendAlert_"):
+        _, user_id, reason = data.split("_", 2)
+        user_id = int(user_id)
 
-    elif data.startswith('sendUnbanAlert'):
-        user_id =(data.split("_")[1])
-        user_id = int(user_id.replace(' ' , ''))
-        if len(str(user_id)) == 10:
-            try:
-                unban_text = '<b>ʜᴜʀʀᴀʏ..ʏᴏᴜ ᴀʀᴇ ᴜɴʙᴀɴɴᴇᴅ ʙʏ ᴀᴅᴍɪɴ.</b>'
-                await client.send_message(user_id , unban_text)
-                await query.message.edit(f"<b>Uɴʙᴀɴɴᴇᴅ Aʟᴇʀᴛ sᴇɴᴛ ᴛᴏ <code>{user_id}</code>\nᴀʟᴇʀᴛ ᴛᴇxᴛ : {unban_text}</b>")
-            except Exception as e:
-                await query.message.edit(f"<b>sʀʏ ɪ ɢᴏᴛ ᴛʜɪs ᴇʀʀᴏʀ : {e}</b>")
-        else:
-            await query.message.edit(f"<b>Tʜᴇ ᴘʀᴏᴄᴇss ᴡᴀs ɴᴏᴛ ᴄᴏᴍᴘʟᴇᴛᴇᴅ ʙᴇᴄᴀᴜsᴇ ᴛʜᴇ ᴜsᴇʀ ɪᴅ ᴡᴀs ɴᴏᴛ ᴠᴀʟɪᴅ, ᴏʀ ᴘᴇʀʜᴀᴘs ɪᴛ ᴡᴀs ᴀ ᴄʜᴀɴɴᴇʟ ɪᴅ</b>")   
-    elif data.startswith('NoUnbanAlert'):
-        user_id =(data.split("_")[1])
-        user_id = int(user_id.replace(' ' , ''))
-        await query.message.edit(f"Tʜᴇ ᴜɴʙᴀɴ ᴏɴ <code>{user_id}</code> ᴡᴀs ᴇxᴇᴄᴜᴛᴇᴅ sɪʟᴇɴᴛʟʏ.")
+        try:
+            await client.send_message(
+                user_id,
+                f"<b>You have been banned by admin.\nReason: {reason}</b>"
+            )
+            await query.message.edit(
+                f"<b>Alert sent to <code>{user_id}</code>\nReason: {reason}</b>"
+            )
+        except Exception as e:
+            await query.message.edit(f"<b>Failed to send alert beacuse the user id is not valid:\n{e}</b>")
+
+    # -------- NO BAN ALERT --------
+    elif data.startswith("noAlert_"):
+        user_id = int(data.split("_")[1])
+        await query.message.edit(
+            f"<b>User <code>{user_id}</code> banned silently.</b>"
+        )
+
+    # -------- SEND UNBAN ALERT --------
+    elif data.startswith("sendUnbanAlert_"):
+        user_id = int(data.split("_")[1])
+
+        try:
+            text = "<b>Good news! You have been unbanned by admin.</b>"
+            await client.send_message(user_id, text)
+            await query.message.edit(
+                f"<b>Unban alert sent to <code>{user_id}</code></b>"
+            )
+        except Exception as e:
+            await query.message.edit(f"<b>Error:\n{e}</b>")
+
+    # -------- NO UNBAN ALERT --------
+    elif data.startswith("NoUnbanAlert_"):
+        user_id = int(data.split("_")[1])
+        await query.message.edit(
+            f"<b>Unban executed silently for <code>{user_id}</code>.</b>"
+        )
+
     
