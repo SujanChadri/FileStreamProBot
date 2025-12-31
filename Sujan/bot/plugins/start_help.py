@@ -264,8 +264,7 @@ async def do_unban(bot ,  message):
         await text.edit('<b>ᴜsᴇʀ ɪs ɴᴏᴛ ʙᴀɴɴᴇᴅ ʏᴇᴛ.</b>')
     else :
         await text.edit(f"<b>ғᴀɪʟᴇᴅ ᴛᴏ ᴜɴʙᴀɴ ᴜsᴇʀ/ᴄʜᴀɴɴᴇʟ.\nʀᴇᴀsᴏɴ : {unban_chk}</b>")
-                        
-)
+
     elif data.startswith("sendAlert"):
         user_id =(data.split("_")[1])
         user_id = int(user_id.replace(' ' , ''))
