@@ -111,7 +111,7 @@ async def start_services():
     print('\n')
     print('---------------------------------------------------------------------------------------------------------')
     print('---------------------------------------------------------------------------------------------------------')
-    print(' follow me for more such exciting bots! https://github.com/Sujan')
+    print(' follow me for more such exciting bots! https://t.me/sujan_ch')
     print('---------------------------------------------------------------------------------------------------------')
     print('\n')
     print('----------------------- Service Started -----------------------------------------------------------------')
@@ -121,8 +121,12 @@ async def start_services():
     if Var.ON_HEROKU:
         print('                        app running on =>> {}'.format(Var.FQDN))
     print('---------------------------------------------------------------------------------------------------------')
-    print('Give a star to my repo https://github.com/Sujan/filestreambot-pro  also follow me for new bots')
+    print('Give a star to my repo https://github.com/Sujanch740/filestreambotpro  also follow me for new bots')
     print('---------------------------------------------------------------------------------------------------------')
+    try: 
+        await StreamBot.send_message(chat_id=Var.OWNER_ID[0] ,text='<b>Bᴏᴛ Rᴇsᴛᴀʀᴛᴇᴅ !!</b>')
+    except Exception as e:
+        print(f'got this err to send restart msg to owner : {e}')
     await idle()
 
 if __name__ == '__main__':
