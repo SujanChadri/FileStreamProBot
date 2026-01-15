@@ -1744,21 +1744,10 @@
                   <i class="fab fa-facebook-f"></i>
                   <span>Facebook</span>
                 </a>
-                <a class="share-btn btn-twitter" id="twitter-share" target="_blank">
-                  <i class="fab fa-twitter"></i>
-                  <span>Twitter</span>
-                </a>
                 <a class="share-btn btn-instagram" onclick="shareToInstagram()">
                   <i class="fab fa-instagram"></i>
                   <span>Instagram</span>
                 </a>
-                <a class="share-btn btn-messenger" id="messenger-share" target="_blank">
-                  <i class="fab fa-facebook-messenger"></i>
-                  <span>Messenger</span>
-                </a>
-                <a class="share-btn btn-email" id="email-share">
-                  <i class="fas fa-envelope"></i>
-                  <span>Email</span>
                 </a>
               </div>
             </div>
@@ -1852,7 +1841,7 @@
               Experience the next generation of video streaming. Fast, secure, and clear. 
               Stream your favorite content with advanced features and premium quality.
             </p>
-            <a href="tg://resolve?domain=filetolinksroxbot" class="footer-cta">
+            <a href="tg://resolve?domain=sujan_ch" class="footer-cta">
               <i class="fas fa-rocket"></i>
               Get Started Free
             </a>
@@ -1863,7 +1852,7 @@
               <a href="#" class="social-link" title="Discord">
                 <i class="fab fa-discord"></i>
               </a>
-              <a href="tg://resolve?domain=filetolinksroxbot" class="social-link" title="Telegram">
+              <a href="tg://resolve?domain=sujan_ch" class="social-link" title="Telegram">
                 <i class="fab fa-telegram"></i>
               </a>
             </div>
@@ -2255,16 +2244,12 @@
       const whatsapp = document.getElementById('whatsapp-share');
       const telegram = document.getElementById('telegram-share');
       const facebook = document.getElementById('facebook-share');
-      const twitter = document.getElementById('twitter-share');
       const messenger = document.getElementById('messenger-share');
-      const email = document.getElementById('email-share');
 
       if (whatsapp) whatsapp.href = `https://wa.me/?text=${title}%20${currentUrl}`;
       if (telegram) telegram.href = `https://t.me/share/url?url=${currentUrl}&text=${title}`;
       if (facebook) facebook.href = `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`;
-      if (twitter) twitter.href = `https://twitter.com/intent/tweet?url=${currentUrl}&text=${title}`;
       if (messenger) messenger.href = `fb-messenger://share/?link=${currentUrl}`;
-      if (email) email.href = `mailto:?subject=${title}&body=Check out this video: ${currentUrl}`;
     }
 
     function copyLink() {
