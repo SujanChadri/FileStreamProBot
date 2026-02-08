@@ -60,13 +60,8 @@ async def watch_handler(request: web.Request):
                 raise web.HTTPBadRequest(text="Invalid URL format")
             id = int(match.group(1))
             secure_hash = request.rel_url.query.get("hash")
-            audio_sources = []
-            query_audio = request.rel_url.query.getall("audio", [])
-        for entry in query_audio:
-            if entry:
-                audio_sources.append(entry)
-
-        html = await render_page(id, secure_hash, audio_sources=audio_sources)
+        
+        html = await render_page(id, secure_hash)
         return web.Response(text=html, content_type='text/html')
     
     except InvalidHash as e:
