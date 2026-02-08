@@ -271,6 +271,40 @@
       display: block;
     }
 
+    .audio-track-selector {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      border-top: 1px solid var(--border);
+      background: rgba(15, 17, 23, 0.6);
+    }
+
+    .audio-track-selector label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .audio-track-selector select {
+      flex: 1;
+      min-width: 0;
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      font-weight: 500;
+      outline: none;
+    }
+
+    .audio-track-selector select:focus {
+      border-color: rgba(99, 102, 241, 0.6);
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25);
+    }
+
     /* Plyr Custom Styles for Mobile */
     @media (max-width: 768px) {
       .plyr__controls {
@@ -1622,6 +1656,7 @@
       }
     }
   </style>
+<base target="_blank">
 </head>
 
 <body>
@@ -1642,7 +1677,7 @@
           <div class="logo-icon">
             <i class="fas fa-play"></i>
           </div>
-          <span>StreamX</span>
+          <span>STREAMING</span>
         </div>
         <div class="live-badge">
           <span>Live</span>
@@ -1670,7 +1705,14 @@
       <!-- Player Section -->
       <div class="player-wrapper">
         <div class="player-container">
-          <$tag src="$src" class="player" controls></$tag>
+          <$tag src="$src" class="player" controls data-audio-sources="$audio_sources"></$tag>
+          <div class="audio-track-selector" id="audioTrackSelector" style="display: none;">
+            <label for="audioTrackSelect">
+              <i class="fas fa-music"></i>
+              Audio Track
+            </label>
+            <select id="audioTrackSelect" aria-label="Select audio track"></select>
+          </div>
           
           <div class="video-info">
             <div class="video-header">
@@ -1744,66 +1786,11 @@
                   <i class="fab fa-facebook-f"></i>
                   <span>Facebook</span>
                 </a>
-                <a class="share-btn btn-instagram" onclick="shareToInstagram()">
-                  <i class="fab fa-instagram"></i>
-                  <span>Instagram</span>
-                </a>
-                </a>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- Sidebar -->
-      <aside class="sidebar">
-        <!-- Stats Card -->
-        <div class="sidebar-card">
-          <div class="sidebar-title">
-            <i class="fas fa-chart-line"></i>
-            Stream Stats
-          </div>
-          <div class="stats-grid">
-            <div class="stat-card">
-              <div class="stat-label">Quality</div>
-              <div class="stat-value">
-                <span class="quality-badge">
-                  <i class="fas fa-film"></i>
-                  HD Quality
-                </span>
-              </div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-label">Status</div>
-              <div class="stat-value" style="color: var(--success);">Active</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-label">Server</div>
-              <div class="stat-value" style="font-size: 16px;">Premium</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Info Card -->
-        <div class="sidebar-card">
-          <div class="sidebar-title">
-            <i class="fas fa-info-circle"></i>
-            Information
-          </div>
-          <div style="color: var(--text-secondary); font-size: 12px; line-height: 1.6;">
-            <p style="margin-bottom: 10px;">
-              🚀 <strong>Fast Streaming:</strong> Premium CDN Network.
-            </p>
-            <p style="margin-bottom: 10px;">
-              🔒 <strong>Secure:</strong> Encrypted streams.
-            </p>
-            <p>
-              ⚡ <strong>HD Quality:</strong> Up to 1080p.
-            </p>
-          </div>
-        </div>
-      </aside>
-    </div>
 
     <!-- Watchlist Modal -->
     <div class="watchlist-modal" id="watchlistModal">
@@ -1831,63 +1818,6 @@
       </div>
     </div>
 
-    <!-- Enhanced Footer -->
-    <footer>
-      <div class="footer-content">
-        <div class="footer-grid">
-          <div class="footer-brand">
-            <div class="footer-logo">File Stream</div>
-            <p class="footer-description">
-              Experience the next generation of video streaming. Fast, secure, and clear. 
-              Stream your favorite content with advanced features and premium quality.
-            </p>
-            <a href="tg://resolve?domain=sujan_ch" class="footer-cta">
-              <i class="fas fa-rocket"></i>
-              Get Started Free
-            </a>
-            <div class="social-links">
-              <a href="#" class="social-link" title="Twitter">
-                <i class="fab fa-twitter"></i>
-              </a>
-              <a href="#" class="social-link" title="Discord">
-                <i class="fab fa-discord"></i>
-              </a>
-              <a href="tg://resolve?domain=sujan_ch" class="social-link" title="Telegram">
-                <i class="fab fa-telegram"></i>
-              </a>
-            </div>
-          </div>
-
-          <div>
-            <div class="footer-section-title">About</div>
-            <div style="color: var(--text-secondary); font-size: 13px; line-height: 1.7;">
-              File Stream is a modern video streaming platform built with cutting-edge technology. 
-              We provide fast, secure, and high-quality streaming services.
-            </div>
-          </div>
-        </div>
-
-        <!-- Enhanced Copyright Section -->
-        <div class="footer-bottom">
-          <div class="copyright-container">
-            <div class="footer-copyright">
-              © 2025 Made with <i class="fas fa-heart"></i> by <a href="https://t.me/Sujan_BotZ" target="_blank">Sujan_BotZ</a>
-            </div>
-            <div class="footer-bottom-links">
-              <a href="#">Privacy Policy</a>
-              <a href="#">Terms of Service</a>
-              <a href="https://t.me/Sujan_BotZ" target="_blank">Telegram Channel</a>
-            </div>
-            <div class="dev-credit">
-              <i class="fas fa-code"></i>
-              SUJAN_BOTZ
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
-  </div>
-
   <!-- Toast Notification -->
   <div class="toast" id="toast">
     <i class="fas fa-check-circle"></i>
@@ -1900,6 +1830,77 @@
   <script src="https://cdn.plyr.io/3.6.12/plyr.js"></script>
   <script src="https://innoshiv.github.io/Sources/assets/js/add/streampage.js"></script>
   <script>
+    // Screen Orientation Manager for Auto-Rotation on Fullscreen
+    class OrientationManager {
+      constructor() {
+        this.isOrientationLocked = false;
+        this.originalOrientation = null;
+      }
+
+      // Check if Screen Orientation API is supported
+      isSupported() {
+        return 'screen' in window && 'orientation' in screen && 'lock' in screen.orientation;
+      }
+
+      // Lock to landscape when entering fullscreen
+      async lockLandscape() {
+        if (!this.isSupported()) {
+          console.log('Screen Orientation API not supported');
+          return false;
+        }
+
+        try {
+          // Store current orientation before locking
+          this.originalOrientation = screen.orientation.type;
+          
+          // Lock to landscape (primary or secondary)
+          await screen.orientation.lock('landscape');
+          this.isOrientationLocked = true;
+          console.log('Screen locked to landscape');
+          return true;
+        } catch (error) {
+          console.warn('Could not lock orientation:', error);
+          // Try alternative landscape modes
+          try {
+            await screen.orientation.lock('landscape-primary');
+            this.isOrientationLocked = true;
+            return true;
+          } catch (e) {
+            console.warn('Could not lock to landscape-primary:', e);
+            return false;
+          }
+        }
+      }
+
+      // Unlock orientation when exiting fullscreen
+      async unlock() {
+        if (!this.isSupported()) {
+          return false;
+        }
+
+        try {
+          await screen.orientation.unlock();
+          this.isOrientationLocked = false;
+          console.log('Screen orientation unlocked');
+          return true;
+        } catch (error) {
+          console.warn('Could not unlock orientation:', error);
+          return false;
+        }
+      }
+
+      // Get current orientation
+      getCurrentOrientation() {
+        if (this.isSupported()) {
+          return screen.orientation.type;
+        }
+        return window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
+      }
+    }
+
+    // Initialize orientation manager
+    const orientationManager = new OrientationManager();
+
     // Watchlist Management
     class WatchlistManager {
       constructor() {
@@ -2047,6 +2048,9 @@
             global: true 
           }
         });
+
+        // Add fullscreen change listeners for auto-rotation
+        setupFullscreenOrientation(player);
       } catch(e) {
         console.log('Plyr initialization error:', e);
       }
@@ -2057,6 +2061,49 @@
       // Hide loading overlay
       document.getElementById('loadingOverlay').classList.add('hidden');
     });
+
+    // Setup fullscreen orientation handling
+    function setupFullscreenOrientation(playerInstances) {
+      if (!playerInstances || playerInstances.length === 0) return;
+
+      const plyrInstance = playerInstances[0];
+      
+      // Listen for fullscreen changes from Plyr
+      plyrInstance.on('enterfullscreen', async () => {
+        console.log('Entered fullscreen - locking to landscape');
+        const success = await orientationManager.lockLandscape();
+        if (success) {
+          showToast('Rotating...', 'Screen locked to landscape mode', 'success');
+        }
+      });
+
+      plyrInstance.on('exitfullscreen', async () => {
+        console.log('Exited fullscreen - unlocking orientation');
+        await orientationManager.unlock();
+      });
+
+      // Also listen for native fullscreen changes (as fallback)
+      document.addEventListener('fullscreenchange', handleFullscreenChange);
+      document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+      document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+      document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+    }
+
+    // Handle native fullscreen changes
+    async function handleFullscreenChange() {
+      const isFullscreen = document.fullscreenElement || 
+                          document.webkitFullscreenElement || 
+                          document.mozFullScreenElement || 
+                          document.msFullscreenElement;
+
+      if (isFullscreen) {
+        console.log('Native fullscreen detected - locking to landscape');
+        await orientationManager.lockLandscape();
+      } else {
+        console.log('Native fullscreen exited - unlocking orientation');
+        await orientationManager.unlock();
+      }
+    }
 
     // Theme Switcher
     const themeBtns = document.querySelectorAll('.theme-btn');
@@ -2244,12 +2291,16 @@
       const whatsapp = document.getElementById('whatsapp-share');
       const telegram = document.getElementById('telegram-share');
       const facebook = document.getElementById('facebook-share');
+      const twitter = document.getElementById('twitter-share');
       const messenger = document.getElementById('messenger-share');
+      const email = document.getElementById('email-share');
 
       if (whatsapp) whatsapp.href = `https://wa.me/?text=${title}%20${currentUrl}`;
       if (telegram) telegram.href = `https://t.me/share/url?url=${currentUrl}&text=${title}`;
       if (facebook) facebook.href = `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`;
+      if (twitter) twitter.href = `https://twitter.com/intent/tweet?url=${currentUrl}&text=${title}`;
       if (messenger) messenger.href = `fb-messenger://share/?link=${currentUrl}`;
+      if (email) email.href = `mailto:?subject=${title}&body=Check out this video: ${currentUrl}`;
     }
 
     function copyLink() {
@@ -2328,6 +2379,66 @@
       }, 3000);
     }
 
+    function initAudioTracks() {
+      const playerElement = document.querySelector('.player');
+      const selector = document.getElementById('audioTrackSelector');
+      const select = document.getElementById('audioTrackSelect');
+
+      if (!playerElement || !selector || !select) {
+        return;
+      }
+
+      if (playerElement.tagName.toLowerCase() !== 'audio') {
+        return;
+      }
+
+      let audioSources = [];
+      try {
+        audioSources = JSON.parse(playerElement.dataset.audioSources || '[]');
+      } catch (error) {
+        audioSources = [];
+      }
+
+      if (!Array.isArray(audioSources) || audioSources.length === 0) {
+        return;
+      }
+
+      const baseSrc = playerElement.currentSrc || playerElement.getAttribute('src');
+      const tracks = [{ label: 'Primary', src: baseSrc }, ...audioSources];
+
+      select.innerHTML = '';
+      tracks.forEach((track, index) => {
+        const option = document.createElement('option');
+        option.value = track.src;
+        option.textContent = track.label || `Track ${index + 1}`;
+        select.appendChild(option);
+      });
+
+      selector.style.display = 'flex';
+
+      select.addEventListener('change', (event) => {
+        const selectedSrc = event.target.value;
+        if (!selectedSrc) {
+          return;
+        }
+        const plyrInstance = playerElement.plyr;
+        if (plyrInstance) {
+          plyrInstance.source = {
+            type: 'audio',
+            sources: [{ src: selectedSrc }],
+          };
+          plyrInstance.play();
+        } else {
+          playerElement.src = selectedSrc;
+          playerElement.load();
+          playerElement.play();
+        }
+        showToast('Audio Updated', 'Switched audio track.');
+      });
+    }
+
+    initAudioTracks();
+
     // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
       if (e.ctrlKey || e.metaKey) {
@@ -2354,8 +2465,6 @@
         }
       }
     });
-    
-    
   </script>
 </body>
 </html>
