@@ -1,6 +1,8 @@
 # (c) Sujan
 import os
 import asyncio
+import time
+from collections import defaultdict, deque
 from asyncio import TimeoutError
 from Sujan.bot import StreamBot
 from Sujan.utils.database import Database
@@ -20,6 +22,22 @@ pass_db = Database(Var.DATABASE_URL, "ag_passwords")
 
 # ✅ Simple flag
 _channel_cached = False
+FILE_RATE_LIMIT = 3
+FILE_RATE_WINDOW_SECONDS = 60
+_user_file_events = defaultdict(deque)
+
+
+def _check_file_rate_limit(user_id: int):
+    now = time.monotonic()
+    window_start = now - FILE_RATE_WINDOW_SECONDS
+    events = _user_file_events[user_id]
+    while events and events[0] < window_start:
+        events.popleft()
+    if len(events) >= FILE_RATE_LIMIT:
+        retry_after = max(0, int(FILE_RATE_WINDOW_SECONDS - (now - events[0])))
+        return True, retry_after
+    events.append(now)
+    return False, 0
 
 
 async def cache_channel(c: Client):
@@ -73,6 +91,11 @@ async def login_handler(c: Client, m: Message):
 
 @StreamBot.on_message((filters.private) & (filters.document | filters.video | filters.audio | filters.photo), group=4)
 async def private_receive_handler(c: Client, m: Message):
+    if await db.is_user_banned(m.from_user.id):
+        await m.reply_text(
+            "You are banned from using this bot. Contact support if you believe this is a mistake."
+        )
+        return
     if MY_PASS:
         check_pass = await pass_db.get_user_pass(m.chat.id)
         if check_pass == None:
@@ -123,8 +146,15 @@ async def private_receive_handler(c: Client, m: Message):
                 disable_web_page_preview=True
             )
             return
+    limited, retry_after = _check_file_rate_limit(m.from_user.id)
+    if limited:
+        await m.reply_text(
+            f"Sᴏʀʀʏ ʏᴏᴜ ᴄᴀɴ ᴏɴʟʏ ꜱᴇɴᴅ {FILE_RATE_LIMIT} ꜰɪʟᴇꜱ ᴘᴇʀ ᴍɪɴᴜᴛᴇ. "
+            f"Sᴇɴᴅ ꜰɪʟᴇꜱ ᴀɢᴀɪɴ ɪɴ {retry_after}s."
+        )
+        return
     try:
-        log_msg = await m.forward(chat_id=Var.BIN_CHANNEL)
+        log_msg = await m.copy(chat_id=Var.BIN_CHANNEL)
         stream_link = f"{Var.URL}watch/{str(log_msg.id)}?hash={get_hash(log_msg)}"
         online_link = f"{Var.URL}dl/{str(log_msg.id)}?hash={get_hash(log_msg)}"
         
@@ -178,7 +208,7 @@ async def channel_receive_handler(bot, broadcast):
         # ✅ Cache channel
         await cache_channel(bot)
         
-        log_msg = await broadcast.forward(chat_id=Var.BIN_CHANNEL)
+        log_msg = await broadcast.copy(chat_id=Var.BIN_CHANNEL)
         stream_link = f"{Var.URL}watch/{str(log_msg.id)}?hash={get_hash(log_msg)}"
         online_link = f"{Var.URL}dl/{str(log_msg.id)}?hash={get_hash(log_msg)}"
         
