@@ -1,85 +1,82 @@
-<!-- Dont Remove My Credit @Sujan_BotZ -->
-
+<!-- (c) adarsh-goel-->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Download your Telegram files with Sujan Botz."/>
-  <meta property="og:title" content="{{ file_name }}" />
-  <meta property="og:description" content="Secure file download powered by Sujan Botz" />
-  <meta property="og:url" content="{{ file_url }}" />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://cdn.jsdelivr.net/gh/Botsthe/DATABASE@main/image/live.png"/>
+    <meta charset="UTF-8">
+    <meta property="og:image" content="https://i.ibb.co/M8S0Zzj/live-streaming.png" itemprop="thumbnailUrl">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>%s</title>
+    <link rel="stylesheet" type='text/css' href="https://adarsh-goel.github.io/resources/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Delius">
 
-  <title>{{ file_name }} | SUJAN BOTZ</title>
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #111;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .box {
-      background: #1c1c1c;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px #0ff;
-      text-align: center;
-    }
-    h1 {
-      font-size: 22px;
-      margin-bottom: 10px;
-      color: #00ffff;
-    }
-    p {
-      margin: 5px 0;
-      font-size: 14px;
-    }
-    .download-btn {
-      margin-top: 15px;
-      background: #00ffff;
-      color: #000;
-      text-decoration: none;
-      padding: 10px 20px;
-      font-weight: bold;
-      border-radius: 8px;
-      transition: background 0.3s ease;
-      display: inline-block;
-    }
-    .download-btn:hover {
-      background: #00b3b3;
-    }
-    .footer {
-      margin-top: 30px;
-      font-size: 12px;
-      color: #aaa;
-    }
-    .footer a {
-      color: #0ff;
-      text-decoration: none;
-    }
-  </style>
 </head>
-<body>
-  <div class="box">
-    <h1>{{ file_name }}</h1>
-    <p><strong>Size:</strong> {{ file_size }}</p>
-    <p><strong>Unique ID:</strong> {{ file_unique_id }}</p>
 
-    <a class="download-btn" href="{{ file_url }}" download="{{ file_name }}">⬇ Download File</a>
-  </div>
+<body class='cyber'>
+    <header>
+        <div class="toogle"></div>
+        <div id="file-name" class="cyber">
+            <marquee direction="left"> %s</marquee>
+        </div>
+    </header>
 
-  <div class="footer">
-    <p>{{ disclaimer }}</p>
-    <p><a href="{{ report_link }}">Report File</a> | Template by <b>@SUJAN_BOTZ</b></p>
-  </div>
+    <div class="container">
+        <a href=%s>
+            <button class="cybr-btn">
+                Download
+                <span aria-hidden>_</span>
+                <span aria-hidden class="cybr-btn__glitch">_404 Error</span>
+                <span aria-hidden class="cybr-btn__tag">_%s</span>
+            </button>
+        </a>
+    </div>
+
+    <footer>
+        <center>
+            <a href="https://t.me/Sujan_BotZ">
+                <h3 style="color: black; text-align: center;">FORK ME</h3>
+            </a>
+        </center>
+
+    </footer>
+
+
+    <script src="https://cdn.plyr.io/3.6.12/plyr.js"></script>
+    <script>
+        const controls = [
+            'play-large',
+            'rewind',
+            'play',
+            'fast-forward',
+            'progress',
+            'current-time',
+            'duration',
+            'mute',
+            'volume',
+            'captions',
+            'settings',
+            'pip',
+            'airplay',
+            'download',
+            'fullscreen'
+        ];
+        document.addEventListener('DOMContentLoaded', () => {
+            const player = Plyr.setup('.player', { controls });
+        });
+
+        const body = document.querySelector('body');
+        const title = document.querySelector('#file-name');
+        const footer = document.querySelector('footer');
+        const toogle = document.querySelector('.toogle');
+        toogle.onclick = () => {
+            body.classList.toggle('dark')
+            footer.classList.toggle('dark')
+            title.classList.toggle('dark')
+        }
+    </script>
 </body>
-</html>
 
+</html>
