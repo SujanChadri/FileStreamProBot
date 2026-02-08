@@ -36,6 +36,13 @@ else:
             
 @StreamBot.on_message((filters.command("start") | filters.regex('start⚡️')) & filters.private )
 async def start(b, m):
+    if await db.is_user_banned(m.from_user.id):
+        await b.send_message(
+            chat_id=m.chat.id,
+            text="You are banned from using this bot. Contact support if you believe this is a mistake.",
+            disable_web_page_preview=True
+        )
+        return
     if not await db.is_user_exist(m.from_user.id):
         await db.add_user(m.from_user.id)
         await b.send_message(
@@ -166,6 +173,13 @@ Bot Is Made By @Sujan_Ch
 
 @StreamBot.on_message((filters.command("help") | filters.regex('help📚')) & filters.private )
 async def help_handler(bot, message):
+    if await db.is_user_banned(message.from_user.id):
+        await bot.send_message(
+            chat_id=message.chat.id,
+            text="You are banned from using this bot. Contact support if you believe this is a mistake.",
+            disable_web_page_preview=True
+        )
+        return
     if not await db.is_user_exist(message.from_user.id):
         await db.add_user(message.from_user.id)
         await bot.send_message(

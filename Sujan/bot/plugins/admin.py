@@ -11,22 +11,44 @@ from Sujan.bot import StreamBot
 from Sujan.vars import Var
 from pyrogram import filters, Client
 from pyrogram.types import Message
+
 db = Database(Var.DATABASE_URL, Var.name)
 Broadcast_IDs = {}
 
+async def resolve_target_user_id(c: Client, m: Message):
+    if m.reply_to_message and m.reply_to_message.from_user:
+        return m.reply_to_message.from_user.id
+    if len(m.command) < 2:
+        return None
+    token = m.command[1].strip()
+    if token.isdigit():
+        return int(token)
+    if token.startswith("@"):
+        token = token[1:]
+    try:
+        user = await c.get_users(token)
+    except Exception:
+        return None
+    return user.id
+
+def is_owner(user_id: int) -> bool:
+    return user_id in Var.OWNER_ID
+
 @StreamBot.on_message(filters.command("users") & filters.private )
 async def sts(c: Client, m: Message):
-    user_id=m.from_user.id
+    user_id = m.from_user.id
     if user_id in Var.OWNER_ID:
         total_users = await db.total_users_count()
         await m.reply_text(text=f"Total Users in DB: {total_users}", quote=True)
-        
-        
-@StreamBot.on_message(filters.command("broadcast") & filters.private  & filters.user(list(Var.OWNER_ID)))
+
+@StreamBot.on_message(filters.command("broadcast") & filters.private & filters.user(list(Var.OWNER_ID)))
 async def broadcast_(c, m):
-    user_id=m.from_user.id
+    user_id = m.from_user.id
+    if not m.reply_to_message:
+        return await m.reply_text("Reply to a message to broadcast it.")
+    
     out = await m.reply_text(
-            text=f"Broadcast initiated! You will be notified with log file when all the users are notified."
+        text=f"Broadcast initiated! You will be notified with log file when all the users are notified."
     )
     all_users = await db.get_all_users()
     broadcast_msg = m.reply_to_message
@@ -87,3 +109,40 @@ async def broadcast_(c, m):
             quote=True
         )
     os.remove('broadcast.txt')
+
+
+@StreamBot.on_message(filters.command("ban") & filters.private & filters.user(list(Var.OWNER_ID)))
+async def ban_user(c: Client, m: Message):
+    target_id = await resolve_target_user_id(c, m)
+    if target_id is None:
+        await m.reply_text("Usage: /ban <user_id> or reply to a user message.", quote=True)
+        return
+    if is_owner(target_id):
+        await m.reply_text("You cannot ban an owner.", quote=True)
+        return
+    await db.ban_user(target_id)
+    await m.reply_text(f"User `{target_id}` has been banned.", quote=True)
+    try:
+        await c.send_message(
+            chat_id=target_id,
+            text="You have been banned from using this bot. Contact support if you think this is a mistake."
+        )
+    except Exception:
+        pass
+
+
+@StreamBot.on_message(filters.command("unban") & filters.private & filters.user(list(Var.OWNER_ID)))
+async def unban_user(c: Client, m: Message):
+    target_id = await resolve_target_user_id(c, m)
+    if target_id is None:
+        await m.reply_text("Usage: /unban <user_id> or reply to a user message.", quote=True)
+        return
+    await db.unban_user(target_id)
+    await m.reply_text(f"User `{target_id}` has been unbanned.", quote=True)
+    try:
+        await c.send_message(
+            chat_id=target_id,
+            text="You have been unbanned. You can use the bot again."
+        )
+    except Exception:
+        pass

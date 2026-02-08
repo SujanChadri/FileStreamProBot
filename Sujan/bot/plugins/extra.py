@@ -5,13 +5,27 @@ import time
 import shutil, psutil
 from utils_bot import *
 from Sujan import StartTime
+from Sujan.utils.database import Database
+from Sujan.vars import Var
 
+db = Database(Var.DATABASE_URL, Var.name)
 
 START_TEXT = """ Your Telegram DC Is : `{}`  """
 
+async def deny_if_banned(b, m):
+    if await db.is_user_banned(m.from_user.id):
+        await b.send_message(
+            chat_id=m.chat.id,
+            text="You are banned from using this bot. Contact support if you believe this is a mistake.",
+            disable_web_page_preview=True
+        )
+        return True
+    return False
 
 @StreamBot.on_message(filters.command("maintainers"))
 async def maintainers(b, m):
+    if await deny_if_banned(b, m):
+        return
     try:
         await b.send_message(chat_id=m.chat.id, text="HELLO", quote=True)
     except Exception as e:
@@ -32,6 +46,8 @@ async def maintainers(b, m):
          
 @StreamBot.on_message(filters.command("subscribe"))
 async def follow_user(b,m):
+    if await deny_if_banned(b, m):
+        return
     try:
        await b.send_message(chat_id=m.chat.id,text="HELLO",quote=True)
     except Exception:
@@ -52,17 +68,19 @@ async def follow_user(b,m):
 
 @StreamBot.on_message(filters.command("dc"))
 async def start(bot, update):
+    if await deny_if_banned(bot, update):
+        return
     text = START_TEXT.format(update.from_user.dc_id)
     await update.reply_text(
         text=text,
         disable_web_page_preview=True,
         quote=True
     )
-
-    
     
 @StreamBot.on_message(filters.command("list"))
 async def list(l, m):
+    if await deny_if_banned(l, m):
+        return
     LIST_MSG = "Hi! {} Here is a list of all my commands \n \n 1 . `start⚡️` \n 2. `help📚` \n 3. `login🔑` \n 4.`Subscribe ❤️` \n 5. `ping📡` \n 6. `status📊` \n 7. `DC` this tells your telegram dc \n 8. `maintainers😎` "
     await l.send_message(chat_id = m.chat.id,
         text = LIST_MSG.format(m.from_user.mention(style="md"))
@@ -72,6 +90,8 @@ async def list(l, m):
     
 @StreamBot.on_message(filters.command("ping"))
 async def ping(b, m):
+    if await deny_if_banned(b, m):
+        return
     start_t = time.time()
     ag = await m.reply_text("....")
     end_t = time.time()
@@ -83,6 +103,8 @@ async def ping(b, m):
     
 @StreamBot.on_message(filters.private & filters.command("status"))
 async def stats(bot, update):
+  if await deny_if_banned(bot, update):
+    return
   currentTime = readable_time((time.time() - StartTime))
   total, used, free = shutil.disk_usage('.')
   total = get_readable_file_size(total)
