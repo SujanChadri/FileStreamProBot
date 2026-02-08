@@ -271,40 +271,6 @@
       display: block;
     }
 
-    .audio-track-selector {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 16px 20px;
-      border-top: 1px solid var(--border);
-      background: rgba(15, 17, 23, 0.6);
-    }
-
-    .audio-track-selector label {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 600;
-      color: var(--text-secondary);
-    }
-
-    .audio-track-selector select {
-      flex: 1;
-      min-width: 0;
-      background: var(--bg-tertiary);
-      color: var(--text-primary);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 10px 12px;
-      font-weight: 500;
-      outline: none;
-    }
-
-    .audio-track-selector select:focus {
-      border-color: rgba(99, 102, 241, 0.6);
-      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25);
-    }
-
     /* Plyr Custom Styles for Mobile */
     @media (max-width: 768px) {
       .plyr__controls {
@@ -1703,16 +1669,8 @@
     <!-- Main Container -->
     <div class="main-container">
       <!-- Player Section -->
-      <div class="player-wrapper">
-        <div class="player-container">
-          <$tag src="$src" class="player" controls data-audio-sources="$audio_sources"></$tag>
-          <div class="audio-track-selector" id="audioTrackSelector" style="display: none;">
-            <label for="audioTrackSelect">
-              <i class="fas fa-music"></i>
-              Audio Track
-            </label>
-            <select id="audioTrackSelect" aria-label="Select audio track"></select>
-          </div>
+      <div class="player-container">
+          <$tag src="$src" class="player" controls></$tag>
           
           <div class="video-info">
             <div class="video-header">
@@ -2378,66 +2336,6 @@
         toast.classList.remove('show');
       }, 3000);
     }
-
-    function initAudioTracks() {
-      const playerElement = document.querySelector('.player');
-      const selector = document.getElementById('audioTrackSelector');
-      const select = document.getElementById('audioTrackSelect');
-
-      if (!playerElement || !selector || !select) {
-        return;
-      }
-
-      if (playerElement.tagName.toLowerCase() !== 'audio') {
-        return;
-      }
-
-      let audioSources = [];
-      try {
-        audioSources = JSON.parse(playerElement.dataset.audioSources || '[]');
-      } catch (error) {
-        audioSources = [];
-      }
-
-      if (!Array.isArray(audioSources) || audioSources.length === 0) {
-        return;
-      }
-
-      const baseSrc = playerElement.currentSrc || playerElement.getAttribute('src');
-      const tracks = [{ label: 'Primary', src: baseSrc }, ...audioSources];
-
-      select.innerHTML = '';
-      tracks.forEach((track, index) => {
-        const option = document.createElement('option');
-        option.value = track.src;
-        option.textContent = track.label || `Track ${index + 1}`;
-        select.appendChild(option);
-      });
-
-      selector.style.display = 'flex';
-
-      select.addEventListener('change', (event) => {
-        const selectedSrc = event.target.value;
-        if (!selectedSrc) {
-          return;
-        }
-        const plyrInstance = playerElement.plyr;
-        if (plyrInstance) {
-          plyrInstance.source = {
-            type: 'audio',
-            sources: [{ src: selectedSrc }],
-          };
-          plyrInstance.play();
-        } else {
-          playerElement.src = selectedSrc;
-          playerElement.load();
-          playerElement.play();
-        }
-        showToast('Audio Updated', 'Switched audio track.');
-      });
-    }
-
-    initAudioTracks();
 
     // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
