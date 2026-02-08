@@ -41,5 +41,5 @@ class Var(object):
         URL = URL + '/'
         
     DATABASE_URL = str(getenv('DATABASE_URL', '')) #Required
-    UPDATES_CHANNEL = str(getenv('UPDATES_CHANNEL', 'Airdrop_News_Update')) #Required without @
+    UPDATES_CHANNEL = str(getenv('UPDATES_CHANNEL', 'Sujan_BotZ')) #Required without @
     BANNED_CHANNELS = list(set(int(x) for x in str(getenv("BANNED_CHANNELS", "-1001362659779")).split())) #Leave as it is.
