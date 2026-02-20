@@ -1,95 +1,156 @@
-<!--(c) Sujan-->
+<!-- Premium Streaming Page Template - FileStreamX -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta property="og:title" content="Stream Video" />
+  <meta property="og:description" content="Watch streaming content powered by @Sujan_BotZ" />
   <meta property="og:image" content="https://i.ibb.co/M8S0Zzj/live-streaming.png" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FileStream</title>
+  <title>FileStreamX - Premium Streaming</title>
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.plyr.io/3.6.12/plyr.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Plyr CSS -->
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.6.12/plyr.css" />
 
   <style>
     :root {
-      --bg-primary: #0f1117;
-      --bg-secondary: #1a1d29;
-      --bg-tertiary: #252936;
-      --bg-glass: rgba(37, 41, 54, 0.8);
-      --text-primary: #ffffff;
-      --text-secondary: #a8b3cf;
-      --text-muted: #6b7395;
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --bg-tertiary: #1e1e2e;
+      --bg-glass: rgba(18, 18, 26, 0.85);
       --accent-primary: #6366f1;
       --accent-secondary: #8b5cf6;
-      --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      --accent-tertiary: #ec4899;
+      --accent-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+      --accent-glow: rgba(99, 102, 241, 0.4);
+      --text-primary: #ffffff;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
       --success: #10b981;
       --warning: #f59e0b;
       --danger: #ef4444;
-      --border: rgba(255, 255, 255, 0.06);
-      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
-      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
-      --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
+      --border: rgba(255, 255, 255, 0.08);
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
+      --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.3);
       --radius-sm: 8px;
       --radius-md: 12px;
       --radius-lg: 16px;
       --radius-xl: 24px;
     }
 
-    * { 
-      margin: 0; 
-      padding: 0; 
-      box-sizing: border-box; 
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
     html {
+      scroll-behavior: smooth;
       overflow-x: hidden;
     }
 
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg-primary);
       color: var(--text-primary);
       min-height: 100vh;
       position: relative;
       overflow-x: hidden;
-      width: 100%;
     }
 
-    /* Subtle Background */
-    .bg-decoration {
+    /* Animated Background */
+    .bg-animation {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       z-index: 0;
-      opacity: 0.4;
       overflow: hidden;
       pointer-events: none;
-      background: radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
-                  radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.06) 0%, transparent 50%);
     }
 
-    /* Main Container */
+    .bg-gradient {
+      position: absolute;
+      width: 800px;
+      height: 800px;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.12;
+      animation: float 25s ease-in-out infinite;
+    }
+
+    .bg-gradient-1 {
+      background: var(--accent-primary);
+      top: -300px;
+      right: -300px;
+    }
+
+    .bg-gradient-2 {
+      background: var(--accent-secondary);
+      bottom: -300px;
+      left: -300px;
+      animation-delay: -12s;
+    }
+
+    .bg-gradient-3 {
+      background: var(--accent-tertiary);
+      top: 50%;
+      left: 30%;
+      width: 500px;
+      height: 500px;
+      opacity: 0.08;
+      animation-delay: -6s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(50px, -50px) scale(1.1); }
+      50% { transform: translate(-30px, 30px) scale(0.95); }
+      75% { transform: translate(-50px, -30px) scale(1.05); }
+    }
+
+    /* Grid Pattern */
+    .grid-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 60px 60px;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* App Wrapper */
     .app-wrapper {
       position: relative;
-      z-index: 1;
+      z-index: 10;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      width: 100%;
-      overflow-x: hidden;
     }
 
     /* Header */
     header {
-      background: rgba(26, 29, 41, 0.95);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      padding: 16px 4%;
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 16px 5%;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -97,15 +158,13 @@
       top: 0;
       z-index: 1000;
       border-bottom: 1px solid var(--border);
-      box-shadow: var(--shadow-md);
-      width: 100%;
-      gap: 12px;
+      gap: 16px;
     }
 
     .logo-wrapper {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
       flex-shrink: 0;
     }
 
@@ -120,13 +179,12 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      position: relative;
-      white-space: nowrap;
+      text-decoration: none;
     }
 
     .logo-icon {
-      width: 42px;
-      height: 42px;
+      width: 44px;
+      height: 44px;
       background: var(--accent-gradient);
       border-radius: 12px;
       display: flex;
@@ -134,51 +192,51 @@
       justify-content: center;
       font-size: 20px;
       color: white;
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
       flex-shrink: 0;
     }
 
     .live-badge {
-      background: var(--danger);
+      background: linear-gradient(135deg, #ef4444, #dc2626);
       color: white;
-      padding: 4px 12px;
-      border-radius: 20px;
+      padding: 6px 14px;
+      border-radius: 50px;
       font-size: 11px;
-      font-weight: 600;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.8px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       white-space: nowrap;
-      flex-shrink: 0;
-      animation: pulse 2s infinite;
+      animation: pulse-badge 2s ease-in-out infinite;
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
+    @keyframes pulse-badge {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.85; transform: scale(0.98); }
     }
 
     .live-badge::before {
       content: '';
-      width: 6px;
-      height: 6px;
+      width: 8px;
+      height: 8px;
       background: white;
       border-radius: 50%;
-      animation: blink 1s infinite;
+      animation: blink 1.2s ease-in-out infinite;
     }
 
     @keyframes blink {
       0%, 100% { opacity: 1; }
-      50% { opacity: 0; }
+      50% { opacity: 0.3; }
     }
 
     #file-name {
       flex: 1;
-      margin: 0 12px;
       overflow: hidden;
       min-width: 0;
+      margin: 0 16px;
     }
 
     #file-name marquee {
@@ -204,25 +262,24 @@
     }
 
     .theme-btn {
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       border: none;
       background: transparent;
       border-radius: 50%;
       cursor: pointer;
-      font-size: 16px;
-      transition: all 0.2s ease;
+      font-size: 18px;
+      transition: all 0.3s ease;
       display: flex;
       align-items: center;
       justify-content: center;
       color: var(--text-muted);
-      flex-shrink: 0;
     }
 
     .theme-btn.active {
       background: var(--accent-gradient);
       color: white;
-      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
     }
 
     .theme-btn:hover:not(.active) {
@@ -230,16 +287,16 @@
       background: rgba(255, 255, 255, 0.05);
     }
 
-    /* Main Content */
+    /* Main Container */
     .main-container {
       flex: 1;
-      padding: 30px 4%;
+      padding: 32px 5%;
       max-width: 1600px;
       margin: 0 auto;
       width: 100%;
       display: grid;
-      grid-template-columns: 1fr 360px;
-      gap: 24px;
+      grid-template-columns: 1fr 380px;
+      gap: 28px;
       align-items: start;
     }
 
@@ -253,7 +310,7 @@
       background: var(--bg-secondary);
       border-radius: var(--radius-xl);
       overflow: hidden;
-      box-shadow: var(--shadow-lg);
+      box-shadow: var(--shadow-lg), 0 0 60px rgba(0, 0, 0, 0.3);
       border: 1px solid var(--border);
       position: relative;
       width: 100%;
@@ -261,84 +318,290 @@
     }
 
     .player-container:hover {
-      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+      box-shadow: var(--shadow-lg), 0 0 80px rgba(99, 102, 241, 0.15);
     }
 
     .player {
       width: 100%;
       aspect-ratio: 16/9;
       background: #000;
+      display: none;
+    }
+
+    .player.active {
       display: block;
     }
 
-    /* Plyr Custom Styles for Mobile */
-    @media (max-width: 768px) {
-      .plyr__controls {
-        padding: 8px !important;
-      }
-
-      .plyr__controls button {
-        padding: 6px !important;
-      }
-
-      .plyr__control {
-        padding: 5px 8px !important;
-      }
-
-      .plyr__controls .plyr__controls__item:first-child {
-        margin-left: 0 !important;
-      }
-
-      .plyr__time {
-        font-size: 12px !important;
-        padding: 0 4px !important;
-      }
-
-      .plyr__volume {
-        max-width: 60px !important;
-      }
+    /* Human Verification Overlay */
+    .verification-overlay {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
     }
 
-    @media (max-width: 480px) {
-      .plyr__controls {
-        padding: 6px 4px !important;
-      }
+    .verification-overlay.hidden {
+      display: none;
+    }
 
-      .plyr__controls button {
-        padding: 4px !important;
-      }
+    .verification-box {
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-lg), 0 0 60px rgba(99, 102, 241, 0.15);
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
 
-      .plyr__control {
-        padding: 4px 6px !important;
-      }
+    .verification-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--accent-gradient);
+    }
 
-      .plyr__control svg {
-        width: 16px !important;
-        height: 16px !important;
-      }
+    .verification-icon {
+      width: 80px;
+      height: 80px;
+      background: var(--accent-gradient);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-size: 36px;
+      color: white;
+      box-shadow: 0 8px 30px rgba(99, 102, 241, 0.4);
+      animation: verificationPulse 2s ease-in-out infinite;
+    }
 
-      .plyr__time {
-        font-size: 11px !important;
-        padding: 0 3px !important;
-      }
+    @keyframes verificationPulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 8px 30px rgba(99, 102, 241, 0.4); }
+      50% { transform: scale(1.05); box-shadow: 0 12px 40px rgba(99, 102, 241, 0.6); }
+    }
 
-      .plyr__progress {
-        margin: 0 2px !important;
-      }
+    .verification-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
 
-      .plyr__volume {
-        max-width: 50px !important;
-        min-width: 50px !important;
-      }
+    .verification-subtitle {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
 
-      .plyr__menu {
-        margin-right: 2px !important;
-      }
+    .captcha-container {
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+
+    .captcha-box {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .captcha-box:hover {
+      border-color: var(--accent-primary);
+      background: rgba(99, 102, 241, 0.05);
+    }
+
+    .captcha-box.verified {
+      border-color: var(--success);
+      background: rgba(16, 185, 129, 0.1);
+      pointer-events: none;
+    }
+
+    .captcha-checkbox {
+      width: 28px;
+      height: 28px;
+      border: 2px solid var(--text-muted);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+      background: var(--bg-tertiary);
+    }
+
+    .captcha-box:hover .captcha-checkbox {
+      border-color: var(--accent-primary);
+    }
+
+    .captcha-box.verified .captcha-checkbox {
+      background: var(--success);
+      border-color: var(--success);
+    }
+
+    .captcha-checkbox i {
+      color: white;
+      font-size: 14px;
+      opacity: 0;
+      transform: scale(0);
+      transition: all 0.3s ease;
+    }
+
+    .captcha-box.verified .captcha-checkbox i {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .captcha-text {
+      font-size: 15px;
+      color: var(--text-primary);
+      font-weight: 500;
+      user-select: none;
+    }
+
+    .captcha-loading {
+      position: absolute;
+      right: 16px;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--bg-tertiary);
+      border-top-color: var(--accent-primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .captcha-box.verifying .captcha-loading {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .verification-footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .verification-footer i {
+      color: var(--success);
+    }
+
+    .verification-success {
+      position: absolute;
+      inset: 0;
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.5s ease;
+    }
+
+    .verification-success.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .success-icon {
+      width: 100px;
+      height: 100px;
+      background: var(--success);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      color: white;
+      margin-bottom: 20px;
+      animation: successPop 0.5s ease;
+    }
+
+    @keyframes successPop {
+      0% { transform: scale(0); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    .success-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    /* Audio Track Selector */
+    .audio-track-selector {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      border-top: 1px solid var(--border);
+      background: rgba(10, 10, 15, 0.6);
+    }
+
+    .audio-track-selector label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    .audio-track-selector select {
+      flex: 1;
+      min-width: 0;
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-weight: 500;
+      outline: none;
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    .audio-track-selector select:focus {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
     }
 
     /* Video Info */
     .video-info {
-      padding: 24px;
+      padding: 28px;
       background: linear-gradient(to bottom, var(--bg-secondary), transparent);
     }
 
@@ -352,18 +615,56 @@
 
     .video-title {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 24px;
+      font-size: 26px;
       font-weight: 700;
       color: var(--text-primary);
       line-height: 1.3;
       flex: 1;
       word-wrap: break-word;
+      min-width: 0;
     }
 
-    /* Enhanced Bookmark Button */
+    /* Bookmark Button Container - Premium Style */
+    .bookmark-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+      border: 2px solid transparent;
+      border-radius: var(--radius-lg);
+      position: relative;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+    }
+
+    .bookmark-container::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: var(--radius-lg);
+      padding: 2px;
+      background: var(--accent-gradient);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0.6;
+      transition: opacity 0.3s ease;
+    }
+
+    .bookmark-container:hover::before {
+      opacity: 1;
+    }
+
+    .bookmark-container:hover {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.2));
+      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.2);
+    }
+
     .bookmark-btn {
-      width: 44px;
-      height: 44px;
+      width: 48px;
+      height: 48px;
       border: 1px solid var(--border);
       background: var(--bg-tertiary);
       border-radius: 50%;
@@ -374,32 +675,22 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0;
       position: relative;
       overflow: hidden;
+      z-index: 10;
     }
 
     .bookmark-btn.bookmarked {
       background: var(--success);
       color: white;
       border-color: var(--success);
-      animation: bookmarkAdded 0.5s ease;
+      animation: bookmarkPop 0.5s ease;
     }
 
-    @keyframes bookmarkAdded {
+    @keyframes bookmarkPop {
       0% { transform: scale(1); }
-      50% { transform: scale(1.2) rotate(10deg); }
+      50% { transform: scale(1.2); }
       100% { transform: scale(1); }
-    }
-
-    .bookmark-btn.bookmarked i {
-      animation: checkmark 0.5s ease;
-    }
-
-    @keyframes checkmark {
-      0% { transform: scale(0) rotate(-180deg); }
-      50% { transform: scale(1.2) rotate(10deg); }
-      100% { transform: scale(1) rotate(0deg); }
     }
 
     .bookmark-btn:hover:not(.bookmarked) {
@@ -409,14 +700,15 @@
       transform: scale(1.05);
     }
 
-    .bookmark-btn .bookmark-icon {
+    .bookmark-btn .bookmark-icon,
+    .bookmark-btn .check-icon {
+      position: absolute;
       transition: all 0.3s ease;
     }
 
     .bookmark-btn .check-icon {
-      position: absolute;
       opacity: 0;
-      transition: all 0.3s ease;
+      transform: scale(0);
     }
 
     .bookmark-btn.bookmarked .bookmark-icon {
@@ -429,27 +721,47 @@
       transform: scale(1);
     }
 
+    .bookmark-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      text-align: center;
+      white-space: nowrap;
+      font-family: 'Space Grotesk', sans-serif;
+      transition: all 0.3s ease;
+    }
+
+    .bookmark-container:hover .bookmark-label {
+      color: var(--accent-primary);
+    }
+
+    .bookmark-container.bookmarked .bookmark-label {
+      color: var(--success);
+    }
+
+    /* Video Stats */
     .video-stats {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 20px;
+      gap: 10px;
+      margin-bottom: 24px;
       flex-wrap: wrap;
     }
 
     .stat-item {
       display: flex;
       align-items: center;
-      gap: 6px;
-      padding: 8px 14px;
+      gap: 8px;
+      padding: 8px 16px;
       background: var(--bg-tertiary);
-      border-radius: var(--radius-md);
+      border-radius: 50px;
       border: 1px solid var(--border);
       font-size: 13px;
       color: var(--text-secondary);
       font-weight: 500;
       transition: all 0.2s ease;
-      white-space: nowrap;
     }
 
     .stat-item:hover {
@@ -472,13 +784,13 @@
     /* Action Buttons */
     .action-buttons {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 10px;
-      margin-bottom: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px;
+      margin-bottom: 28px;
     }
 
     .action-btn {
-      padding: 12px 16px;
+      padding: 14px 18px;
       border: 1px solid var(--border);
       background: var(--bg-tertiary);
       border-radius: var(--radius-md);
@@ -489,8 +801,8 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      transition: all 0.2s ease;
-      font-family: 'Inter', sans-serif;
+      transition: all 0.3s ease;
+      font-family: inherit;
       color: var(--text-primary);
       white-space: nowrap;
     }
@@ -498,7 +810,7 @@
     .action-btn:hover {
       border-color: var(--accent-primary);
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2);
     }
 
     .action-btn i {
@@ -512,7 +824,7 @@
     }
 
     .btn-primary:hover {
-      box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
     }
 
     .btn-watchlist {
@@ -523,7 +835,7 @@
     }
 
     .btn-watchlist:hover {
-      box-shadow: 0 4px 16px rgba(245, 158, 11, 0.4);
+      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
     }
 
     .watchlist-count {
@@ -532,13 +844,212 @@
       right: -8px;
       background: var(--danger);
       color: white;
-      font-size: 10px;
-      padding: 2px 6px;
-      border-radius: 10px;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 50px;
       font-weight: 700;
-      min-width: 18px;
+      min-width: 20px;
       text-align: center;
       border: 2px solid var(--bg-secondary);
+    }
+
+    .btn-download {
+      background: linear-gradient(135deg, #10b981, #059669);
+      border-color: transparent;
+      color: white;
+    }
+
+    .btn-download:hover {
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-mxplayer {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      border-color: transparent;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-mxplayer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, #ff6b35, #f7931e);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 0;
+    }
+
+    .btn-mxplayer:hover::before {
+      opacity: 1;
+    }
+
+    .btn-mxplayer span,
+    .btn-mxplayer i {
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-mxplayer:hover {
+      box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+    }
+
+    .btn-vlc {
+      background: linear-gradient(135deg, #ff8800, #ff6600);
+      border-color: transparent;
+      color: white;
+    }
+
+    .btn-vlc:hover {
+      box-shadow: 0 6px 20px rgba(255, 136, 0, 0.4);
+    }
+
+    /* Share Section */
+    .share-section {
+      margin-top: 24px;
+      padding: 24px;
+      background: var(--bg-glass);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .share-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .share-title i {
+      color: var(--accent-primary);
+      font-size: 18px;
+    }
+
+    .share-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .share-btn {
+      padding: 14px 8px;
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      font-family: inherit;
+      text-decoration: none;
+      color: white;
+    }
+
+    .share-btn i {
+      font-size: 22px;
+      transition: transform 0.3s ease;
+    }
+
+    .share-btn:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .share-btn:hover i {
+      transform: scale(1.15);
+    }
+
+    .btn-copy { background: var(--accent-gradient); }
+    .btn-whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); }
+    .btn-telegram { background: linear-gradient(135deg, #0088cc, #00a8e8); }
+    .btn-facebook { background: linear-gradient(135deg, #1877f2, #4267B2); }
+
+    /* Sidebar */
+    .sidebar {
+      position: sticky;
+      top: 100px;
+      width: 100%;
+      max-width: 380px;
+    }
+
+    .sidebar-card {
+      background: var(--bg-glass);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-md);
+      width: 100%;
+    }
+
+    .sidebar-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+      font-family: 'Space Grotesk', sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar-title i {
+      color: var(--accent-primary);
+      font-size: 18px;
+    }
+
+    .stats-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .stat-card {
+      background: var(--bg-tertiary);
+      padding: 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      border-color: var(--accent-primary);
+      transform: translateX(4px);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .stat-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+      font-family: 'Space Grotesk', sans-serif;
     }
 
     /* Watchlist Modal */
@@ -548,7 +1059,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.85);
       backdrop-filter: blur(10px);
       display: flex;
       align-items: center;
@@ -573,7 +1084,7 @@
       max-height: 80vh;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
       border: 1px solid var(--border);
       transform: scale(0.9);
       transition: transform 0.3s ease;
@@ -609,15 +1120,15 @@
     }
 
     .close-watchlist {
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       border: 1px solid var(--border);
       background: var(--bg-tertiary);
       border-radius: 50%;
       cursor: pointer;
       font-size: 16px;
       color: var(--text-secondary);
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -643,15 +1154,20 @@
     }
 
     .watchlist-empty i {
-      font-size: 48px;
+      font-size: 56px;
       color: var(--text-muted);
-      margin-bottom: 16px;
+      margin-bottom: 20px;
       opacity: 0.5;
+    }
+
+    .watchlist-empty h3 {
+      font-size: 18px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
     }
 
     .watchlist-empty p {
       font-size: 14px;
-      margin-top: 8px;
     }
 
     .watchlist-items {
@@ -667,8 +1183,8 @@
       border: 1px solid var(--border);
       display: flex;
       align-items: center;
-      gap: 12px;
-      transition: all 0.2s ease;
+      gap: 14px;
+      transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
     }
@@ -682,12 +1198,12 @@
       height: 100%;
       background: var(--accent-gradient);
       opacity: 0;
-      transition: opacity 0.2s ease;
+      transition: opacity 0.3s ease;
     }
 
     .watchlist-item:hover {
       border-color: var(--accent-primary);
-      transform: translateX(4px);
+      transform: translateX(6px);
     }
 
     .watchlist-item:hover::before {
@@ -695,8 +1211,8 @@
     }
 
     .watchlist-item-icon {
-      width: 40px;
-      height: 40px;
+      width: 44px;
+      height: 44px;
       background: var(--accent-gradient);
       border-radius: var(--radius-md);
       display: flex;
@@ -723,15 +1239,11 @@
     }
 
     .watchlist-item-date {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--text-muted);
       display: flex;
       align-items: center;
-      gap: 4px;
-    }
-
-    .watchlist-item-date i {
-      font-size: 10px;
+      gap: 6px;
     }
 
     .watchlist-item-actions {
@@ -740,15 +1252,15 @@
     }
 
     .watchlist-action-btn {
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       border: 1px solid var(--border);
       background: var(--bg-secondary);
       border-radius: 50%;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 13px;
       color: var(--text-secondary);
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -779,12 +1291,12 @@
     }
 
     .watchlist-stats {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--text-muted);
     }
 
     .clear-watchlist {
-      padding: 8px 16px;
+      padding: 10px 18px;
       background: var(--danger);
       color: white;
       border: none;
@@ -792,185 +1304,22 @@
       font-size: 12px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
     }
 
     .clear-watchlist:hover {
       background: #dc2626;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
     }
 
-    /* Share Section */
-    .share-section {
-      margin-top: 24px;
-      padding: 20px;
-      background: var(--bg-glass);
-      backdrop-filter: blur(10px);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border);
-    }
-
-    .section-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-    }
-
-    .share-title {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-family: 'Space Grotesk', sans-serif;
-    }
-
-    .share-title i {
-      color: var(--accent-primary);
-      font-size: 18px;
-    }
-
-    .share-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-    }
-
-    .share-btn {
-      padding: 12px 8px;
-      border: none;
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      font-size: 11px;
-      font-weight: 600;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: all 0.2s ease;
-      font-family: 'Inter', sans-serif;
-      text-decoration: none;
-    }
-
-    .share-btn i {
-      font-size: 20px;
-      transition: transform 0.2s ease;
-    }
-
-    .share-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    }
-
-    .share-btn:hover i {
-      transform: scale(1.1);
-    }
-
-    .btn-copy { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; }
-    .btn-whatsapp { background: #25D366; color: white; }
-    .btn-telegram { background: #0088cc; color: white; }
-    .btn-facebook { background: #1877f2; color: white; }
-    .btn-twitter { background: #1DA1F2; color: white; }
-    .btn-instagram { background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); color: white; }
-    .btn-messenger { background: #0084ff; color: white; }
-    .btn-email { background: #ea4335; color: white; }
-
-    /* Sidebar */
-    .sidebar {
-      position: sticky;
-      top: 100px;
-      width: 100%;
-      max-width: 360px;
-    }
-
-    .sidebar-card {
-      background: var(--bg-glass);
-      backdrop-filter: blur(10px);
-      border-radius: var(--radius-lg);
-      padding: 20px;
-      border: 1px solid var(--border);
-      margin-bottom: 20px;
-      box-shadow: var(--shadow-md);
-      width: 100%;
-    }
-
-    .sidebar-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 16px;
-      font-family: 'Space Grotesk', sans-serif;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .sidebar-title i {
-      color: var(--accent-primary);
-    }
-
-    .stats-grid {
-      display: grid;
-      gap: 12px;
-    }
-
-    .stat-card {
-      background: var(--bg-tertiary);
-      padding: 14px;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      transition: all 0.2s ease;
-    }
-
-    .stat-card:hover {
-      border-color: var(--accent-primary);
-      transform: translateX(2px);
-    }
-
-    .stat-label {
-      font-size: 11px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 6px;
-      font-weight: 600;
-    }
-
-    .stat-value {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--text-primary);
-      font-family: 'Space Grotesk', sans-serif;
-    }
-
-    .quality-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
-      background: var(--accent-gradient);
-      color: white;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
-    }
-
-    /* Enhanced Footer */
+    /* Footer */
     footer {
-      background: linear-gradient(to bottom, var(--bg-secondary), rgba(26, 29, 41, 0.98));
-      padding: 60px 4% 30px;
+      background: linear-gradient(to bottom, var(--bg-secondary), rgba(10, 10, 15, 0.98));
+      padding: 30px 5%;
       border-top: 1px solid var(--border);
-      margin-top: 60px;
-      width: 100%;
+      margin-top: 40px;
       position: relative;
-      overflow: hidden;
     }
 
     footer::before {
@@ -987,146 +1336,17 @@
     .footer-content {
       max-width: 1600px;
       margin: 0 auto;
-      width: 100%;
-      position: relative;
-      z-index: 1;
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 40px;
-      margin-bottom: 50px;
-    }
-
-    .footer-brand {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .footer-logo {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 26px;
-      font-weight: 700;
-      background: var(--accent-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .footer-description {
-      color: var(--text-secondary);
-      line-height: 1.7;
-      font-size: 14px;
-    }
-
-    .footer-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 24px;
-      background: var(--accent-gradient);
-      color: white;
-      text-decoration: none;
-      border-radius: 50px;
-      font-weight: 600;
-      font-size: 14px;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
-      align-self: flex-start;
-      white-space: nowrap;
-    }
-
-    .footer-cta:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
-    }
-
-    .social-links {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
-
-    .social-link {
-      width: 40px;
-      height: 40px;
-      background: var(--bg-tertiary);
-      border: 1px solid var(--border);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 16px;
-      transition: all 0.2s ease;
-      flex-shrink: 0;
-    }
-
-    .social-link:hover {
-      background: var(--accent-gradient);
-      color: white;
-      border-color: transparent;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-    }
-
-    .footer-section-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 16px;
-      font-family: 'Space Grotesk', sans-serif;
-    }
-
-    /* Enhanced Copyright Section */
-    .footer-bottom {
-      padding-top: 30px;
-      border-top: 1px solid var(--border);
       text-align: center;
-      position: relative;
-    }
-
-    .copyright-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
     }
 
     .footer-copyright {
       font-size: 14px;
       color: var(--text-secondary);
-      display: inline-flex;
+      display: flex;
       align-items: center;
+      justify-content: center;
       gap: 8px;
-      padding: 12px 24px;
-      background: var(--bg-glass);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--border);
-      border-radius: 50px;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.3s ease;
-    }
-
-    .footer-copyright::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: var(--accent-gradient);
-      opacity: 0.1;
-      transition: left 0.5s ease;
-    }
-
-    .footer-copyright:hover::before {
-      left: 0;
+      flex-wrap: wrap;
     }
 
     .footer-copyright i {
@@ -1144,73 +1364,6 @@
       color: var(--accent-primary);
       text-decoration: none;
       font-weight: 600;
-      transition: all 0.2s ease;
-      position: relative;
-    }
-
-    .footer-copyright a::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: var(--accent-gradient);
-      transition: width 0.3s ease;
-    }
-
-    .footer-copyright a:hover::after {
-      width: 100%;
-    }
-
-    .footer-copyright a:hover {
-      text-shadow: 0 0 8px rgba(99, 102, 241, 0.5);
-    }
-
-    .footer-bottom-links {
-      display: flex;
-      gap: 24px;
-      align-items: center;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .footer-bottom-links a {
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 13px;
-      transition: all 0.2s ease;
-      white-space: nowrap;
-      padding: 8px 16px;
-      border-radius: 20px;
-      background: transparent;
-    }
-
-    .footer-bottom-links a:hover {
-      color: var(--accent-primary);
-      background: rgba(99, 102, 241, 0.1);
-    }
-
-    /* Developer Credit Badge */
-    .dev-credit {
-      margin-top: 16px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
-      background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
-      border: 1px solid var(--accent-primary);
-      border-radius: 30px;
-      font-size: 11px;
-      color: var(--text-muted);
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-
-    .dev-credit i {
-      color: var(--accent-primary);
-      font-size: 12px;
     }
 
     /* Toast Notification */
@@ -1226,15 +1379,15 @@
       font-weight: 600;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       box-shadow: var(--shadow-lg);
       border: 1px solid var(--success);
       transform: translateY(150px);
       opacity: 0;
       transition: all 0.3s ease;
       z-index: 10000;
-      min-width: 260px;
-      max-width: 400px;
+      min-width: 280px;
+      max-width: 420px;
     }
 
     .toast.show {
@@ -1246,30 +1399,25 @@
       border-color: var(--warning);
     }
 
-    .toast.warning i {
-      background: var(--warning);
-    }
-
     .toast.error {
       border-color: var(--danger);
     }
 
-    .toast.error i {
-      background: var(--danger);
-    }
-
-    .toast i {
-      width: 32px;
-      height: 32px;
-      background: var(--success);
-      color: white;
+    .toast-icon {
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
+      color: white;
+      font-size: 16px;
       flex-shrink: 0;
     }
+
+    .toast.success .toast-icon { background: var(--success); }
+    .toast.warning .toast-icon { background: var(--warning); }
+    .toast.error .toast-icon { background: var(--danger); }
 
     .toast-content {
       flex: 1;
@@ -1277,36 +1425,18 @@
     }
 
     .toast-title {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 700;
       margin-bottom: 2px;
     }
 
     .toast-message {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--text-secondary);
       font-weight: 400;
     }
 
-    /* Dark Theme */
-    body.dark {
-      --bg-primary: #000000;
-      --bg-secondary: #0a0a0a;
-      --bg-tertiary: #151515;
-      --border: rgba(255, 255, 255, 0.05);
-    }
-
-    body.light {
-      --bg-primary: #f8f9fa;
-      --bg-secondary: #ffffff;
-      --bg-tertiary: #f1f3f5;
-      --text-primary: #1a1a1a;
-      --text-secondary: #4a4a4a;
-      --text-muted: #6b6b6b;
-      --border: rgba(0, 0, 0, 0.1);
-    }
-
-    /* Loading Animation */
+    /* Loading Overlay */
     .loading-overlay {
       position: fixed;
       top: 0;
@@ -1315,6 +1445,7 @@
       height: 100%;
       background: var(--bg-primary);
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       z-index: 9999;
@@ -1328,19 +1459,47 @@
     }
 
     .loader {
-      width: 60px;
-      height: 60px;
+      width: 70px;
+      height: 70px;
       border: 4px solid var(--bg-tertiary);
       border-top-color: var(--accent-primary);
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
 
+    .loading-text {
+      margin-top: 20px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
 
-    /* Responsive - Tablet */
+    /* Light Theme */
+    body.light-theme {
+      --bg-primary: #f8f9fc;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #f1f3f5;
+      --bg-glass: rgba(255, 255, 255, 0.9);
+      --text-primary: #1a1a2e;
+      --text-secondary: #4a4a5a;
+      --text-muted: #6b6b7b;
+      --border: rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    body.light-theme header {
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    body.light-theme .player-container {
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Responsive */
     @media (max-width: 1200px) {
       .main-container {
         grid-template-columns: 1fr;
@@ -1351,32 +1510,18 @@
         position: static;
         max-width: 100%;
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 20px;
-      }
-
-      .footer-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .share-grid {
-        grid-template-columns: repeat(4, 1fr);
       }
     }
 
-    /* Responsive - Mobile Large */
     @media (max-width: 768px) {
       header {
         padding: 12px 4%;
-        gap: 8px;
       }
 
       .logo {
         font-size: 20px;
-      }
-
-      .logo span {
-        display: none;
       }
 
       .logo-icon {
@@ -1386,49 +1531,29 @@
       }
 
       .live-badge {
-        padding: 4px 8px;
+        padding: 4px 10px;
         font-size: 10px;
       }
 
       #file-name {
-        margin: 0 8px;
-      }
-
-      #file-name marquee {
-        font-size: 13px;
-      }
-
-      .theme-switcher {
-        padding: 3px;
-        gap: 3px;
-      }
-
-      .theme-btn {
-        width: 32px;
-        height: 32px;
-        font-size: 14px;
+        display: none;
       }
 
       .main-container {
         padding: 20px 4%;
-        gap: 20px;
-        grid-template-columns: 1fr;
       }
 
-      .player-container {
-        border-radius: var(--radius-lg);
-      }
-
-      .video-info {
-        padding: 20px;
+      .video-header {
+        flex-wrap: wrap;
       }
 
       .video-title {
         font-size: 20px;
+        width: calc(100% - 100px);
       }
 
-      .video-header {
-        gap: 12px;
+      .bookmark-container {
+        padding: 10px 12px;
       }
 
       .bookmark-btn {
@@ -1437,191 +1562,62 @@
         font-size: 16px;
       }
 
-      .video-stats {
-        gap: 8px;
-      }
-
-      .stat-item {
-        font-size: 12px;
-        padding: 6px 10px;
+      .bookmark-label {
+        font-size: 9px;
       }
 
       .action-buttons {
         grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
       }
 
-      .action-btn {
-        padding: 10px 12px;
-        font-size: 12px;
+      .share-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .toast {
+        left: 16px;
+        right: 16px;
+        min-width: unset;
+      }
+
+      .verification-box {
+        padding: 30px 20px;
+      }
+
+      .verification-title {
+        font-size: 20px;
+      }
+
+      .verification-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 28px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .action-buttons {
+        grid-template-columns: 1fr;
+      }
+
+      .video-info {
+        padding: 20px;
       }
 
       .share-section {
         padding: 16px;
       }
 
-      .share-grid {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 8px;
+      .captcha-box {
+        padding: 12px;
       }
 
-      .share-btn {
-        padding: 10px 6px;
-        font-size: 10px;
-      }
-
-      .share-btn i {
-        font-size: 18px;
-      }
-
-      .sidebar {
-        grid-template-columns: 1fr;
-        gap: 16px;
-      }
-
-      .sidebar-card {
-        padding: 16px;
-        margin-bottom: 0;
-      }
-
-      .footer-grid {
-        grid-template-columns: 1fr;
-        gap: 28px;
-      }
-
-      .footer-copyright {
-        font-size: 12px;
-        padding: 10px 20px;
-      }
-
-      .footer-bottom-links {
-        gap: 16px;
-      }
-
-      .footer-bottom-links a {
-        font-size: 12px;
-        padding: 6px 12px;
-      }
-
-      .toast {
-        bottom: 16px;
-        right: 16px;
-        left: 16px;
-        min-width: unset;
-        max-width: unset;
-      }
-
-      .watchlist-container {
-        max-height: 90vh;
-      }
-    }
-
-    /* Responsive - Mobile Small */
-    @media (max-width: 480px) {
-      .logo-wrapper {
-        gap: 8px;
-      }
-
-      .logo-icon {
-        width: 34px;
-        height: 34px;
-        font-size: 16px;
-      }
-
-      .live-badge {
-        padding: 3px 6px;
-        font-size: 9px;
-        gap: 4px;
-      }
-
-      .live-badge::before {
-        width: 5px;
-        height: 5px;
-      }
-
-      .theme-btn {
-        width: 30px;
-        height: 30px;
+      .captcha-text {
         font-size: 13px;
-      }
-
-      .main-container {
-        padding: 16px 3%;
-      }
-
-      .video-info {
-        padding: 16px;
-      }
-
-      .video-title {
-        font-size: 18px;
-      }
-
-      .video-stats {
-        gap: 6px;
-      }
-
-      .stat-item {
-        font-size: 11px;
-        padding: 6px 8px;
-      }
-
-      .action-buttons {
-        grid-template-columns: 1fr;
-      }
-
-      .action-btn {
-        padding: 12px 16px;
-      }
-
-      .share-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .share-btn {
-        padding: 12px 8px;
-      }
-
-      footer {
-        padding: 40px 4% 24px;
-      }
-
-      .footer-logo {
-        font-size: 22px;
-      }
-
-      .footer-description {
-        font-size: 13px;
-      }
-
-      .footer-cta {
-        padding: 12px 20px;
-        font-size: 13px;
-      }
-
-      .footer-copyright {
-        font-size: 11px;
-        padding: 8px 16px;
-      }
-
-      .dev-credit {
-        font-size: 10px;
-        padding: 6px 12px;
-      }
-
-      .footer-bottom-links a {
-        font-size: 11px;
-        padding: 4px 8px;
-      }
-
-      .watchlist-count {
-        top: -6px;
-        right: -6px;
-        font-size: 9px;
-        padding: 1px 4px;
       }
     }
   </style>
+<base target="_blank">
 <base target="_blank">
 </head>
 
@@ -1629,27 +1625,35 @@
   <!-- Loading Overlay -->
   <div class="loading-overlay" id="loadingOverlay">
     <div class="loader"></div>
+    <div class="loading-text">Loading Stream...</div>
   </div>
 
-  <!-- Subtle Background -->
-  <div class="bg-decoration"></div>
+  <!-- Background Animation -->
+  <div class="bg-animation">
+    <div class="bg-gradient bg-gradient-1"></div>
+    <div class="bg-gradient bg-gradient-2"></div>
+    <div class="bg-gradient bg-gradient-3"></div>
+  </div>
+
+  <!-- Grid Overlay -->
+  <div class="grid-overlay"></div>
 
   <!-- App Wrapper -->
   <div class="app-wrapper">
     <!-- Header -->
     <header>
       <div class="logo-wrapper">
-        <div class="logo">
+        <a href="#" class="logo">
           <div class="logo-icon">
             <i class="fas fa-play"></i>
           </div>
-          <span>STREAMING</span>
-        </div>
+          <span>FileStreamX</span>
+        </a>
         <div class="live-badge">
           <span>Live</span>
         </div>
       </div>
-      
+
       <div id="file-name">
         <marquee direction="left">$filename</marquee>
       </div>
@@ -1657,10 +1661,10 @@
       <div class="header-actions">
         <div class="theme-switcher">
           <button class="theme-btn active" data-theme="default" title="Default Theme">
-            🌈
+            <i class="fas fa-palette"></i>
           </button>
-          <button class="theme-btn" data-theme="dark" title="Dark Theme">
-            🌙
+          <button class="theme-btn" data-theme="light" title="Light Theme">
+            <i class="fas fa-sun"></i>
           </button>
         </div>
       </div>
@@ -1669,18 +1673,66 @@
     <!-- Main Container -->
     <div class="main-container">
       <!-- Player Section -->
-      <div class="player-container">
-          <$tag src="$src" class="player" controls></$tag>
-          
+      <div class="player-wrapper">
+        <div class="player-container">
+          <!-- Human Verification Overlay -->
+          <div class="verification-overlay" id="verificationOverlay">
+            <div class="verification-box">
+              <div class="verification-icon">
+                <i class="fas fa-shield-alt"></i>
+              </div>
+              <h2 class="verification-title">Human Verification</h2>
+              <p class="verification-subtitle">Please verify that you are human to access the streaming content. This helps us protect our servers from bots.</p>
+              
+              <div class="captcha-container">
+                <div class="captcha-box" id="captchaBox" onclick="verifyHuman()">
+                  <div class="captcha-checkbox" id="captchaCheckbox">
+                    <i class="fas fa-check"></i>
+                  </div>
+                  <span class="captcha-text">I'm not a robot</span>
+                  <div class="captcha-loading"></div>
+                </div>
+              </div>
+              
+              <div class="verification-footer">
+                <i class="fas fa-lock"></i>
+                <span>Powered By @Sujan_BotZ</span>
+              </div>
+
+              <!-- Success State -->
+              <div class="verification-success" id="verificationSuccess">
+                <div class="success-icon">
+                  <i class="fas fa-check"></i>
+                </div>
+                <div class="success-text">Verification Successful!</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Video Player (Hidden until verified) -->
+          <$tag src="$src" class="player" id="videoPlayer" controls data-audio-sources="$audio_sources"></$tag>
+
+          <div class="audio-track-selector" id="audioTrackSelector" style="display: none;">
+            <label for="audioTrackSelect">
+              <i class="fas fa-music"></i>
+              Audio Track
+            </label>
+            <select id="audioTrackSelect" aria-label="Select audio track"></select>
+          </div>
+
           <div class="video-info">
             <div class="video-header">
               <h1 class="video-title">$filename</h1>
-              <button class="bookmark-btn" id="bookmarkBtn" title="Add to Watchlist">
-                <i class="far fa-bookmark bookmark-icon"></i>
-                <i class="fas fa-check check-icon"></i>
-              </button>
+              <!-- Bookmark Container with Premium Border and Label -->
+              <div class="bookmark-container" id="bookmarkContainer">
+                <button class="bookmark-btn" id="bookmarkBtn" title="Add to Watchlist">
+                  <i class="far fa-bookmark bookmark-icon"></i>
+                  <i class="fas fa-check check-icon"></i>
+                </button>
+                <span class="bookmark-label">Add Watchlist</span>
+              </div>
             </div>
-            
+
             <div class="video-stats">
               <div class="stat-item">
                 <i class="fas fa-eye"></i>
@@ -1699,24 +1751,24 @@
                 <span>Secure</span>
               </div>
             </div>
-<div id="streamnow"></div>
+
             <div class="action-buttons">
               <button class="action-btn btn-watchlist" onclick="openWatchlist()">
                 <i class="fas fa-list"></i>
                 <span>Watchlist</span>
                 <span class="watchlist-count" id="watchlistCount" style="display: none;">0</span>
               </button>
-              <button class="action-btn btn-primary" onclick="copyLink()">
-                <i class="fas fa-link"></i>
-                <span>Copy Link</span>
+              <button class="action-btn btn-download" onclick="downloadVideo()">
+                <i class="fas fa-download"></i>
+                <span>Download</span>
               </button>
-              <button class="action-btn" onclick="shareVideo()">
-                <i class="fas fa-share-nodes"></i>
-                <span>Share</span>
+              <button class="action-btn btn-mxplayer" onclick="openInMXPlayer()">
+                <i class="fas fa-play-circle"></i>
+                <span>MX Player</span>
               </button>
-              <button class="action-btn" onclick="reportIssue()">
-                <i class="fas fa-flag"></i>
-                <span>Report</span>
+              <button class="action-btn btn-vlc" onclick="openInVLC()">
+                <i class="fas fa-broadcast-tower"></i>
+                <span>VLC Player</span>
               </button>
             </div>
 
@@ -1750,6 +1802,31 @@
         </div>
       </div>
 
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <div class="sidebar-title">
+            <i class="fas fa-chart-bar"></i>
+            Stream Info
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-label">Quality</div>
+              <div class="stat-value" style="color: var(--accent-primary);">HD</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Status</div>
+              <div class="stat-value" style="color: var(--success);">Online</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Buffer</div>
+              <div class="stat-value">Auto</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
     <!-- Watchlist Modal -->
     <div class="watchlist-modal" id="watchlistModal">
       <div class="watchlist-container">
@@ -1776,109 +1853,181 @@
       </div>
     </div>
 
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-copyright">
+          <span>Made with</span>
+          <i class="fas fa-heart"></i>
+          <span>by <a href="https://t.me/Sujan_BotZ" target="_blank">SujanBotZ</a></span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
   <!-- Toast Notification -->
   <div class="toast" id="toast">
-    <i class="fas fa-check-circle"></i>
+    <div class="toast-icon">
+      <i class="fas fa-check"></i>
+    </div>
     <div class="toast-content">
       <div class="toast-title">Success!</div>
-      <div class="toast-message">Link copied to clipboard</div>
+      <div class="toast-message">Operation completed</div>
     </div>
   </div>
 
+  <!-- Plyr JS -->
   <script src="https://cdn.plyr.io/3.6.12/plyr.js"></script>
-  <script src="https://innoshiv.github.io/Sources/assets/js/add/streampage.js"></script>
+
   <script>
-    // Screen Orientation Manager for Auto-Rotation on Fullscreen
+    // ==================== Human Verification ====================
+    let isVerified = false;
+
+    function verifyHuman() {
+      if (isVerified) return;
+
+      const captchaBox = document.getElementById('captchaBox');
+      const verificationSuccess = document.getElementById('verificationSuccess');
+      const videoPlayer = document.getElementById('videoPlayer');
+      const verificationOverlay = document.getElementById('verificationOverlay');
+
+      // Add verifying state
+      captchaBox.classList.add('verifying');
+
+      // Simulate verification process (1.5 seconds)
+      setTimeout(() => {
+        isVerified = true;
+        
+        // Mark as verified
+        captchaBox.classList.remove('verifying');
+        captchaBox.classList.add('verified');
+
+        // Show success animation
+        verificationSuccess.classList.add('show');
+
+        // Play success sound (optional - using Web Audio API)
+        playSuccessSound();
+
+        // After success animation, hide overlay and show player
+        setTimeout(() => {
+          verificationOverlay.classList.add('hidden');
+          videoPlayer.classList.add('active');
+          
+          // Initialize Plyr player after verification
+          initializePlayer();
+          
+          showToast('Access Granted', 'You can now stream the content', 'success');
+        }, 1200);
+
+      }, 1500);
+    }
+
+    // Simple success sound using Web Audio API
+    function playSuccessSound() {
+      try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
+        oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
+        oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
+
+        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.4);
+      } catch (e) {
+        // Silent fail if audio not supported
+      }
+    }
+
+    // ==================== Loading Overlay ====================
+    window.addEventListener('load', function() {
+      setTimeout(() => {
+        document.getElementById('loadingOverlay').classList.add('hidden');
+      }, 800);
+    });
+
+    // Fallback: Hide loading after 3 seconds
+    setTimeout(() => {
+      document.getElementById('loadingOverlay').classList.add('hidden');
+    }, 3000);
+
+    // ==================== Orientation Manager ====================
     class OrientationManager {
       constructor() {
         this.isOrientationLocked = false;
         this.originalOrientation = null;
       }
 
-      // Check if Screen Orientation API is supported
       isSupported() {
         return 'screen' in window && 'orientation' in screen && 'lock' in screen.orientation;
       }
 
-      // Lock to landscape when entering fullscreen
       async lockLandscape() {
-        if (!this.isSupported()) {
-          console.log('Screen Orientation API not supported');
-          return false;
-        }
-
+        if (!this.isSupported()) return false;
         try {
-          // Store current orientation before locking
           this.originalOrientation = screen.orientation.type;
-          
-          // Lock to landscape (primary or secondary)
           await screen.orientation.lock('landscape');
           this.isOrientationLocked = true;
-          console.log('Screen locked to landscape');
           return true;
         } catch (error) {
-          console.warn('Could not lock orientation:', error);
-          // Try alternative landscape modes
           try {
             await screen.orientation.lock('landscape-primary');
             this.isOrientationLocked = true;
             return true;
           } catch (e) {
-            console.warn('Could not lock to landscape-primary:', e);
             return false;
           }
         }
       }
 
-      // Unlock orientation when exiting fullscreen
       async unlock() {
-        if (!this.isSupported()) {
-          return false;
-        }
-
+        if (!this.isSupported()) return false;
         try {
           await screen.orientation.unlock();
           this.isOrientationLocked = false;
-          console.log('Screen orientation unlocked');
           return true;
         } catch (error) {
-          console.warn('Could not unlock orientation:', error);
           return false;
         }
       }
-
-      // Get current orientation
-      getCurrentOrientation() {
-        if (this.isSupported()) {
-          return screen.orientation.type;
-        }
-        return window.innerWidth > window.innerHeight ? 'landscape' : 'portrait';
-      }
     }
 
-    // Initialize orientation manager
     const orientationManager = new OrientationManager();
 
-    // Watchlist Management
+    // ==================== Watchlist Manager ====================
     class WatchlistManager {
       constructor() {
-        this.storageKey = 'streamx-watchlist';
+        this.storageKey = 'filestreamx-watchlist';
         this.watchlist = this.load();
         this.updateCount();
       }
 
       load() {
-        const saved = localStorage.getItem(this.storageKey);
-        return saved ? JSON.parse(saved) : [];
+        try {
+          const saved = localStorage.getItem(this.storageKey);
+          return saved ? JSON.parse(saved) : [];
+        } catch (e) {
+          return [];
+        }
       }
 
       save() {
-        localStorage.setItem(this.storageKey, JSON.stringify(this.watchlist));
-        this.updateCount();
+        try {
+          localStorage.setItem(this.storageKey, JSON.stringify(this.watchlist));
+          this.updateCount();
+        } catch (e) {
+          console.warn('Could not save watchlist');
+        }
       }
 
       add(item) {
-        // Check if already exists
         const exists = this.watchlist.find(i => i.url === item.url);
         if (!exists) {
           this.watchlist.unshift({
@@ -1920,26 +2069,16 @@
       }
     }
 
-    // Initialize watchlist manager
     const watchlistManager = new WatchlistManager();
 
-    // Hide loading immediately when page loads
-    window.addEventListener('load', function() {
-      document.getElementById('loadingOverlay').classList.add('hidden');
-    });
-
-    // Fallback: Hide loading after 2 seconds regardless
-    setTimeout(() => {
-      document.getElementById('loadingOverlay').classList.add('hidden');
-    }, 2000);
-
-    // Detect device type
+    // ==================== Device Detection ====================
     const isMobile = window.innerWidth <= 768;
     const isSmallMobile = window.innerWidth <= 480;
-    
-    // Different controls for different screen sizes
+
+    // ==================== Plyr Controls - Settings, Mute & Fullscreen Grouped ====================
     let controls;
-    
+    let playerInstance = null;
+
     if (isSmallMobile) {
       controls = [
         "play-large",
@@ -1949,9 +2088,8 @@
         "progress",
         "current-time",
         "duration",
-        "mute",
-        "volume",
         "settings",
+        "mute",
         "fullscreen"
       ];
     } else if (isMobile) {
@@ -1963,9 +2101,8 @@
         "progress",
         "current-time",
         "duration",
-        "mute",
-        "volume",
         "settings",
+        "mute",
         "fullscreen"
       ];
     } else {
@@ -1977,93 +2114,82 @@
         "progress",
         "current-time",
         "duration",
-        "mute",
-        "volume",
         "captions",
-        "settings",
         "pip",
         "airplay",
         "download",
+        "settings",
+        "mute",
         "fullscreen"
       ];
     }
-    
-    // Initialize player
-    document.addEventListener("DOMContentLoaded", () => {
+
+    // ==================== Initialize Player (Called after verification) ====================
+    function initializePlayer() {
+      if (playerInstance) return; // Already initialized
+
       try {
-        const player = Plyr.setup(".player", { 
+        const players = Plyr.setup('.player', {
           controls,
-          quality: { 
-            default: 1080, 
-            options: [4320, 2160, 1080, 720, 480, 360] 
+          quality: {
+            default: 1080,
+            options: [4320, 2160, 1080, 720, 480, 360]
           },
-          tooltips: { 
-            controls: !isSmallMobile, 
-            seek: !isSmallMobile 
+          tooltips: {
+            controls: !isSmallMobile,
+            seek: !isSmallMobile
           },
-          keyboard: { 
-            focused: true, 
-            global: true 
+          keyboard: {
+            focused: true,
+            global: true
           }
         });
 
-        // Add fullscreen change listeners for auto-rotation
-        setupFullscreenOrientation(player);
-      } catch(e) {
+        if (players && players.length > 0) {
+          playerInstance = players[0];
+          setupFullscreenOrientation(players);
+        }
+      } catch (e) {
         console.log('Plyr initialization error:', e);
       }
-      
-      setupShareLinks();
-      initializeBookmark();
-      
-      // Hide loading overlay
-      document.getElementById('loadingOverlay').classList.add('hidden');
-    });
 
-    // Setup fullscreen orientation handling
+      initAudioTracks();
+    }
+
+    // ==================== Fullscreen Orientation ====================
     function setupFullscreenOrientation(playerInstances) {
       if (!playerInstances || playerInstances.length === 0) return;
 
       const plyrInstance = playerInstances[0];
-      
-      // Listen for fullscreen changes from Plyr
+
       plyrInstance.on('enterfullscreen', async () => {
-        console.log('Entered fullscreen - locking to landscape');
-        const success = await orientationManager.lockLandscape();
-        if (success) {
-          showToast('Rotating...', 'Screen locked to landscape mode', 'success');
-        }
+        await orientationManager.lockLandscape();
       });
 
       plyrInstance.on('exitfullscreen', async () => {
-        console.log('Exited fullscreen - unlocking orientation');
         await orientationManager.unlock();
       });
 
-      // Also listen for native fullscreen changes (as fallback)
       document.addEventListener('fullscreenchange', handleFullscreenChange);
       document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
       document.addEventListener('mozfullscreenchange', handleFullscreenChange);
       document.addEventListener('MSFullscreenChange', handleFullscreenChange);
     }
 
-    // Handle native fullscreen changes
     async function handleFullscreenChange() {
-      const isFullscreen = document.fullscreenElement || 
-                          document.webkitFullscreenElement || 
-                          document.mozFullScreenElement || 
+      const isFullscreen = document.fullscreenElement ||
+                          document.webkitFullscreenElement ||
+                          document.mozFullScreenElement ||
                           document.msFullscreenElement;
 
       if (isFullscreen) {
-        console.log('Native fullscreen detected - locking to landscape');
         await orientationManager.lockLandscape();
       } else {
-        console.log('Native fullscreen exited - unlocking orientation');
         await orientationManager.unlock();
       }
     }
 
-    // Theme Switcher
+    // ==================== Theme Switcher ====================
     const themeBtns = document.querySelectorAll('.theme-btn');
     const body = document.body;
 
@@ -2071,19 +2197,19 @@
       btn.addEventListener('click', () => {
         themeBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        
+
         const theme = btn.dataset.theme;
-        body.classList.remove('dark', 'light');
-        if (theme !== 'default') {
-          body.classList.add(theme);
+        body.classList.remove('light-theme');
+        if (theme === 'light') {
+          body.classList.add('light-theme');
         }
-        
-        localStorage.setItem('streamx-theme', theme);
+
+        localStorage.setItem('filestreamx-theme', theme);
       });
     });
 
     // Load saved theme
-    const savedTheme = localStorage.getItem('streamx-theme');
+    const savedTheme = localStorage.getItem('filestreamx-theme');
     if (savedTheme) {
       themeBtns.forEach(btn => {
         if (btn.dataset.theme === savedTheme) {
@@ -2092,33 +2218,38 @@
       });
     }
 
-    // Enhanced Bookmark functionality
+    // ==================== Bookmark Functionality ====================
     function initializeBookmark() {
       const bookmarkBtn = document.getElementById('bookmarkBtn');
+      const bookmarkContainer = document.getElementById('bookmarkContainer');
+      const bookmarkLabel = bookmarkContainer.querySelector('.bookmark-label');
       const currentUrl = window.location.href;
-      
-      // Check if already bookmarked
+
       if (watchlistManager.isInWatchlist(currentUrl)) {
         bookmarkBtn.classList.add('bookmarked');
-        bookmarkBtn.title = 'Already in Watchlist';
+        bookmarkContainer.classList.add('bookmarked');
+        bookmarkBtn.title = 'In Watchlist';
+        bookmarkLabel.textContent = 'In Watchlist';
       }
-      
+
       bookmarkBtn.addEventListener('click', () => {
         const isBookmarked = bookmarkBtn.classList.contains('bookmarked');
-        
+
         if (!isBookmarked) {
           const title = document.querySelector('.video-title').textContent;
           const added = watchlistManager.add({
             name: title,
             url: currentUrl
           });
-          
+
           if (added) {
             bookmarkBtn.classList.add('bookmarked');
-            bookmarkBtn.title = 'Already in Watchlist';
+            bookmarkContainer.classList.add('bookmarked');
+            bookmarkBtn.title = 'In Watchlist';
+            bookmarkLabel.textContent = 'In Watchlist';
             showToast('Added to Watchlist!', 'Video saved successfully', 'success');
           } else {
-            showToast('Already in Watchlist', 'This video is already saved', 'warning');
+            showToast('Already Saved', 'This video is in your watchlist', 'warning');
           }
         } else {
           showToast('Already Saved', 'This video is in your watchlist', 'warning');
@@ -2126,7 +2257,7 @@
       });
     }
 
-    // Watchlist Modal Functions
+    // ==================== Watchlist Modal ====================
     function openWatchlist() {
       const modal = document.getElementById('watchlistModal');
       modal.classList.add('active');
@@ -2145,7 +2276,7 @@
       const stats = document.getElementById('watchlistStats');
       const clearBtn = document.getElementById('clearWatchlistBtn');
       const items = watchlistManager.getAll();
-      
+
       if (items.length === 0) {
         content.innerHTML = `
           <div class="watchlist-empty">
@@ -2164,7 +2295,7 @@
                   <i class="fas fa-play"></i>
                 </div>
                 <div class="watchlist-item-info">
-                  <div class="watchlist-item-name">${item.name}</div>
+                  <div class="watchlist-item-name">${escapeHtml(item.name)}</div>
                   <div class="watchlist-item-date">
                     <i class="fas fa-clock"></i>
                     Added ${formatDate(item.addedAt)}
@@ -2184,22 +2315,26 @@
         `;
         clearBtn.style.display = 'block';
       }
-      
+
       stats.textContent = `${items.length} ${items.length === 1 ? 'item' : 'items'} in watchlist`;
     }
 
     function removeFromWatchlist(id) {
       watchlistManager.remove(id);
       renderWatchlist();
-      
-      // Check if current video was removed
+
       const currentUrl = window.location.href;
+      const bookmarkBtn = document.getElementById('bookmarkBtn');
+      const bookmarkContainer = document.getElementById('bookmarkContainer');
+      const bookmarkLabel = bookmarkContainer.querySelector('.bookmark-label');
+
       if (!watchlistManager.isInWatchlist(currentUrl)) {
-        const bookmarkBtn = document.getElementById('bookmarkBtn');
         bookmarkBtn.classList.remove('bookmarked');
+        bookmarkContainer.classList.remove('bookmarked');
         bookmarkBtn.title = 'Add to Watchlist';
+        bookmarkLabel.textContent = 'Add Watchlist';
       }
-      
+
       showToast('Removed', 'Video removed from watchlist', 'error');
     }
 
@@ -2207,14 +2342,24 @@
       if (confirm('Are you sure you want to clear your entire watchlist?')) {
         watchlistManager.clear();
         renderWatchlist();
-        
-        // Update bookmark button
+
         const bookmarkBtn = document.getElementById('bookmarkBtn');
+        const bookmarkContainer = document.getElementById('bookmarkContainer');
+        const bookmarkLabel = bookmarkContainer.querySelector('.bookmark-label');
+
         bookmarkBtn.classList.remove('bookmarked');
+        bookmarkContainer.classList.remove('bookmarked');
         bookmarkBtn.title = 'Add to Watchlist';
-        
+        bookmarkLabel.textContent = 'Add Watchlist';
+
         showToast('Cleared', 'Watchlist has been cleared', 'error');
       }
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
     }
 
     function formatDate(dateString) {
@@ -2224,12 +2369,12 @@
       const diffMins = Math.floor(diffMs / 60000);
       const diffHours = Math.floor(diffMs / 3600000);
       const diffDays = Math.floor(diffMs / 86400000);
-      
+
       if (diffMins < 1) return 'just now';
       if (diffMins < 60) return `${diffMins} min${diffMins > 1 ? 's' : ''} ago`;
       if (diffHours < 24) return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
       if (diffDays < 7) return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
-      
+
       return date.toLocaleDateString();
     }
 
@@ -2240,7 +2385,7 @@
       }
     });
 
-    // Share Functions
+    // ==================== Share Functions ====================
     function setupShareLinks() {
       const currentUrl = encodeURIComponent(window.location.href);
       const titleElem = document.querySelector('.video-title');
@@ -2249,22 +2394,16 @@
       const whatsapp = document.getElementById('whatsapp-share');
       const telegram = document.getElementById('telegram-share');
       const facebook = document.getElementById('facebook-share');
-      const twitter = document.getElementById('twitter-share');
-      const messenger = document.getElementById('messenger-share');
-      const email = document.getElementById('email-share');
 
       if (whatsapp) whatsapp.href = `https://wa.me/?text=${title}%20${currentUrl}`;
       if (telegram) telegram.href = `https://t.me/share/url?url=${currentUrl}&text=${title}`;
       if (facebook) facebook.href = `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`;
-      if (twitter) twitter.href = `https://twitter.com/intent/tweet?url=${currentUrl}&text=${title}`;
-      if (messenger) messenger.href = `fb-messenger://share/?link=${currentUrl}`;
-      if (email) email.href = `mailto:?subject=${title}&body=Check out this video: ${currentUrl}`;
     }
 
     function copyLink() {
       const url = window.location.href;
       navigator.clipboard.writeText(url).then(() => {
-        showToast('Success!', 'Link copied to clipboard');
+        showToast('Success!', 'Link copied to clipboard', 'success');
       }).catch(() => {
         const input = document.createElement('input');
         input.value = url;
@@ -2272,13 +2411,8 @@
         input.select();
         document.execCommand('copy');
         document.body.removeChild(input);
-        showToast('Success!', 'Link copied to clipboard');
+        showToast('Success!', 'Link copied to clipboard', 'success');
       });
-    }
-
-    function shareToInstagram() {
-      showToast('Info', 'Instagram sharing works best through the app. Link copied!');
-      copyLink();
     }
 
     function shareVideo() {
@@ -2292,60 +2426,259 @@
       }
     }
 
-    function downloadVideo() {
-      showToast('Info', 'Download Will Start Shortly...');
-      const player = document.querySelector('.player');
-      const link = document.createElement('a');
-      link.href = player.src;
-      link.download = '$filename';
-      link.click();
-    }
-
     function reportIssue() {
-      showToast('Info', 'Opening report form...');
+      showToast('Opening...', 'Redirecting to support', 'success');
       setTimeout(() => {
         window.open('https://t.me/Sujan_Ch', '_blank');
-      }, 500);
+      }, 800);
     }
 
+    // ==================== Toast Notification ====================
     function showToast(title, message, type = 'success') {
       const toast = document.getElementById('toast');
       const toastTitle = toast.querySelector('.toast-title');
       const toastMessage = toast.querySelector('.toast-message');
-      const toastIcon = toast.querySelector('i');
-      
-      // Reset classes
-      toast.classList.remove('warning', 'error');
-      
-      // Set type
+      const toastIcon = toast.querySelector('.toast-icon i');
+
+      toast.className = 'toast ' + type;
+
       if (type === 'warning') {
-        toast.classList.add('warning');
         toastIcon.className = 'fas fa-exclamation-circle';
       } else if (type === 'error') {
-        toast.classList.add('error');
         toastIcon.className = 'fas fa-times-circle';
       } else {
         toastIcon.className = 'fas fa-check-circle';
       }
-      
+
       toastTitle.textContent = title;
       toastMessage.textContent = message;
-      
+
       toast.classList.add('show');
       setTimeout(() => {
         toast.classList.remove('show');
       }, 3000);
     }
 
-    // Keyboard shortcuts
+    // ==================== Audio Tracks ====================
+    function initAudioTracks() {
+      const playerElement = document.querySelector('.player');
+      const selector = document.getElementById('audioTrackSelector');
+      const select = document.getElementById('audioTrackSelect');
+
+      if (!playerElement || !selector || !select) return;
+      if (playerElement.tagName.toLowerCase() !== 'audio') return;
+
+      let audioSources = [];
+      try {
+        audioSources = JSON.parse(playerElement.dataset.audioSources || '[]');
+      } catch (error) {
+        audioSources = [];
+      }
+
+      if (!Array.isArray(audioSources) || audioSources.length === 0) return;
+
+      const baseSrc = playerElement.currentSrc || playerElement.getAttribute('src');
+      const tracks = [{ label: 'Primary', src: baseSrc }, ...audioSources];
+
+      select.innerHTML = '';
+      tracks.forEach((track, index) => {
+        const option = document.createElement('option');
+        option.value = track.src;
+        option.textContent = track.label || `Track ${index + 1}`;
+        select.appendChild(option);
+      });
+
+      selector.style.display = 'flex';
+
+      select.addEventListener('change', (event) => {
+        const selectedSrc = event.target.value;
+        if (!selectedSrc) return;
+
+        const plyrInstance = playerElement.plyr;
+        if (plyrInstance) {
+          plyrInstance.source = {
+            type: 'audio',
+            sources: [{ src: selectedSrc }],
+          };
+          plyrInstance.play();
+        } else {
+          playerElement.src = selectedSrc;
+          playerElement.load();
+          playerElement.play();
+        }
+        showToast('Audio Updated', 'Switched audio track', 'success');
+      });
+    }
+
+    // ==================== Download Function (FIXED) ====================
+    function downloadVideo() {
+      const player = document.querySelector('.player');
+      const videoUrl = player ? (player.currentSrc || player.getAttribute('src')) : '';
+      const filename = document.querySelector('.video-title').textContent.trim() || 'video';
+
+      if (!videoUrl) {
+        showToast('Error', 'Video source not found', 'error');
+        return;
+      }
+
+      if (!isVerified) {
+        showToast('Please Complete Human Verification First', 'warning');
+        document.getElementById('verificationOverlay').scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+
+      showToast('Preparing Download...', 'Please wait', 'success');
+
+      // Method 1: Try direct download using anchor tag with download attribute
+      try {
+        const a = document.createElement('a');
+        a.href = videoUrl;
+        a.download = filename + '.mp4';
+        a.style.display = 'none';
+        document.body.appendChild(a);
+
+        // Trigger click
+        const clickEvent = new MouseEvent('click', {
+          bubbles: true,
+          cancelable: true,
+          view: window
+        });
+        a.dispatchEvent(clickEvent);
+
+        document.body.removeChild(a);
+
+        showToast('Download Started!', 'Your video is being downloaded', 'success');
+        return;
+      } catch (error) {
+        console.log('Direct download failed, trying alternative method...');
+      }
+
+      // Method 2: Use iframe for download (bypasses some restrictions)
+      try {
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = videoUrl;
+        document.body.appendChild(iframe);
+
+        setTimeout(() => {
+          document.body.removeChild(iframe);
+        }, 5000);
+
+        showToast('Download Started!', 'Check your downloads folder', 'success');
+        return;
+      } catch (error) {
+        console.error('Iframe download failed:', error);
+      }
+
+      // Method 3: Final fallback - open in new tab and instruct user
+      window.open(videoUrl, '_blank');
+      showToast('Video Opened', 'Right-click and "Save as" to download', 'warning');
+    }
+
+    // ==================== MX Player & VLC Player Handlers ====================
+    function openInMXPlayer() {
+      const player = document.querySelector('.player');
+      const videoUrl = player ? (player.currentSrc || player.getAttribute('src')) : '';
+
+      if (!videoUrl) {
+        showToast('Error', 'Video source not found', 'error');
+        return;
+      }
+
+      if (!isVerified) {
+        showToast('Verification Required', 'Please complete human verification first', 'warning');
+        document.getElementById('verificationOverlay').scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+
+      // Detect device type
+      const isAndroid = /Android/i.test(navigator.userAgent);
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+      if (!isAndroid && !isIOS) {
+        showToast('MX Player', 'Opening in new tab...', 'warning');
+        window.open(videoUrl, '_blank');
+        return;
+      }
+
+      showToast('Opening MX Player...', 'Please wait', 'success');
+
+      if (isIOS) {
+        // iOS: Try mxplayer:// protocol or open directly
+        window.location.href = videoUrl;
+      } else {
+        // Android: Use proper intent format - DO NOT encode the full URL
+        // Format: intent:<url>#Intent;action=android.intent.action.VIEW;type=video/*;package=com.mxtech.videoplayer.ad;end
+        const intentUrl = `intent:${videoUrl}#Intent;action=android.intent.action.VIEW;type=video/*;package=com.mxtech.videoplayer.ad;end`;
+
+        // Try intent first, fallback to direct URL
+        const startTime = Date.now();
+        window.location.href = intentUrl;
+
+        // Fallback if app not installed
+        setTimeout(() => {
+          if (Date.now() - startTime < 2000) {
+            window.open(videoUrl, '_blank');
+          }
+        }, 1500);
+      }
+    }
+
+    function openInVLC() {
+      const player = document.querySelector('.player');
+      const videoUrl = player ? (player.currentSrc || player.getAttribute('src')) : '';
+
+      if (!videoUrl) {
+        showToast('Error', 'Video source not found', 'error');
+        return;
+      }
+
+      if (!isVerified) {
+        showToast('Verification Required', 'Please complete human verification first', 'warning');
+        document.getElementById('verificationOverlay').scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+
+      // Detect device type
+      const isAndroid = /Android/i.test(navigator.userAgent);
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+      if (!isAndroid && !isIOS) {
+        showToast('VLC Player', 'Opening in new tab...', 'warning');
+        window.open(videoUrl, '_blank');
+        return;
+      }
+
+      showToast('Opening VLC Player...', 'Please wait', 'success');
+
+      if (isIOS) {
+        // iOS: VLC uses vlc:// protocol
+        const vlcUrl = videoUrl.replace(/^https?:\/\//, 'vlc://');
+        window.location.href = vlcUrl;
+      } else {
+        // Android: Use proper intent format with VLC package - DO NOT encode the full URL
+        // Format: intent:<url>#Intent;action=android.intent.action.VIEW;type=video/*;package=org.videolan.vlc;end
+        const intentUrl = `intent:${videoUrl}#Intent;action=android.intent.action.VIEW;type=video/*;package=org.videolan.vlc;end`;
+
+        // Try intent first, fallback to direct URL
+        const startTime = Date.now();
+        window.location.href = intentUrl;
+
+        // Fallback if app not installed
+        setTimeout(() => {
+          if (Date.now() - startTime < 2000) {
+            window.open(videoUrl, '_blank');
+          }
+        }, 1500);
+      }
+    }
+
+    // ==================== Keyboard Shortcuts ====================
     document.addEventListener('keydown', (e) => {
       if (e.ctrlKey || e.metaKey) {
         if (e.key === 'c') {
           e.preventDefault();
           copyLink();
-        } else if (e.key === 'd') {
-          e.preventDefault();
-          downloadVideo();
         } else if (e.key === 'b') {
           e.preventDefault();
           document.getElementById('bookmarkBtn').click();
@@ -2354,14 +2687,20 @@
           openWatchlist();
         }
       }
-      
-      // Close watchlist on Escape
+
       if (e.key === 'Escape') {
         const modal = document.getElementById('watchlistModal');
         if (modal.classList.contains('active')) {
           closeWatchlist();
         }
       }
+    });
+
+    // ==================== DOMContentLoaded ====================
+    document.addEventListener('DOMContentLoaded', () => {
+      setupShareLinks();
+      initializeBookmark();
+      // Player initialization is now handled after verification
     });
   </script>
 </body>
