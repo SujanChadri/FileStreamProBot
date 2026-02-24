@@ -64,7 +64,8 @@ async def set_bot_commands():
     await StreamBot.set_bot_commands(commands)
 
 
-async def startprint('\n')
+async def start_services():
+    print('\n')
     print('------------------- Initializing Telegram Bot -------------------')
     
     await reset_session()  # Ensure no previous session conflicts
