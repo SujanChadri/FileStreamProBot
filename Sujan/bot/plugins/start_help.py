@@ -266,7 +266,7 @@ async def help_handler(bot, message):
 @StreamBot.on_callback_query(filters.regex('^check_join$'))
 async def on_check_join_button(client, callback_query: CallbackQuery):
     """Handle the 'I've Joined / Refresh' button click"""
-    await callback_query.answer("Checking your membership...")
+    await callback_query.answer("Please Wait...")
 
     user_id = callback_query.from_user.id
 
