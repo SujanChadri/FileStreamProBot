@@ -41,5 +41,27 @@ class Var(object):
         URL = URL + '/'
         
     DATABASE_URL = str(getenv('DATABASE_URL', '')) #Required
-    UPDATES_CHANNEL = str(getenv('UPDATES_CHANNEL', 'Sujan_BotZ')) #Required without @
+    
+    # Multiple UPDATE CHANNELS Support - Comma separated channel usernames/IDs without @
+    # Example: UPDATES_CHANNEL = "channel1,channel2,channel3" or "channel1" for single channel
+    # Set to "None" to disable update channel check
+    UPDATES_CHANNEL = str(getenv('UPDATES_CHANNEL', 'Sujan_Ch,Sujan_BotZ')) #Required without @
+    
+    # Parse multiple update channels into a list
+    @classmethod
+    def get_update_channels(cls):
+        """Get list of update channels from comma-separated string"""
+        if not cls.UPDATES_CHANNEL or cls.UPDATES_CHANNEL == "None":
+            return []
+        # Split by comma and strip whitespace
+        channels = [ch.strip() for ch in cls.UPDATES_CHANNEL.split(',') if ch.strip()]
+        return channels
+    
+    # Backward compatibility - single channel
+    @classmethod
+    def get_first_update_channel(cls):
+        """Get first update channel for backward compatibility"""
+        channels = cls.get_update_channels()
+        return channels[0] if channels else None
+    
     BANNED_CHANNELS = list(set(int(x) for x in str(getenv("BANNED_CHANNELS", "-1001362659779")).split())) #Leave as it is.
