@@ -1,8 +1,6 @@
 # (c) Sujan
 import os
 import asyncio
-import time
-from collections import defaultdict, deque
 from asyncio import TimeoutError
 from Sujan.bot import StreamBot
 from Sujan.utils.database import Database
@@ -20,24 +18,8 @@ MY_PASS = os.environ.get("MY_PASS", None)
 pass_dict = {}
 pass_db = Database(Var.DATABASE_URL, "ag_passwords")
 
-# ✅ Simple flag
+# Simple flag
 _channel_cached = False
-FILE_RATE_LIMIT = 3
-FILE_RATE_WINDOW_SECONDS = 60
-_user_file_events = defaultdict(deque)
-
-
-def _check_file_rate_limit(user_id: int):
-    now = time.monotonic()
-    window_start = now - FILE_RATE_WINDOW_SECONDS
-    events = _user_file_events[user_id]
-    while events and events[0] < window_start:
-        events.popleft()
-    if len(events) >= FILE_RATE_LIMIT:
-        retry_after = max(0, int(FILE_RATE_WINDOW_SECONDS - (now - events[0])))
-        return True, retry_after
-    events.append(now)
-    return False, 0
 
 
 async def cache_channel(c: Client):
@@ -48,15 +30,68 @@ async def cache_channel(c: Client):
         return
     
     try:
-        # This loads all chats into Pyrogram's cache
         async for dialog in c.get_dialogs():
             if dialog.chat.id == Var.BIN_CHANNEL:
-                print(f"✅ BIN_CHANNEL cached: {dialog.chat.title}")
+                print(f"BIN_CHANNEL cached: {dialog.chat.title}")
                 break
         _channel_cached = True
     except Exception as e:
         print(f"Cache error: {e}")
-        _channel_cached = True  # Don't retry on error
+        _channel_cached = True
+
+
+async def check_user_in_update_channels(c: Client, user_id: int):
+    """
+    Check if user is a member of all required update channels.
+    Returns: (is_member: bool, not_joined_channels: list, is_banned: bool)
+    """
+    update_channels = Var.get_update_channels()
+    
+    # If no update channels configured, allow access
+    if not update_channels:
+        return True, [], False
+    
+    not_joined = []
+    is_banned = False
+    
+    for channel in update_channels:
+        try:
+            user = await c.get_chat_member(channel, user_id)
+            if user.status == "kicked":
+                is_banned = True
+                break
+        except UserNotParticipant:
+            not_joined.append(channel)
+        except Exception as e:
+            print(f"Error checking channel {channel}: {e}")
+            not_joined.append(channel)
+    
+    is_member = not is_banned and len(not_joined) == 0
+    return is_member, not_joined, is_banned
+
+
+def get_join_channels_markup(not_joined_channels):
+    """Generate inline keyboard markup for channels user needs to join"""
+    buttons = []
+
+    for channel in not_joined_channels:
+        clean_channel = channel.lstrip('@')
+        buttons.append([
+            InlineKeyboardButton(
+                f"Jᴏɪɴ {clean_channel} 🔓",
+                url=f"https://t.me/{clean_channel}"
+            )
+        ])
+
+    # Add "I've Joined" / "Refresh" button
+    buttons.append([
+        InlineKeyboardButton(
+            "✅ I've Joined",
+            callback_data="check_join"
+        )
+    ])
+
+    return InlineKeyboardMarkup(buttons)
 
 
 @StreamBot.on_message((filters.regex("login🔑") | filters.command("login")), group=4)
@@ -105,7 +140,6 @@ async def private_receive_handler(c: Client, m: Message):
             await pass_db.delete_user(m.chat.id)
             return
 
-    # ✅ Cache channel on first use
     await cache_channel(c)
 
     if not await db.is_user_exist(m.from_user.id):
@@ -115,44 +149,28 @@ async def private_receive_handler(c: Client, m: Message):
             f"New User Joined! : \n\n Name : [{m.from_user.first_name}](tg://user?id={m.from_user.id}) Started Your Bot!!"
         )
 
-    if Var.UPDATES_CHANNEL != "None":
-        try:
-            user = await c.get_chat_member(Var.UPDATES_CHANNEL, m.chat.id)
-            if user.status == "kicked":
-                await c.send_message(
-                    chat_id=m.chat.id,
-                    text="You are banned!\n\n  **Cᴏɴᴛᴀᴄᴛ Support [Support](https://t.me/Sujan_Ch) They Wɪʟʟ Hᴇʟᴘ Yᴏᴜ**",
-                    disable_web_page_preview=True
-                )
-                return
-        except UserNotParticipant:
+    # Check multiple update channels
+    update_channels = Var.get_update_channels()
+    if update_channels:
+        is_member, not_joined, is_banned = await check_user_in_update_channels(c, m.chat.id)
+        
+        if is_banned:
             await c.send_message(
                 chat_id=m.chat.id,
-                text="""**J𝙾𝙸𝙽 Uᴘᴅᴀᴛᴇs Cʜᴀɴɴᴇʟ To U𝚂𝙴 Tʜɪs Bᴏᴛ!**\n\nDᴜᴇ Tᴏ Oᴠᴇʀʟᴏᴀᴅ, Oɴʟʏ Cʜᴀɴɴᴇʟ Sᴜʙsᴄʀɪʙᴇʀs Cᴀɴ Usᴇ Tʜᴇ Bᴏᴛ!""",
-                reply_markup=InlineKeyboardMarkup(
-                    [
-                        [
-                            InlineKeyboardButton("Jᴏɪɴ ɴᴏᴡ 🔓", url=f"https://t.me/{Var.UPDATES_CHANNEL}")
-                        ]
-                    ]
-                ),
-            )
-            return
-        except Exception as e:
-            await m.reply_text(e)
-            await c.send_message(
-                chat_id=m.chat.id,
-                text="**Sᴏᴍᴇᴛʜɪɴɢ ᴡᴇɴᴛ Wʀᴏɴɢ. Cᴏɴᴛᴀᴄᴛ ᴍʏ Support** [Support](https://t.me/Sujan_Ch)",
+                text="You are banned!\n\n  **Cᴏɴᴛᴀᴄᴛ Support [Support](https://t.me/Sujan_Ch) They Wɪʟʟ Hᴇʟᴘ Yᴏᴜ**",
                 disable_web_page_preview=True
             )
             return
-    limited, retry_after = _check_file_rate_limit(m.from_user.id)
-    if limited:
-        await m.reply_text(
-            f"Sᴏʀʀʏ ʏᴏᴜ ᴄᴀɴ ᴏɴʟʏ ꜱᴇɴᴅ {FILE_RATE_LIMIT} ꜰɪʟᴇꜱ ᴘᴇʀ ᴍɪɴᴜᴛᴇ. "
-            f"Sᴇɴᴅ ꜰɪʟᴇꜱ ᴀɢᴀɪɴ ɪɴ {retry_after}s."
-        )
-        return
+        
+        if not_joined:
+            channel_text = "Cʜᴀɴɴᴇʟs" if len(not_joined) > 1 else "Cʜᴀɴɴᴇʟ"
+            await c.send_message(
+                chat_id=m.chat.id,
+                text=f"**J𝙾𝙸𝙽 Uᴘᴅᴀᴛᴇs {channel_text} To U𝚂𝙴 Tʜɪs Bᴏᴛ!**\n\nDᴜᴇ Tᴏ Oᴠᴇʀʟᴏᴀᴅ, Oɴʟʏ Cʜᴀɴɴᴇʟ Sᴜʙsᴄʀɪʙᴇʀs Cᴀɴ Usᴇ Tʜᴇ Bᴏᴛ!\n\n**Yᴏᴜ ɴᴇᴇᴅ ᴛᴏ ᴊᴏɪɴ:**",
+                reply_markup=get_join_channels_markup(not_joined),
+            )
+            return
+    
     try:
         log_msg = await m.copy(chat_id=Var.BIN_CHANNEL)
         stream_link = f"{Var.URL}watch/{str(log_msg.id)}?hash={get_hash(log_msg)}"
@@ -205,7 +223,6 @@ async def channel_receive_handler(bot, broadcast):
         return
     
     try:
-        # ✅ Cache channel
         await cache_channel(bot)
         
         log_msg = await broadcast.copy(chat_id=Var.BIN_CHANNEL)
