@@ -71,8 +71,8 @@ async def countdown_timer(c: Client, user_id: int, chat_id: int, reply_to_messag
     
     # Send initial countdown message as reply (below the generated link)
     countdown_msg = await reply_to_message.reply_text(
-        f"⏳ **Cooldown Active**\n\n"
-        f"Sᴏʀʀʏ ʏᴏᴜ ᴄᴀɴ ᴏɴʟʏ ꜱᴇɴᴅ {FILE_RATE_LIMIT} ꜰɪʟᴇꜱ ᴘᴇʀ ᴍɪɴᴜᴛᴇ.\n"
+        f"⏳ **Cᴏᴏʟᴅᴏᴡɴ Aᴄᴛɪᴠᴇ**\n\n"
+        f"Sᴏʀʀʏ ʏᴏᴜ ᴄᴀɴ ᴏɴʟʏ ꜱᴇɴᴅ {FILE_RATE_LIMIT} ꜰɪʟᴇꜱ ᴘᴇʀ ᴍɪɴᴜᴛᴇ.\n\n"
         f"Sᴇɴᴅ ꜰɪʟᴇꜱ ᴀɢᴀɪɴ ɪɴ {remaining}s."
     )
     
@@ -86,8 +86,8 @@ async def countdown_timer(c: Client, user_id: int, chat_id: int, reply_to_messag
             
         try:
             await countdown_msg.edit_text(
-                f"⏳ **Cooldown Active**\n\n"
-                f"Sᴏʀʀʏ ʏᴏᴜ ᴄᴀɴ ᴏɴʟʏ ꜱᴇɴᴅ {FILE_RATE_LIMIT} ꜰɪʟᴇꜱ ᴘᴇʀ ᴍɪɴᴜᴛᴇ.\n"
+                f"⏳ **Cᴏᴏʟᴅᴏᴡɴ Aᴄᴛɪᴠᴇ**\n\n"
+                f"Sᴏʀʀʏ ʏᴏᴜ ᴄᴀɴ ᴏɴʟʏ ꜱᴇɴᴅ {FILE_RATE_LIMIT} ꜰɪʟᴇꜱ ᴘᴇʀ ᴍɪɴᴜᴛᴇ.\n\n"
                 f"Sᴇɴᴅ ꜰɪʟᴇꜱ ᴀɢᴀɪɴ ɪɴ {remaining}s."
             )
         except Exception:
@@ -97,8 +97,7 @@ async def countdown_timer(c: Client, user_id: int, chat_id: int, reply_to_messag
     # Cooldown finished - update message
     try:
         await countdown_msg.edit_text(
-            f"✅ **Cooldown Finished!**\n\n"
-            f"You can now send files again."
+            f"🎉"
         )
     except Exception:
         pass
@@ -107,8 +106,8 @@ async def countdown_timer(c: Client, user_id: int, chat_id: int, reply_to_messag
     try:
         await c.send_message(
             chat_id=chat_id,
-            text="🎉 **Cooldown time finished!**\n\n"
-                 "✅ You can now send files again."
+            text="🎉 **Cᴏᴏʟᴅᴏᴡɴ Tɪᴍᴇ Fɪɴɪꜱʜᴇᴅ!**\n\n"
+                 "✅ Yᴏᴜ ᴄᴀɴ ɴᴏᴡ ꜱᴇɴᴅ 3 ꜰɪʟᴇꜱ ᴀɢᴀɪɴ."
         )
     except Exception:
         pass
