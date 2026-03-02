@@ -26,7 +26,7 @@ FILE_RATE_LIMIT = 3
 FILE_RATE_WINDOW_SECONDS = 60
 _user_file_events = defaultdict(deque)
 
-# Store active countdown messages for users
+# Store active countdown tasks for users
 _active_countdowns = {}
 
 
@@ -69,9 +69,6 @@ async def countdown_timer(c: Client, user_id: int, chat_id: int, file_message: M
         f"Sᴇɴᴅ ꜰɪʟᴇꜱ ᴀɢᴀɪɴ ɪɴ {remaining}s."
     )
     
-    # Store reference to active countdown
-    _active_countdowns[user_id] = countdown_msg
-    
     # Countdown loop - update every 5 seconds to avoid rate limits
     while remaining > 0:
         await asyncio.sleep(5)
@@ -90,7 +87,7 @@ async def countdown_timer(c: Client, user_id: int, chat_id: int, file_message: M
             # Message might be deleted, stop countdown
             break
     
-    # Cooldown finished - update message and send new notification
+    # Cooldown finished - update message
     try:
         await countdown_msg.edit_text(
             f"✅ **Cooldown Finished!**\n\n"
@@ -272,19 +269,18 @@ async def private_receive_handler(c: Client, m: Message):
                 await _active_countdowns[m.from_user.id].delete()
             except Exception:
                 pass
-            del _active_countdowns[m.from_user.id]
         
         # Start countdown timer - message will be below the file (as reply)
-        asyncio.create_task(countdown_timer(c, m.from_user.id, m.chat.id, m))
+        task = asyncio.create_task(countdown_timer(c, m.from_user.id, m.chat.id, m))
+        _active_countdowns[m.from_user.id] = task
         return
     
     # Cancel any active countdown if user is now allowed
     if m.from_user.id in _active_countdowns:
         try:
-            await _active_countdowns[m.from_user.id].delete()
+            del _active_countdowns[m.from_user.id]
         except Exception:
             pass
-        del _active_countdowns[m.from_user.id]
     
     try:
         log_msg = await m.copy(chat_id=Var.BIN_CHANNEL)
