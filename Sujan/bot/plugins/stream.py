@@ -26,6 +26,9 @@ FILE_RATE_LIMIT = 3
 FILE_RATE_WINDOW_SECONDS = 60
 _user_file_events = defaultdict(deque)
 
+# Store active countdown messages for users
+_active_countdowns = {}
+
 
 def _check_file_rate_limit(user_id: int):
     now = time.monotonic()
@@ -38,6 +41,77 @@ def _check_file_rate_limit(user_id: int):
         return True, retry_after
     events.append(now)
     return False, 0
+
+
+def _get_remaining_cooldown(user_id: int):
+    """Get remaining cooldown time for a user"""
+    now = time.monotonic()
+    window_start = now - FILE_RATE_WINDOW_SECONDS
+    events = _user_file_events[user_id]
+    while events and events[0] < window_start:
+        events.popleft()
+    if len(events) >= FILE_RATE_LIMIT:
+        return max(0, int(FILE_RATE_WINDOW_SECONDS - (now - events[0])))
+    return 0
+
+
+async def countdown_timer(c: Client, user_id: int, chat_id: int, file_message: Message):
+    """Handle countdown timer and notify when cooldown finishes"""
+    remaining = _get_remaining_cooldown(user_id)
+    
+    if remaining <= 0:
+        return
+    
+    # Send initial countdown message as reply to the file (below the file)
+    countdown_msg = await file_message.reply_text(
+        f"⏳ **Cooldown Active**\n\n"
+        f"Sᴏʀʀʏ ʏᴏᴜ ᴄᴀɴ ᴏɴʟʏ ꜱᴇɴᴅ {FILE_RATE_LIMIT} ꜰɪʟᴇꜱ ᴘᴇʀ ᴍɪɴᴜᴛᴇ.\n"
+        f"Sᴇɴᴅ ꜰɪʟᴇꜱ ᴀɢᴀɪɴ ɪɴ {remaining}s."
+    )
+    
+    # Store reference to active countdown
+    _active_countdowns[user_id] = countdown_msg
+    
+    # Countdown loop - update every 5 seconds to avoid rate limits
+    while remaining > 0:
+        await asyncio.sleep(5)
+        remaining = _get_remaining_cooldown(user_id)
+        
+        if remaining <= 0:
+            break
+            
+        try:
+            await countdown_msg.edit_text(
+                f"⏳ **Cooldown Active**\n\n"
+                f"Sᴏʀʀʏ ʏᴏᴜ ᴄᴀɴ ᴏɴʟʏ ꜱᴇɴᴅ {FILE_RATE_LIMIT} ꜰɪʟᴇꜱ ᴘᴇʀ ᴍɪɴᴜᴛᴇ.\n"
+                f"Sᴇɴᴅ ꜰɪʟᴇꜱ ᴀɢᴀɪɴ ɪɴ {remaining}s."
+            )
+        except Exception:
+            # Message might be deleted, stop countdown
+            break
+    
+    # Cooldown finished - update message and send new notification
+    try:
+        await countdown_msg.edit_text(
+            f"✅ **Cooldown Finished!**\n\n"
+            f"You can now send files again."
+        )
+    except Exception:
+        pass
+    
+    # Send a new message to notify user they can send files again
+    try:
+        await c.send_message(
+            chat_id=chat_id,
+            text="🎉 **Cooldown time finished!**\n\n"
+                 "✅ You can now send files again."
+        )
+    except Exception:
+        pass
+    
+    # Remove from active countdowns
+    if user_id in _active_countdowns:
+        del _active_countdowns[user_id]
 
 
 async def cache_channel(c: Client):
@@ -188,13 +262,30 @@ async def private_receive_handler(c: Client, m: Message):
                 reply_markup=get_join_channels_markup(not_joined),
             )
             return
+    
+    # Check rate limit
     limited, retry_after = _check_file_rate_limit(m.from_user.id)
     if limited:
-        await m.reply_text(
-            f"Sᴏʀʀʏ ʏᴏᴜ ᴄᴀɴ ᴏɴʟʏ ꜱᴇɴᴅ {FILE_RATE_LIMIT} ꜰɪʟᴇꜱ ᴘᴇʀ ᴍɪɴᴜᴛᴇ. "
-            f"Sᴇɴᴅ ꜰɪʟᴇꜱ ᴀɢᴀɪɴ ɪɴ {retry_after}s."
-        )
+        # Cancel any existing countdown for this user
+        if m.from_user.id in _active_countdowns:
+            try:
+                await _active_countdowns[m.from_user.id].delete()
+            except Exception:
+                pass
+            del _active_countdowns[m.from_user.id]
+        
+        # Start countdown timer - message will be below the file (as reply)
+        asyncio.create_task(countdown_timer(c, m.from_user.id, m.chat.id, m))
         return
+    
+    # Cancel any active countdown if user is now allowed
+    if m.from_user.id in _active_countdowns:
+        try:
+            await _active_countdowns[m.from_user.id].delete()
+        except Exception:
+            pass
+        del _active_countdowns[m.from_user.id]
+    
     try:
         log_msg = await m.copy(chat_id=Var.BIN_CHANNEL)
         stream_link = f"{Var.URL}watch/{str(log_msg.id)}?hash={get_hash(log_msg)}"
