@@ -64,7 +64,7 @@ async def countdown_timer(c: Client, user_id: int, chat_id: int, file_message: M
     
     # Send initial countdown message as reply to the file (below the file)
     countdown_msg = await file_message.reply_text(
-        f"⏳ **Cooldown Active**\n\n"
+        f"⏳ **Cᴏᴏʟᴅᴏᴡɴ Aᴄᴛɪᴠᴇ**\n\n"
         f"Sᴏʀʀʏ ʏᴏᴜ ᴄᴀɴ ᴏɴʟʏ ꜱᴇɴᴅ {FILE_RATE_LIMIT} ꜰɪʟᴇꜱ ᴘᴇʀ ᴍɪɴᴜᴛᴇ.\n"
         f"Sᴇɴᴅ ꜰɪʟᴇꜱ ᴀɢᴀɪɴ ɪɴ {remaining}s."
     )
