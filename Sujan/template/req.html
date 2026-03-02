@@ -5,20 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta property="og:title" content="Stream Video" />
   <meta property="og:description" content="Watch streaming content powered by @Sujan_BotZ" />
-  <meta property="og:image" content="https://i.ibb.co/M8S0Zzj/live-streaming.png " />
+  <meta property="og:image" content="https://i.ibb.co/M8S0Zzj/live-streaming.png" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>FileStreamX - Premium Streaming</title>
 
   <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com ">
-  <link rel="preconnect" href="https://fonts.gstatic.com " crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300 ;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css " />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <!-- Plyr CSS -->
-  <link rel="stylesheet" href="https://cdn.plyr.io/3.6.12/plyr.css " />
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.6.12/plyr.css" />
 
   <style>
     :root {
@@ -66,425 +66,6 @@
       min-height: 100vh;
       position: relative;
       overflow-x: hidden;
-    }
-
-    /* ==================== FULL PAGE GATE OVERLAY ==================== */
-    .page-gate-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(180deg, #0f0f1a 0%, #1a1a2e 100%);
-      z-index: 99999;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      overflow-y: auto;
-      padding: 20px;
-    }
-
-    .page-gate-overlay.hidden {
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.6s ease, visibility 0.6s ease;
-    }
-
-    /* Verification Header Ad - Stays visible until verification complete */
-    .verification-header-ad {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(15, 15, 26, 0.98);
-      backdrop-filter: blur(10px);
-      padding: 12px 20px;
-      z-index: 100000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-bottom: 1px solid rgba(139, 92, 246, 0.2);
-    }
-
-    .verification-header-ad.hidden {
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.6s ease, visibility 0.6s ease;
-    }
-
-    .verification-header-ad-content {
-      width: 100%;
-      max-width: 970px;
-      min-height: 90px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--bg-tertiary);
-      border: 1px dashed var(--border);
-      border-radius: var(--radius-md);
-      position: relative;
-    }
-
-    .verification-header-ad-content::before {
-      content: 'Advertisement';
-      position: absolute;
-      top: 4px;
-      right: 8px;
-      font-size: 10px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .verification-header-ad-placeholder {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: var(--text-muted);
-      font-size: 14px;
-    }
-
-    .verification-header-ad-placeholder i {
-      font-size: 24px;
-      color: var(--accent-primary);
-    }
-
-    /* Adjust verification card to account for header ad */
-    .page-gate-overlay .verification-card {
-      margin-top: 120px;
-    }
-
-    /* Gate Background Pattern */
-    .gate-bg-pattern {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image:
-        radial-gradient(circle at 20% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
-        radial-gradient(circle at 50% 50%, rgba(217, 70, 239, 0.05) 0%, transparent 60%);
-      pointer-events: none;
-    }
-
-    /* Gate Header Ad */
-    .gate-header-ad {
-      position: relative;
-      width: 90%;
-      max-width: 728px;
-      margin-top: 20px;
-      z-index: 20;
-      flex-shrink: 0;
-    }
-
-    /* Verification Card */
-    .verification-card {
-      background: rgba(20, 20, 35, 0.95);
-      border-radius: var(--radius-xl);
-      padding: 48px;
-      width: 100%;
-      max-width: 480px;
-      text-align: center;
-      border: 1px solid rgba(139, 92, 246, 0.2);
-      box-shadow:
-        0 25px 80px rgba(0, 0, 0, 0.6),
-        0 0 60px rgba(139, 92, 246, 0.1);
-      position: relative;
-      z-index: 10;
-      animation: cardFadeIn 0.5s ease;
-      margin: 20px 0 40px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    @keyframes cardFadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Robot Icon */
-    .robot-icon {
-      width: 80px;
-      height: 80px;
-      background: linear-gradient(135deg, #8b5cf6, #a855f7);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 24px;
-      font-size: 40px;
-      box-shadow: 0 8px 30px rgba(139, 92, 246, 0.4);
-      flex-shrink: 0;
-    }
-
-    .robot-icon svg {
-      width: 44px;
-      height: 44px;
-      fill: white;
-    }
-
-    /* Verification Header */
-    .verification-header {
-      margin-bottom: 32px;
-      flex-shrink: 0;
-    }
-
-    .verification-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 26px;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 8px;
-    }
-
-    .verification-subtitle {
-      font-size: 15px;
-      color: var(--text-secondary);
-    }
-
-    /* ==================== STAGE 1: VERIFY BUTTON ==================== */
-    .verify-button-container {
-      margin-bottom: 24px;
-      width: 100%;
-    }
-
-    .verify-btn {
-      width: 100%;
-      padding: 18px 32px;
-      background: linear-gradient(135deg, #8b5cf6, #a855f7);
-      border: none;
-      border-radius: var(--radius-lg);
-      color: white;
-      font-family: 'Inter', sans-serif;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      transition: all 0.3s ease;
-      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
-    }
-
-    .verify-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 35px rgba(139, 92, 246, 0.5);
-    }
-
-    .verify-btn:active {
-      transform: translateY(0);
-    }
-
-    .verify-btn i {
-      font-size: 18px;
-    }
-
-    /* ==================== STAGE 2: COUNTDOWN TIMER ==================== */
-    .countdown-container {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 24px;
-      width: 100%;
-    }
-
-    .countdown-container.active {
-      display: flex;
-      animation: fadeIn 0.4s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    /* Circular Progress */
-    .circular-progress {
-      position: relative;
-      width: 140px;
-      height: 140px;
-      margin-bottom: 24px;
-      flex-shrink: 0;
-    }
-
-    .circular-progress svg {
-      transform: rotate(-90deg);
-      width: 100%;
-      height: 100%;
-    }
-
-    .progress-bg {
-      fill: none;
-      stroke: rgba(139, 92, 246, 0.15);
-      stroke-width: 8;
-    }
-
-    .progress-bar {
-      fill: none;
-      stroke: url(#progressGradient);
-      stroke-width: 8;
-      stroke-linecap: round;
-      stroke-dasharray: 377;
-      stroke-dashoffset: 377;
-      transition: stroke-dashoffset 1s linear;
-    }
-
-    .countdown-number {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 48px;
-      font-weight: 700;
-      background: linear-gradient(135deg, #8b5cf6, #d946ef);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .countdown-text {
-      font-size: 16px;
-      color: var(--text-primary);
-      margin-bottom: 8px;
-    }
-
-    .countdown-subtext {
-      font-size: 14px;
-      color: var(--text-muted);
-    }
-
-    /* ==================== STAGE 3: VERIFICATION COMPLETE ==================== */
-    .complete-container {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 24px;
-      width: 100%;
-    }
-
-    .complete-container.active {
-      display: flex;
-      animation: fadeIn 0.4s ease;
-    }
-
-    .success-circle {
-      width: 80px;
-      height: 80px;
-      background: linear-gradient(135deg, #22c55e, #16a34a);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-      animation: successPop 0.5s ease;
-      flex-shrink: 0;
-    }
-
-    @keyframes successPop {
-      0% { transform: scale(0); }
-      50% { transform: scale(1.2); }
-      100% { transform: scale(1); }
-    }
-
-    .success-circle i {
-      font-size: 36px;
-      color: white;
-    }
-
-    .complete-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--success);
-      margin-bottom: 8px;
-    }
-
-    .complete-subtitle {
-      font-size: 14px;
-      color: var(--text-secondary);
-      margin-bottom: 24px;
-    }
-
-    .get-link-btn {
-      width: 100%;
-      padding: 16px 32px;
-      background: linear-gradient(135deg, #8b5cf6, #a855f7);
-      border: none;
-      border-radius: var(--radius-lg);
-      color: white;
-      font-family: 'Inter', sans-serif;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      transition: all 0.3s ease;
-      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
-    }
-
-    .get-link-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 35px rgba(139, 92, 246, 0.5);
-    }
-
-    .get-link-btn i {
-      font-size: 16px;
-      transition: transform 0.3s ease;
-    }
-
-    .get-link-btn:hover i {
-      transform: translateX(4px);
-    }
-
-    /* Info Box */
-    .info-box {
-      background: rgba(139, 92, 246, 0.08);
-      border: 1px solid rgba(139, 92, 246, 0.2);
-      border-radius: var(--radius-md);
-      padding: 16px;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      text-align: left;
-      width: 100%;
-      flex-shrink: 0;
-    }
-
-    .info-box i {
-      color: var(--accent-primary);
-      font-size: 18px;
-      margin-top: 2px;
-      flex-shrink: 0;
-    }
-
-    .info-text {
-      font-size: 13px;
-      color: var(--text-secondary);
-      line-height: 1.5;
-    }
-
-    /* ==================== MAIN APP (Hidden until verified) ==================== */
-    .app-wrapper {
-      display: none;
-    }
-
-    .app-wrapper.visible {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      animation: appReveal 0.8s ease;
-    }
-
-    @keyframes appReveal {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
     }
 
     /* Animated Background */
@@ -1779,59 +1360,6 @@
     }
 
     @media (max-width: 768px) {
-      .verification-card {
-        padding: 32px 24px;
-        margin: 80px 16px 40px;
-      }
-
-      .verification-title {
-        font-size: 22px;
-      }
-
-      .robot-icon {
-        width: 64px;
-        height: 64px;
-        margin-bottom: 20px;
-      }
-
-      .robot-icon svg {
-        width: 36px;
-        height: 36px;
-      }
-
-      .circular-progress {
-        width: 120px;
-        height: 120px;
-      }
-
-      .countdown-number {
-        font-size: 40px;
-      }
-
-      .gate-header-ad {
-        display: none;
-      }
-
-      .verification-header-ad {
-        padding: 8px 12px;
-      }
-
-      .verification-header-ad-content {
-        min-height: 50px;
-      }
-
-      .verification-header-ad-placeholder {
-        font-size: 12px;
-      }
-
-      .verification-header-ad-placeholder i {
-        font-size: 18px;
-      }
-
-      .page-gate-overlay .verification-card {
-        margin-top: 80px;
-      }
-
       /* Mobile Ad Responsive Styles */
       .header-ad-container {
         display: none;
@@ -1982,362 +1510,277 @@
         min-height: 40px;
         font-size: 11px;
       }
-
-      .verification-header-ad {
-        padding: 6px 10px;
-      }
-
-      .verification-header-ad-content {
-        min-height: 40px;
-      }
-
-      .verification-header-ad-placeholder {
-        font-size: 10px;
-      }
-
-      .verification-header-ad-placeholder i {
-        font-size: 14px;
-      }
-
-      .page-gate-overlay .verification-card {
-        margin-top: 70px;
-      }
     }
   </style>
-<base target="_blank">
-<base target="_blank">
 <base target="_blank">
 </head>
 
 <body>
-  <!-- ==================== VERIFICATION HEADER AD (Stays visible until verification complete) ==================== -->
-  <div class="verification-header-ad" id="verificationHeaderAd">
-    <div class="verification-header-ad-content">
-      <div class="verification-header-ad-placeholder">
-        <i class="fas fa-ad"></i>
-        <span>Insert Your Ad Code Here (970x90 or Responsive)</span>
-      </div>
-    </div>
+  <!-- Background Animation -->
+  <div class="bg-animation">
+    <div class="bg-gradient bg-gradient-1"></div>
+    <div class="bg-gradient bg-gradient-2"></div>
+    <div class="bg-gradient bg-gradient-3"></div>
   </div>
 
-  <!-- SVG Gradient Definition for Progress Bar -->
-  <svg width="0" height="0" style="position: absolute;">
-    <defs>
-      <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%" style="stop-color:#8b5cf6" />
-        <stop offset="100%" style="stop-color:#d946ef" />
-      </linearGradient>
-    </defs>
-  </svg>
+  <!-- Grid Overlay -->
+  <div class="grid-overlay"></div>
 
-  <!-- ==================== FULL PAGE GATE OVERLAY ==================== -->
-  <div class="page-gate-overlay" id="pageGateOverlay">
-    <div class="gate-bg-pattern"></div>
-
-    <!-- Gate Header Ad -->
-    <div class="gate-header-ad">
-      <div class="ad-container" style="margin-bottom: 0;">
-        <div class="ad-placeholder">
-          <i class="fas fa-ad"></i>
-          <span>Insert Your Ad Code Here (728x90)</span>
+  <!-- Header -->
+  <header>
+    <div class="logo-wrapper">
+      <a href="#" class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-play"></i>
         </div>
+        <span>FileStreamX</span>
+      </a>
+      <div class="live-badge">
+        <span>Live</span>
       </div>
     </div>
 
-    <div class="verification-card">
-      <!-- Robot Icon -->
-      <div class="robot-icon">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg ">
-          <path d="M12 2C10.9 2 10 2.9 10 4V6H6C4.9 6 4 6.9 4 8V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V8C20 6.9 19.1 6 18 6H14V4C14 2.9 13.1 2 12 2ZM12 4C12.55 4 13 4.45 13 5V6H11V5C11 4.45 11.45 4 12 4ZM8 10C8.55 10 9 10.45 9 11C9 11.55 8.55 12 8 12C7.45 12 7 11.55 7 11C7 10.45 7.45 10 8 10ZM16 10C16.55 10 17 10.45 17 11C17 11.55 16.55 12 16 12C15.45 12 15 11.55 15 11C15 10.45 15.45 10 16 10ZM12 17C10.34 17 9 15.66 9 14H15C15 15.66 13.66 17 12 17Z"/>
-        </svg>
-      </div>
+    <!-- Header Ad Container -->
+    <div class="header-ad-container">
+      <script type="text/javascript">
+        atOptions = {
+          'key' : 'b2751d092981166abc8dc689e44f2d75',
+          'format' : 'iframe',
+          'height' : 50,
+          'width' : 320,
+          'params' : {}
+        };
+      </script>
+      <script type="text/javascript" src="https://forbesresistread.com/b2751d092981166abc8dc689e44f2d75/invoke.js"></script>
+    </div>
 
-      <!-- Header -->
-      <div class="verification-header">
-        <h2 class="verification-title">Human Verification Required</h2>
-        <p class="verification-subtitle">Please verify that you're human to continue</p>
-      </div>
+    <div id="file-name">
+      <marquee direction="left">$filename</marquee>
+    </div>
 
-      <!-- Stage 1: Verify Button -->
-      <div class="verify-button-container" id="verifyButtonContainer">
-        <button class="verify-btn" onclick="startVerification()">
-          <i class="fas fa-shield-alt"></i>
-          <span>Verify I'm Human</span>
+    <div class="header-actions">
+      <div class="theme-switcher">
+        <button class="theme-btn active" data-theme="default" title="Default Theme">
+          <i class="fas fa-palette"></i>
+        </button>
+        <button class="theme-btn" data-theme="light" title="Light Theme">
+          <i class="fas fa-sun"></i>
         </button>
       </div>
+    </div>
+  </header>
 
-      <!-- Stage 2: Countdown Timer -->
-      <div class="countdown-container" id="countdownContainer">
-        <div class="circular-progress">
-          <svg viewBox="0 0 140 140">
-            <circle class="progress-bg" cx="70" cy="70" r="60"/>
-            <circle class="progress-bar" id="progressBar" cx="70" cy="70" r="60"/>
-          </svg>
-          <div class="countdown-number" id="countdownNumber">5</div>
-        </div>
-        <div class="countdown-text">Verifying your request...</div>
-        <div class="countdown-subtext">Please wait <span id="waitSeconds">5</span> seconds</div>
+  <!-- Main Container -->
+  <div class="main-container">
+    <!-- Player Section -->
+    <div class="player-wrapper">
+      <!-- Top Ad Container -->
+      <div class="ad-container">
+        <script type="text/javascript">
+          atOptions = {
+            'key' : '15135b1fd5ffd7f92eb192c6cad00633',
+            'format' : 'iframe',
+            'height' : 90,
+            'width' : 728,
+            'params' : {}
+          };
+        </script>
+        <script type="text/javascript" src="https://forbesresistread.com/15135b1fd5ffd7f92eb192c6cad00633/invoke.js"></script>
       </div>
 
-      <!-- Stage 3: Verification Complete -->
-      <div class="complete-container" id="completeContainer">
-        <div class="success-circle">
-          <i class="fas fa-check"></i>
+      <div class="player-container">
+        <!-- Video Player -->
+        <$tag src="$src" class="player" id="videoPlayer" controls data-audio-sources="$audio_sources"></$tag>
+
+        <div class="audio-track-selector" id="audioTrackSelector" style="display: none;">
+          <label for="audioTrackSelect">
+            <i class="fas fa-music"></i>
+            Audio Track
+          </label>
+          <select id="audioTrackSelect" aria-label="Select audio track"></select>
         </div>
-        <div class="complete-title">Verification Completed!</div>
-        <div class="complete-subtitle">You can now access the link</div>
-        <button class="get-link-btn" onclick="revealMainApp()">
-          <span>Get Link</span>
-          <i class="fas fa-arrow-right"></i>
+
+        <div class="video-info">
+          <div class="video-header">
+            <h1 class="video-title">$filename</h1>
+            <!-- Bookmark Container -->
+            <div class="bookmark-container" id="bookmarkContainer">
+              <button class="bookmark-btn" id="bookmarkBtn" title="Add to Watchlist">
+                <i class="far fa-bookmark bookmark-icon"></i>
+                <i class="fas fa-check check-icon"></i>
+              </button>
+              <span class="bookmark-label">Add Watchlist</span>
+            </div>
+          </div>
+
+          <div class="video-stats">
+            <div class="stat-item">
+              <i class="fas fa-eye"></i>
+              <span>Streaming</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-clock"></i>
+              <span>Just Now</span>
+            </div>
+            <div class="stat-item quality">
+              <i class="fas fa-crown"></i>
+              <span>HD</span>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-shield-alt"></i>
+              <span>Secure</span>
+            </div>
+          </div>
+
+          <div class="action-buttons">
+            <button class="action-btn btn-watchlist" onclick="openWatchlist()">
+              <i class="fas fa-list"></i>
+              <span>Watchlist</span>
+              <span class="watchlist-count" id="watchlistCount" style="display: none;">0</span>
+            </button>
+            <button class="action-btn btn-download" onclick="downloadVideo()">
+              <i class="fas fa-download"></i>
+              <span>Download</span>
+            </button>
+            <button class="action-btn btn-mxplayer" onclick="openInMXPlayer()">
+              <i class="fas fa-play-circle"></i>
+              <span>MX Player</span>
+            </button>
+            <button class="action-btn btn-vlc" onclick="openInVLC()">
+              <i class="fas fa-broadcast-tower"></i>
+              <span>VLC Player</span>
+            </button>
+          </div>
+
+          <!-- Ad Above Share on Social Section -->
+          <div class="ad-container share-section-ad">
+            <script type="text/javascript">
+              atOptions = {
+                'key' : '15135b1fd5ffd7f92eb192c6cad00633',
+                'format' : 'iframe',
+                'height' : 90,
+                'width' : 728,
+                'params' : {}
+              };
+            </script>
+            <script type="text/javascript" src="https://forbesresistread.com/15135b1fd5ffd7f92eb192c6cad00633/invoke.js"></script>
+          </div>
+
+          <div class="share-section">
+            <div class="section-header">
+              <div class="share-title">
+                <i class="fas fa-share-alt"></i>
+                Share on Social
+              </div>
+            </div>
+            <div class="share-grid">
+              <button class="share-btn btn-copy" onclick="copyLink()">
+                <i class="fas fa-link"></i>
+                <span>Copy</span>
+              </button>
+              <a class="share-btn btn-whatsapp" id="whatsapp-share" target="_blank">
+                <i class="fab fa-whatsapp"></i>
+                <span>WhatsApp</span>
+              </a>
+              <a class="share-btn btn-telegram" id="telegram-share" target="_blank">
+                <i class="fab fa-telegram"></i>
+                <span>Telegram</span>
+              </a>
+              <a class="share-btn btn-facebook" id="facebook-share" target="_blank">
+                <i class="fab fa-facebook-f"></i>
+                <span>Facebook</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <!-- Sidebar Ad Container -->
+      <div class="ad-container ad-sidebar">
+        <script type="text/javascript">
+          atOptions = {
+            'key' : '58bb851e2b13a016d24eff6e63eca743',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script type="text/javascript" src="https://forbesresistread.com/58bb851e2b13a016d24eff6e63eca743/invoke.js"></script>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-title">
+          <i class="fas fa-chart-bar"></i>
+          Stream Info
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Quality</div>
+            <div class="stat-value" style="color: var(--accent-primary);">HD</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Status</div>
+            <div class="stat-value" style="color: var(--success);">Online</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Buffer</div>
+            <div class="stat-value">Auto</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Watchlist Modal -->
+  <div class="watchlist-modal" id="watchlistModal">
+    <div class="watchlist-container">
+      <div class="watchlist-header">
+        <div class="watchlist-title">
+          <i class="fas fa-list"></i>
+          My Watchlist
+        </div>
+        <button class="close-watchlist" onclick="closeWatchlist()">
+          <i class="fas fa-times"></i>
         </button>
       </div>
-
-      <!-- Info Box -->
-      <div class="info-box">
-        <i class="fas fa-info-circle"></i>
-        <div class="info-text">This verification helps us prevent automated downloads and keep the service secure for everyone.</div>
+      <div class="watchlist-content" id="watchlistContent"></div>
+      <div class="watchlist-footer">
+        <div class="watchlist-stats" id="watchlistStats">0 items in watchlist</div>
+        <button class="clear-watchlist" onclick="clearWatchlist()" id="clearWatchlistBtn" style="display: none;">
+          Clear All
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- ==================== MAIN APP (Hidden until verified) ==================== -->
-  <div class="app-wrapper" id="appWrapper">
-    <!-- Background Animation -->
-    <div class="bg-animation">
-      <div class="bg-gradient bg-gradient-1"></div>
-      <div class="bg-gradient bg-gradient-2"></div>
-      <div class="bg-gradient bg-gradient-3"></div>
-    </div>
-
-    <!-- Grid Overlay -->
-    <div class="grid-overlay"></div>
-
-    <!-- Header -->
-    <header>
-      <div class="logo-wrapper">
-        <a href="#" class="logo">
-          <div class="logo-icon">
-            <i class="fas fa-play"></i>
-          </div>
-          <span>FileStreamX</span>
-        </a>
-        <div class="live-badge">
-          <span>Live</span>
-        </div>
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <!-- Footer Ad Container -->
+      <div class="footer-ad-container">
+        <script type="text/javascript">
+          atOptions = {
+            'key' : '15135b1fd5ffd7f92eb192c6cad00633',
+            'format' : 'iframe',
+            'height' : 90,
+            'width' : 728,
+            'params' : {}
+          };
+        </script>
+        <script type="text/javascript" src="https://forbesresistread.com/15135b1fd5ffd7f92eb192c6cad00633/invoke.js"></script>
       </div>
 
-      <!-- Header Ad Container -->
-      <div class="header-ad-container">
-        <div class="header-ad-placeholder">
-          <i class="fas fa-ad"></i>
-          <span>Insert Your Ad Code Here (320x50)</span>
-        </div>
-      </div>
-
-      <div id="file-name">
-        <marquee direction="left">$filename</marquee>
-      </div>
-
-      <div class="header-actions">
-        <div class="theme-switcher">
-          <button class="theme-btn active" data-theme="default" title="Default Theme">
-            <i class="fas fa-palette"></i>
-          </button>
-          <button class="theme-btn" data-theme="light" title="Light Theme">
-            <i class="fas fa-sun"></i>
-          </button>
-        </div>
-      </div>
-    </header>
-
-    <!-- Main Container -->
-    <div class="main-container">
-      <!-- Player Section -->
-      <div class="player-wrapper">
-        <!-- Top Ad Container -->
-        <div class="ad-container">
-          <div class="ad-placeholder">
-            <i class="fas fa-ad"></i>
-            <span>Insert Your Ad Code Here (728x90 or Responsive)</span>
-          </div>
-        </div>
-
-        <div class="player-container">
-          <!-- Video Player -->
-          <$tag src="$src" class="player" id="videoPlayer" controls data-audio-sources="$audio_sources"></$tag>
-
-          <div class="audio-track-selector" id="audioTrackSelector" style="display: none;">
-            <label for="audioTrackSelect">
-              <i class="fas fa-music"></i>
-              Audio Track
-            </label>
-            <select id="audioTrackSelect" aria-label="Select audio track"></select>
-          </div>
-
-          <div class="video-info">
-            <div class="video-header">
-              <h1 class="video-title">$filename</h1>
-              <!-- Bookmark Container -->
-              <div class="bookmark-container" id="bookmarkContainer">
-                <button class="bookmark-btn" id="bookmarkBtn" title="Add to Watchlist">
-                  <i class="far fa-bookmark bookmark-icon"></i>
-                  <i class="fas fa-check check-icon"></i>
-                </button>
-                <span class="bookmark-label">Add Watchlist</span>
-              </div>
-            </div>
-
-            <div class="video-stats">
-              <div class="stat-item">
-                <i class="fas fa-eye"></i>
-                <span>Streaming</span>
-              </div>
-              <div class="stat-item">
-                <i class="fas fa-clock"></i>
-                <span>Just Now</span>
-              </div>
-              <div class="stat-item quality">
-                <i class="fas fa-crown"></i>
-                <span>HD</span>
-              </div>
-              <div class="stat-item">
-                <i class="fas fa-shield-alt"></i>
-                <span>Secure</span>
-              </div>
-            </div>
-
-            <div class="action-buttons">
-              <button class="action-btn btn-watchlist" onclick="openWatchlist()">
-                <i class="fas fa-list"></i>
-                <span>Watchlist</span>
-                <span class="watchlist-count" id="watchlistCount" style="display: none;">0</span>
-              </button>
-              <button class="action-btn btn-download" onclick="downloadVideo()">
-                <i class="fas fa-download"></i>
-                <span>Download</span>
-              </button>
-              <button class="action-btn btn-mxplayer" onclick="openInMXPlayer()">
-                <i class="fas fa-play-circle"></i>
-                <span>MX Player</span>
-              </button>
-              <button class="action-btn btn-vlc" onclick="openInVLC()">
-                <i class="fas fa-broadcast-tower"></i>
-                <span>VLC Player</span>
-              </button>
-            </div>
-
-            <!-- Ad Above Share on Social Section -->
-            <div class="ad-container share-section-ad">
-              <div class="ad-placeholder">
-                <i class="fas fa-ad"></i>
-                <span>Ad Space - Above Share on Social Section</span>
-              </div>
-            </div>
-
-            <div class="share-section">
-              <div class="section-header">
-                <div class="share-title">
-                  <i class="fas fa-share-alt"></i>
-                  Share on Social
-                </div>
-              </div>
-              <div class="share-grid">
-                <button class="share-btn btn-copy" onclick="copyLink()">
-                  <i class="fas fa-link"></i>
-                  <span>Copy</span>
-                </button>
-                <a class="share-btn btn-whatsapp" id="whatsapp-share" target="_blank">
-                  <i class="fab fa-whatsapp"></i>
-                  <span>WhatsApp</span>
-                </a>
-                <a class="share-btn btn-telegram" id="telegram-share" target="_blank">
-                  <i class="fab fa-telegram"></i>
-                  <span>Telegram</span>
-                </a>
-                <a class="share-btn btn-facebook" id="facebook-share" target="_blank">
-                  <i class="fab fa-facebook-f"></i>
-                  <span>Facebook</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Sidebar -->
-      <aside class="sidebar">
-        <!-- Sidebar Ad Container -->
-        <div class="ad-container ad-sidebar">
-          <div class="ad-placeholder ad-sidebar">
-            <i class="fas fa-ad"></i>
-            <span>Insert Your Ad Code Here (300x250)</span>
-          </div>
-        </div>
-
-        <div class="sidebar-card">
-          <div class="sidebar-title">
-            <i class="fas fa-chart-bar"></i>
-            Stream Info
-          </div>
-          <div class="stats-grid">
-            <div class="stat-card">
-              <div class="stat-label">Quality</div>
-              <div class="stat-value" style="color: var(--accent-primary);">HD</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-label">Status</div>
-              <div class="stat-value" style="color: var(--success);">Online</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-label">Buffer</div>
-              <div class="stat-value">Auto</div>
-            </div>
-          </div>
-        </div>
-      </aside>
-    </div>
-
-    <!-- Watchlist Modal -->
-    <div class="watchlist-modal" id="watchlistModal">
-      <div class="watchlist-container">
-        <div class="watchlist-header">
-          <div class="watchlist-title">
-            <i class="fas fa-list"></i>
-            My Watchlist
-          </div>
-          <button class="close-watchlist" onclick="closeWatchlist()">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-        <div class="watchlist-content" id="watchlistContent"></div>
-        <div class="watchlist-footer">
-          <div class="watchlist-stats" id="watchlistStats">0 items in watchlist</div>
-          <button class="clear-watchlist" onclick="clearWatchlist()" id="clearWatchlistBtn" style="display: none;">
-            Clear All
-          </button>
-        </div>
+      <div class="footer-copyright">
+        <span>Made with</span>
+        <i class="fas fa-heart"></i>
+        <span>by <a href="https://t.me/Sujan_BotZ" target="_blank">SujanBotZ</a></span>
       </div>
     </div>
-
-    <!-- Footer -->
-    <footer>
-      <div class="footer-content">
-        <!-- Footer Ad Container -->
-        <div class="footer-ad-container">
-          <div class="footer-ad-placeholder">
-            <i class="fas fa-ad"></i>
-            <span>Insert Your Ad Code Here (728x90 or Responsive)</span>
-          </div>
-        </div>
-
-        <div class="footer-copyright">
-          <span>Made with</span>
-          <i class="fas fa-heart"></i>
-          <span>by <a href="https://t.me/Sujan_BotZ " target="_blank">SujanBotZ</a></span>
-        </div>
-      </div>
-    </footer>
-  </div>
+  </footer>
 
   <!-- Toast Notification -->
   <div class="toast" id="toast">
@@ -2351,80 +1794,9 @@
   </div>
 
   <!-- Plyr JS -->
-  <script src="https://cdn.plyr.io/3.6.12/plyr.js "></script>
+  <script src="https://cdn.plyr.io/3.6.12/plyr.js"></script>
 
   <script>
-    // ==================== CONFIGURATION ====================
-    const COUNTDOWN_SECONDS = 5; // 5 second countdown
-
-    // ==================== VERIFICATION FLOW ====================
-    let countdownInterval = null;
-
-    function startVerification() {
-      // Hide verify button, show countdown
-      document.getElementById('verifyButtonContainer').style.display = 'none';
-      document.getElementById('countdownContainer').classList.add('active');
-
-      // Start countdown
-      startCountdown();
-    }
-
-    function startCountdown() {
-      let secondsLeft = COUNTDOWN_SECONDS;
-      const countdownNumber = document.getElementById('countdownNumber');
-      const waitSeconds = document.getElementById('waitSeconds');
-      const progressBar = document.getElementById('progressBar');
-      const circumference = 2 * Math.PI * 60; // 2 * π * r
-
-      // Set initial state
-      progressBar.style.strokeDasharray = circumference;
-      progressBar.style.strokeDashoffset = 0;
-
-      countdownInterval = setInterval(() => {
-        secondsLeft--;
-        countdownNumber.textContent = secondsLeft;
-        waitSeconds.textContent = secondsLeft;
-
-        // Update circular progress
-        const offset = circumference - (secondsLeft / COUNTDOWN_SECONDS) * circumference;
-        progressBar.style.strokeDashoffset = offset;
-
-        if (secondsLeft <= 0) {
-          clearInterval(countdownInterval);
-          showCompleteState();
-        }
-      }, 1000);
-    }
-
-    function showCompleteState() {
-      // Hide countdown, show complete state
-      document.getElementById('countdownContainer').classList.remove('active');
-      document.getElementById('completeContainer').classList.add('active');
-    }
-
-    function revealMainApp() {
-      const pageGateOverlay = document.getElementById('pageGateOverlay');
-      const appWrapper = document.getElementById('appWrapper');
-      const verificationHeaderAd = document.getElementById('verificationHeaderAd');
-
-      // Hide gate overlay
-      pageGateOverlay.classList.add('hidden');
-
-      // Hide verification header ad
-      if (verificationHeaderAd) {
-        verificationHeaderAd.classList.add('hidden');
-      }
-
-      // Show main app
-      appWrapper.classList.add('visible');
-
-      // Initialize player
-      initializePlayer();
-
-      // Show welcome toast
-      showToast('Welcome!', 'Your stream is ready', 'success');
-    }
-
     // ==================== ORIENTATION MANAGER ====================
     class OrientationManager {
       constructor() {
@@ -2822,9 +2194,9 @@
       const telegram = document.getElementById('telegram-share');
       const facebook = document.getElementById('facebook-share');
 
-      if (whatsapp) whatsapp.href = `https://wa.me/?text= ${title}%20${currentUrl}`;
-      if (telegram) telegram.href = `https://t.me/share/url?url= ${currentUrl}&text=${title}`;
-      if (facebook) facebook.href = `https://www.facebook.com/sharer/sharer.php?u= ${currentUrl}`;
+      if (whatsapp) whatsapp.href = `https://wa.me/?text=${title}%20${currentUrl}`;
+      if (telegram) telegram.href = `https://t.me/share/url?url=${currentUrl}&text=${title}`;
+      if (facebook) facebook.href = `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`;
     }
 
     function copyLink() {
@@ -3056,6 +2428,9 @@
 
     // ==================== DOMContentLoaded ====================
     document.addEventListener('DOMContentLoaded', () => {
+      // Initialize player immediately (no verification)
+      initializePlayer();
+
       // Remove underscores from video title and marquee
       const videoTitle = document.querySelector('.video-title');
       const fileNameMarquee = document.querySelector('#file-name marquee');
