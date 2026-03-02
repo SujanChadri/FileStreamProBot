@@ -29,6 +29,16 @@ _user_file_events = defaultdict(deque)
 # Store active countdown tasks for users
 _active_countdowns = {}
 
+# Store messages to delete after cooldown
+_cooldown_messages = {}
+
+# Queue for sequential processing per user
+_user_queues = {}
+_user_locks = {}
+
+# Store queue messages to delete after processing
+_user_queue_messages = {}
+
 
 def _check_file_rate_limit(user_id: int):
     """Check if user has exceeded rate limit and add current event if not"""
@@ -62,55 +72,55 @@ def _get_remaining_cooldown(user_id: int):
     return 0
 
 
-async def countdown_timer(c: Client, user_id: int, chat_id: int, reply_to_message: Message):
-    """Handle countdown timer and notify when cooldown finishes"""
-    remaining = _get_remaining_cooldown(user_id)
+async def countdown_timer(c: Client, user_id: int, chat_id: int, alert_message: Message, user_file_message: Message = None, initial_retry_after: int = 0):
+    """Handle countdown timer with live updates and delete messages when cooldown finishes"""
+    remaining = initial_retry_after
     
-    if remaining <= 0:
-        return
-    
-    # Send initial countdown message as reply (below the generated link)
-    countdown_msg = await reply_to_message.reply_text(
-        f"⏳ **Cᴏᴏʟᴅᴏᴡɴ Aᴄᴛɪᴠᴇ**\n\n"
-        f"Sᴏʀʀʏ ʏᴏᴜ ᴄᴀɴ ᴏɴʟʏ ꜱᴇɴᴅ {FILE_RATE_LIMIT} ꜰɪʟᴇꜱ ᴘᴇʀ ᴍɪɴᴜᴛᴇ.\n\n"
-        f"Sᴇɴᴅ ꜰɪʟᴇꜱ ᴀɢᴀɪɴ ɪɴ {remaining}s."
-    )
-    
-    # Countdown loop - update every 5 seconds to avoid rate limits
+    # Countdown loop - update every 5 seconds
     while remaining > 0:
         await asyncio.sleep(5)
         remaining = _get_remaining_cooldown(user_id)
         
         if remaining <= 0:
             break
-            
+        
+        # Update the alert message with remaining time
         try:
-            await countdown_msg.edit_text(
-                f"⏳ **Cᴏᴏʟᴅᴏᴡɴ Aᴄᴛɪᴠᴇ**\n\n"
-                f"Sᴏʀʀʏ ʏᴏᴜ ᴄᴀɴ ᴏɴʟʏ ꜱᴇɴᴅ {FILE_RATE_LIMIT} ꜰɪʟᴇꜱ ᴘᴇʀ ᴍɪɴᴜᴛᴇ.\n\n"
-                f"Sᴇɴᴅ ꜰɪʟᴇꜱ ᴀɢᴀɪɴ ɪɴ {remaining}s."
+            await alert_message.edit_text(
+                f"⚠️ **Rᴀᴛᴇ ʟɪᴍɪᴛ ʀᴇᴀᴄʜᴇᴅ!**\n\n"
+                f"Oɴʟʏ {FILE_RATE_LIMIT} ꜰɪʟᴇꜱ ᴄᴀɴ ʙᴇ ꜱᴇɴᴛ ᴘᴇʀ ᴍɪɴᴜᴛᴇ.\n\n"
+                f"Pʟᴇᴀꜱᴇ ᴡᴀɪᴛ **{remaining} ꜱᴇᴄᴏɴᴅꜱ** ᴛᴏ ꜱᴇɴᴅ ᴀɴᴏᴛʜᴇʀ ꜰɪʟᴇ."
             )
         except Exception:
             # Message might be deleted, stop countdown
             break
     
-    # Cooldown finished - update message
+    # Cooldown finished - delete the alert message first
     try:
-        await countdown_msg.edit_text(
-            f"🎉"
+        await alert_message.delete()
+    except Exception:
+        pass
+    
+    # Delete the user's file message
+    try:
+        if user_file_message:
+            await user_file_message.delete()
+    except Exception:
+        pass
+    
+    # ✅ Send new completion message below (not edit)
+    try:
+        await c.send_message(
+            chat_id=chat_id,
+            text=f"✅ **Rᴀᴛᴇ ʟɪᴍɪᴛ ꜰɪɴɪꜱʜᴇᴅ!**\n\n"
+                 f"Yᴏᴜ ᴄᴀɴ ɴᴏᴡ ꜱᴇɴᴅ ꜰɪʟᴇꜱ ᴀɢᴀɪɴ. 😊"
         )
     except Exception:
         pass
     
-    # Send a new message to notify user they can send files again
-    try:
-        await c.send_message(
-            chat_id=chat_id,
-            text="🎉 **Cᴏᴏʟᴅᴏᴡɴ Tɪᴍᴇ Fɪɴɪꜱʜᴇᴅ!**\n\n"
-                 "✅ Yᴏᴜ ᴄᴀɴ ɴᴏᴡ ꜱᴇɴᴅ 3 ꜰɪʟᴇꜱ ᴀɢᴀɪɴ."
-        )
-    except Exception:
-        pass
+    # Clean up stored messages
+    if user_id in _cooldown_messages:
+        del _cooldown_messages[user_id]
     
     # Remove from active countdowns
     if user_id in _active_countdowns:
@@ -118,21 +128,20 @@ async def countdown_timer(c: Client, user_id: int, chat_id: int, reply_to_messag
 
 
 async def cache_channel(c: Client):
-    """Cache BIN_CHANNEL by loading all dialogs"""
+    """Cache BIN_CHANNEL - simplified for bots (get_dialogs not available)"""
     global _channel_cached
     
     if _channel_cached:
         return
     
+    # Bots can't use get_dialogs(), just verify BIN_CHANNEL is accessible
     try:
-        async for dialog in c.get_dialogs():
-            if dialog.chat.id == Var.BIN_CHANNEL:
-                print(f"BIN_CHANNEL cached: {dialog.chat.title}")
-                break
+        chat = await c.get_chat(Var.BIN_CHANNEL)
+        print(f"BIN_CHANNEL verified: {chat.title if chat else 'Unknown'}")
         _channel_cached = True
     except Exception as e:
-        print(f"Cache error: {e}")
-        _channel_cached = True
+        print(f"Cache warning: {e}")
+        _channel_cached = True  # Set anyway to prevent repeated attempts
 
 
 async def check_user_in_update_channels(c: Client, user_id: int):
@@ -189,6 +198,96 @@ def get_join_channels_markup(not_joined_channels):
     return InlineKeyboardMarkup(buttons)
 
 
+async def process_file(c: Client, m: Message, queue_msg: Message = None):
+    """Process a single file - generate links and send to user"""
+    try:
+        log_msg = await m.copy(chat_id=Var.BIN_CHANNEL)
+        stream_link = f"{Var.URL}watch/{str(log_msg.id)}?hash={get_hash(log_msg)}"
+        online_link = f"{Var.URL}dl/{str(log_msg.id)}?hash={get_hash(log_msg)}"
+        
+        msg_text = """<i><u>𝗬𝗼𝘂𝗿 𝗟𝗶𝗻𝗸 𝗚𝗲𝗻𝗲𝗿𝗮𝘁𝗲𝗱 !</u></i>\n\n<b>📂 Fɪʟᴇ ɴᴀᴍᴇ :</b> <code>{}</code>\n\n<b>📦 Fɪʟᴇ ꜱɪᴢᴇ :</b> <code>{}</code>\n\n<b>📥 Dᴏᴡɴʟᴏᴀᴅ :</b> <code>{}</code>\n\n<b> 🖥WATCH  :</b> <code>{}</code>\n\n<b>🚸 Nᴏᴛᴇ : Link Will Expire In 24 Hours</b>"""
+        
+        await log_msg.reply_text(
+            text=f"**RᴇQᴜᴇꜱᴛᴇᴅ ʙʏ :** [{m.from_user.first_name}](tg://user?id={m.from_user.id})\n**Uꜱᴇʀ ɪᴅ :** `{m.from_user.id}`\n**Stream ʟɪɴᴋ :** {stream_link}",
+            disable_web_page_preview=True,
+            quote=True
+        )
+        
+        # Send the generated link message
+        await m.reply_text(
+            text=msg_text.format(get_name(log_msg), humanbytes(get_media_file_size(m)), online_link, stream_link),
+            quote=True,
+            disable_web_page_preview=True,
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton("Stream 🖥", url=stream_link),
+                        InlineKeyboardButton('Download 📥', url=online_link)
+                    ]
+                ]
+            )
+        )
+        
+        # ✅ Delete the original file message after links are generated
+        try:
+            await m.delete()
+        except Exception as e:
+            print(f"Could not delete file message: {e}")
+        
+        # ✅ Delete queue message if exists
+        if queue_msg:
+            try:
+                await queue_msg.delete()
+            except Exception:
+                pass
+        
+    except FloodWait as e:
+        print(f"Sleeping for {str(e.x)}s")
+        await asyncio.sleep(e.x)
+        await c.send_message(
+            chat_id=Var.BIN_CHANNEL,
+            text=f"Gᴏᴛ FʟᴏᴏᴅWᴀɪᴛ ᴏғ {str(e.x)}s from [{m.from_user.first_name}](tg://user?id={m.from_user.id})\n\n**𝚄𝚜𝚎𝚛 𝙸𝙳 :** `{str(m.from_user.id)}`",
+            disable_web_page_preview=True
+        )
+
+
+async def queue_processor(c: Client, user_id: int):
+    """Background task to process files sequentially for a specific user"""
+    while True:
+        queue_msg = None
+        m = None
+        
+        try:
+            # Get next file from queue
+            m, queue_msg = await _user_queues[user_id].get()
+            
+            try:
+                # Process the file
+                await process_file(c, m, queue_msg)
+            except Exception as e:
+                print(f"Error processing file for user {user_id}: {e}")
+            finally:
+                # Mark task as done
+                _user_queues[user_id].task_done()
+                
+                # Small delay between processing files to avoid flooding
+                await asyncio.sleep(1)
+                
+        except Exception as e:
+            print(f"Queue processor error for user {user_id}: {e}")
+            await asyncio.sleep(1)
+        
+        # If queue is empty, clean up
+        if _user_queues[user_id].empty():
+            del _user_queues[user_id]
+            if user_id in _user_locks:
+                del _user_locks[user_id]
+            # Clean up queue messages dict
+            if user_id in _user_queue_messages:
+                del _user_queue_messages[user_id]
+            break
+
+
 @StreamBot.on_message((filters.regex("login🔑") | filters.command("login")), group=4)
 async def login_handler(c: Client, m: Message):
     try:
@@ -221,7 +320,9 @@ async def login_handler(c: Client, m: Message):
 
 @StreamBot.on_message((filters.private) & (filters.document | filters.video | filters.audio | filters.photo), group=4)
 async def private_receive_handler(c: Client, m: Message):
-    if await db.is_user_banned(m.from_user.id):
+    user_id = m.from_user.id
+    
+    if await db.is_user_banned(user_id):
         await m.reply_text(
             "You are banned from using this bot. Contact support if you believe this is a mistake."
         )
@@ -237,11 +338,11 @@ async def private_receive_handler(c: Client, m: Message):
 
     await cache_channel(c)
 
-    if not await db.is_user_exist(m.from_user.id):
-        await db.add_user(m.from_user.id)
+    if not await db.is_user_exist(user_id):
+        await db.add_user(user_id)
         await c.send_message(
             Var.BIN_CHANNEL,
-            f"New User Joined! : \n\n Name : [{m.from_user.first_name}](tg://user?id={m.from_user.id}) Started Your Bot!!"
+            f"New User Joined! : \n\n Name : [{m.from_user.first_name}](tg://user?id={user_id}) Started Your Bot!!"
         )
 
     # Check multiple update channels
@@ -266,58 +367,71 @@ async def private_receive_handler(c: Client, m: Message):
             )
             return
     
-    # Check rate limit BEFORE processing - but still process the file
-    limited, retry_after = _check_file_rate_limit(m.from_user.id)
+    # ✅ Check rate limit BEFORE adding to queue
+    limited, retry_after = _check_file_rate_limit(user_id)
     
-    # Cancel any existing countdown for this user
-    if m.from_user.id in _active_countdowns:
-        try:
-            await _active_countdowns[m.from_user.id]
-        except Exception:
-            pass
-        del _active_countdowns[m.from_user.id]
-    
-    try:
-        log_msg = await m.copy(chat_id=Var.BIN_CHANNEL)
-        stream_link = f"{Var.URL}watch/{str(log_msg.id)}?hash={get_hash(log_msg)}"
-        online_link = f"{Var.URL}dl/{str(log_msg.id)}?hash={get_hash(log_msg)}"
+    if limited:
+        # Cancel any existing countdown for this user
+        if user_id in _active_countdowns:
+            try:
+                _active_countdowns[user_id].cancel()
+            except Exception:
+                pass
         
-        msg_text = """<i><u>𝗬𝗼𝘂𝗿 𝗟𝗶𝗻𝗸 𝗚𝗲𝗻𝗲𝗿𝗮𝘁𝗲𝗱 !</u></i>\n\n<b>📂 Fɪʟᴇ ɴᴀᴍᴇ :</b> <code>{}</code>\n\n<b>📦 Fɪʟᴇ ꜱɪᴢᴇ :</b> <code>{}</code>\n\n<b>📥 Dᴏᴡɴʟᴏᴀᴅ :</b> <code>{}</code>\n\n<b> 🖥WATCH  :</b> <code>{}</code>\n\n<b>🚸 Nᴏᴛᴇ : Link Will Expire In 24 Hours</b>"""
-        
-        await log_msg.reply_text(
-            text=f"**RᴇQᴜᴇꜱᴛᴇᴅ ʙʏ :** [{m.from_user.first_name}](tg://user?id={m.from_user.id})\n**Uꜱᴇʀ ɪᴅ :** `{m.from_user.id}`\n**Stream ʟɪɴᴋ :** {stream_link}",
-            disable_web_page_preview=True,
+        # Send alert message with initial retry_after
+        alert_msg = await m.reply_text(
+            f"⚠️ **Rᴀᴛᴇ ʟɪᴍɪᴛ ʀᴇᴀᴄʜᴇᴅ!**\n\n"
+            f"Oɴʟʏ {FILE_RATE_LIMIT} ꜰɪʟᴇꜱ ᴄᴀɴ ʙᴇ ꜱᴇɴᴛ ᴘᴇʀ ᴍɪɴᴜᴛᴇ.\n\n"
+            f"Pʟᴇᴀꜱᴇ ᴡᴀɪᴛ **{retry_after} ꜱᴇᴄᴏɴᴅꜱ** ᴛᴏ ꜱᴇɴᴅ ᴀɴᴏᴛʜᴇʀ ꜰɪʟᴇ.",
             quote=True
         )
         
-        # Send the generated link message
-        sent_msg = await m.reply_text(
-            text=msg_text.format(get_name(log_msg), humanbytes(get_media_file_size(m)), online_link, stream_link),
-            quote=True,
-            disable_web_page_preview=True,
-            reply_markup=InlineKeyboardMarkup(
-                [
-                    [
-                        InlineKeyboardButton("Stream 🖥", url=stream_link),
-                        InlineKeyboardButton('Download 📥', url=online_link)
-                    ]
-                ]
+        # Store messages for deletion after cooldown
+        _cooldown_messages[user_id] = {
+            'alert': alert_msg,
+            'file': m
+        }
+        
+        # Start countdown timer with live updates
+        task = asyncio.create_task(countdown_timer(c, user_id, m.chat.id, alert_msg, m, retry_after))
+        _active_countdowns[user_id] = task
+        return
+    
+    # Cancel any existing countdown since user is now allowed to send
+    if user_id in _active_countdowns:
+        try:
+            _active_countdowns[user_id].cancel()
+        except Exception:
+            pass
+        del _active_countdowns[user_id]
+    
+    # Clean up any stored cooldown messages
+    if user_id in _cooldown_messages:
+        del _cooldown_messages[user_id]
+    
+    # ✅ Add file to user's queue for sequential processing
+    if user_id not in _user_queues:
+        _user_queues[user_id] = asyncio.Queue()
+        # Start queue processor for this user
+        asyncio.create_task(queue_processor(c, user_id))
+    
+    # Send queue position if there's more than 1 file pending
+    queue_size = _user_queues[user_id].qsize()
+    queue_msg = None
+    
+    if queue_size > 0:  # If there are pending files, show queue position
+        try:
+            queue_msg = await m.reply_text(
+                f"⏳ **Qᴜᴇᴜᴇᴅ!**\n\n"
+                f"Yᴏᴜʀ ꜰɪʟᴇ ɪꜱ #{queue_size + 1} ɪɴ Qᴜᴇᴜᴇ.\n\n"
+                f"Pʀᴏᴄᴇꜱꜱɪɴɢ ꜰɪʟᴇꜱ ꜱᴇQᴜᴇɴᴛɪᴀʟʟʏ...",
+                quote=True
             )
-        )
-        
-        # If rate limit was hit, send cooldown message BELOW the generated link
-        if limited:
-            task = asyncio.create_task(countdown_timer(c, m.from_user.id, m.chat.id, sent_msg))
-            _active_countdowns[m.from_user.id] = task
-        
-    except FloodWait as e:
-        print(f"Sleeping for {str(e.x)}s")
-        await asyncio.sleep(e.x)
-        await c.send_message(
-            chat_id=Var.BIN_CHANNEL,
-            text=f"Gᴏᴛ FʟᴏᴏᴅWᴀɪᴛ ᴏғ {str(e.x)}s from [{m.from_user.first_name}](tg://user?id={m.from_user.id})\n\n**𝚄𝚜𝚎𝚛 𝙸𝙳 :** `{str(m.from_user.id)}`",
-            disable_web_page_preview=True
-        )
+        except Exception:
+            pass
+    
+    # Add file to queue (store both message and queue_msg)
+    await _user_queues[user_id].put((m, queue_msg))
 
 
 @StreamBot.on_message(filters.channel & ~filters.group & (filters.document | filters.video | filters.photo) & ~filters.forwarded, group=-1)
