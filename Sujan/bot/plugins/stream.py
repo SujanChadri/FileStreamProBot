@@ -31,14 +31,21 @@ _active_countdowns = {}
 
 
 def _check_file_rate_limit(user_id: int):
+    """Check if user has exceeded rate limit and add current event if not"""
     now = time.monotonic()
     window_start = now - FILE_RATE_WINDOW_SECONDS
     events = _user_file_events[user_id]
+    
+    # Clean old events
     while events and events[0] < window_start:
         events.popleft()
+    
+    # Check if limit exceeded
     if len(events) >= FILE_RATE_LIMIT:
         retry_after = max(0, int(FILE_RATE_WINDOW_SECONDS - (now - events[0])))
         return True, retry_after
+    
+    # Add current event
     events.append(now)
     return False, 0
 
@@ -55,16 +62,16 @@ def _get_remaining_cooldown(user_id: int):
     return 0
 
 
-async def countdown_timer(c: Client, user_id: int, chat_id: int, file_message: Message):
+async def countdown_timer(c: Client, user_id: int, chat_id: int, reply_to_message: Message):
     """Handle countdown timer and notify when cooldown finishes"""
     remaining = _get_remaining_cooldown(user_id)
     
     if remaining <= 0:
         return
     
-    # Send initial countdown message as reply to the file (below the file)
-    countdown_msg = await file_message.reply_text(
-        f"⏳ **Cᴏᴏʟᴅᴏᴡɴ Aᴄᴛɪᴠᴇ**\n\n"
+    # Send initial countdown message as reply (below the generated link)
+    countdown_msg = await reply_to_message.reply_text(
+        f"⏳ **Cooldown Active**\n\n"
         f"Sᴏʀʀʏ ʏᴏᴜ ᴄᴀɴ ᴏɴʟʏ ꜱᴇɴᴅ {FILE_RATE_LIMIT} ꜰɪʟᴇꜱ ᴘᴇʀ ᴍɪɴᴜᴛᴇ.\n"
         f"Sᴇɴᴅ ꜰɪʟᴇꜱ ᴀɢᴀɪɴ ɪɴ {remaining}s."
     )
@@ -79,8 +86,8 @@ async def countdown_timer(c: Client, user_id: int, chat_id: int, file_message: M
             
         try:
             await countdown_msg.edit_text(
-                f"⏳ **Cᴏᴏʟᴅᴏᴡɴ Aᴄᴛɪᴠᴇ**\n\n"
-                f"Sᴏʀʀʏ ʏᴏᴜ ᴄᴀɴ ᴏɴʟʏ ꜱᴇɴᴅ {FILE_RATE_LIMIT} ꜰɪʟᴇꜱ ᴘᴇʀ ᴍɪɴᴜᴛᴇ.\n\n"
+                f"⏳ **Cooldown Active**\n\n"
+                f"Sᴏʀʀʏ ʏᴏᴜ ᴄᴀɴ ᴏɴʟʏ ꜱᴇɴᴅ {FILE_RATE_LIMIT} ꜰɪʟᴇꜱ ᴘᴇʀ ᴍɪɴᴜᴛᴇ.\n"
                 f"Sᴇɴᴅ ꜰɪʟᴇꜱ ᴀɢᴀɪɴ ɪɴ {remaining}s."
             )
         except Exception:
@@ -90,7 +97,8 @@ async def countdown_timer(c: Client, user_id: int, chat_id: int, file_message: M
     # Cooldown finished - update message
     try:
         await countdown_msg.edit_text(
-            f"🎉"
+            f"✅ **Cooldown Finished!**\n\n"
+            f"You can now send files again."
         )
     except Exception:
         pass
@@ -99,8 +107,8 @@ async def countdown_timer(c: Client, user_id: int, chat_id: int, file_message: M
     try:
         await c.send_message(
             chat_id=chat_id,
-            text="🎉 **Cᴏᴏʟᴅᴏᴡɴ Fɪɴɪꜱʜᴇᴅ!**\n\n"
-                 "✅ Yᴏᴜ ᴄᴀɴ ɴᴏᴡ ꜱᴇɴᴅ 3 ꜰɪʟᴇꜱ ᴀɢᴀɪɴ."
+            text="🎉 **Cooldown time finished!**\n\n"
+                 "✅ You can now send files again."
         )
     except Exception:
         pass
@@ -259,27 +267,16 @@ async def private_receive_handler(c: Client, m: Message):
             )
             return
     
-    # Check rate limit
+    # Check rate limit BEFORE processing - but still process the file
     limited, retry_after = _check_file_rate_limit(m.from_user.id)
-    if limited:
-        # Cancel any existing countdown for this user
-        if m.from_user.id in _active_countdowns:
-            try:
-                await _active_countdowns[m.from_user.id].delete()
-            except Exception:
-                pass
-        
-        # Start countdown timer - message will be below the file (as reply)
-        task = asyncio.create_task(countdown_timer(c, m.from_user.id, m.chat.id, m))
-        _active_countdowns[m.from_user.id] = task
-        return
     
-    # Cancel any active countdown if user is now allowed
+    # Cancel any existing countdown for this user
     if m.from_user.id in _active_countdowns:
         try:
-            del _active_countdowns[m.from_user.id]
+            await _active_countdowns[m.from_user.id]
         except Exception:
             pass
+        del _active_countdowns[m.from_user.id]
     
     try:
         log_msg = await m.copy(chat_id=Var.BIN_CHANNEL)
@@ -293,7 +290,9 @@ async def private_receive_handler(c: Client, m: Message):
             disable_web_page_preview=True,
             quote=True
         )
-        await m.reply_text(
+        
+        # Send the generated link message
+        sent_msg = await m.reply_text(
             text=msg_text.format(get_name(log_msg), humanbytes(get_media_file_size(m)), online_link, stream_link),
             quote=True,
             disable_web_page_preview=True,
@@ -306,6 +305,12 @@ async def private_receive_handler(c: Client, m: Message):
                 ]
             )
         )
+        
+        # If rate limit was hit, send cooldown message BELOW the generated link
+        if limited:
+            task = asyncio.create_task(countdown_timer(c, m.from_user.id, m.chat.id, sent_msg))
+            _active_countdowns[m.from_user.id] = task
+        
     except FloodWait as e:
         print(f"Sleeping for {str(e.x)}s")
         await asyncio.sleep(e.x)
