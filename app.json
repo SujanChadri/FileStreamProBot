@@ -1,6 +1,6 @@
 {
-    "name": "ShivamNox-",
-    "description": "A Pyrogram Telegram bot to Stream Telegram files to web. @ShivamNox",
+    "name": "Sujan-",
+    "description": "A Pyrogram Telegram bot to Stream Telegram files to web. @Sujan",
     "keywords": [
         "telegram",
         "stream",
@@ -13,10 +13,10 @@
         "media",
         "bot"
       ],
-    "repository": "https://github.com/ShivamNox/-pro/",
+    "repository": "https://github.com/Sujan/-pro/",
     "success_url": "/",
     "logo": "https://i.ibb.co/MnMZ1Sy/download-1.jpg",
-    "website": "http://shivamnox.eu.org",
+    "website": "http://Sujan.eu.org",
     "env": {
         "ENV": {
             "description": "Set this to True if you don't want to crash the bot",
@@ -55,7 +55,7 @@
             
         },
         "OWNER_USERNAME": {
-            "description": "Enter your username without @  example  ShivamNox."
+            "description": "Enter your username without @  example  Sujan."
         },
         "SLEEP_THRESHOLD": {
             "description": "Floodwait Sleep timer. Read the readme for more info about this var",
@@ -94,9 +94,12 @@
             "required": false
         },
         "name": {
-            "description": " Session Name for Bot [ Add ShivamNox]",
+            "description": " Session Name for Bot [ Add Sujan]",
             "value": "File-To-Link",
             "required": false
+        },
+        "BAN_ALERT": {
+            "description": "[Optional] Add the text you wish to display when attempting to get links while banned."
         }
     },
     "buildpacks": [{

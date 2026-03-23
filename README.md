@@ -47,6 +47,7 @@ Below are the environment variables used by the bot:
 | `OWNER_USERNAME`          | Bot owner’s Telegram username                                | ✅        | `shivamnox`                                      |
 | `FQDN`                    | Fully qualified domain name                                  | ❌        | `0.0.0.0:3000`                                   |
 | `HAS_SSL`                 | Enable SSL for bot URL                                       | ❌        | `False`                                          |
+| `SERVER_URL`              | Your Serer Url                                               | ✅        | `https://your-app-name.com`                      |
 | `DATABASE_URL`            | MongoDB connection string                                    | ✅        | `mongodb+srv://...`                              |
 | `UPDATES_CHANNEL`         | Telegram updates/news channel username                       | ✅        | `hivajoyweb`                                     |
 | `BANNED_CHANNELS`         | List of banned channel IDs                                   | ❌        | `-1001362659779`                                 |
@@ -87,6 +88,7 @@ API_HASH=52b6dfbaee00000000cefbea7c2e04
 BOT_TOKEN=your_bot_token_here
 BIN_CHANNEL=-1002044705664
 DATABASE_URL=your_mongodb_connection_url
+SERVER_URL=https://your-server-url.com
 OWNER_ID=Owner_id
 OWNER_USERNAME=Username
 UPDATES_CHANNEL=channel_username
@@ -104,7 +106,7 @@ UPDATES_CHANNEL=channel_username
 To start the bot, run:
 
 ```bash
-python3 -m ShivamNox.__main__
+python3 -m Sujan.__main__
 ```
 
 If everything is configured correctly, your bot will connect to Telegram and start running.
@@ -126,14 +128,6 @@ You can deploy this bot on:
 2. Create a new Heroku app.
 3. Go to **Settings → Config Vars** and add all required variables.
 4. Deploy the app.
-
----
-
-## 👤 Author
-
-**© ShivamNox**
-Telegram: [@shivamnox](https://t.me/shivamnox)
-GitHub: [github.com/ShivamNox](https://github.com/ShivamNox)
 
 ---
 
