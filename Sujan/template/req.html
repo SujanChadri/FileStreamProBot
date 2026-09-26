@@ -151,32 +151,6 @@
       gap: 16px;
     }
 
-    /* Header Ad Container */
-    .header-ad-container {
-      background: var(--bg-tertiary);
-      border: 1px dashed var(--border);
-      border-radius: var(--radius-md);
-      padding: 8px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 320px;
-      min-height: 50px;
-    }
-
-    .header-ad-placeholder {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--text-muted);
-      font-size: 12px;
-    }
-
-    .header-ad-placeholder i {
-      color: var(--accent-primary);
-      font-size: 14px;
-    }
-
     .logo-wrapper {
       display: flex;
       align-items: center;
@@ -343,48 +317,6 @@
       width: 100%;
       aspect-ratio: 16/9;
       background: #000;
-    }
-
-    /* Ad Container Styles */
-    .ad-container {
-      background: var(--bg-tertiary);
-      border: 1px dashed var(--border);
-      border-radius: var(--radius-md);
-      padding: 16px;
-      text-align: center;
-      margin-bottom: 20px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .ad-container::before {
-      content: 'Advertisement';
-      position: absolute;
-      top: 4px;
-      right: 8px;
-      font-size: 10px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .ad-placeholder {
-      min-height: 90px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-muted);
-      font-size: 14px;
-      gap: 12px;
-    }
-
-    .ad-placeholder i {
-      font-size: 24px;
-      color: var(--accent-primary);
-    }
-
-    .ad-sidebar {
-      min-height: 250px;
     }
 
     /* Audio Track Selector */
@@ -732,11 +664,6 @@
 
     .btn-vlc:hover {
       box-shadow: 0 6px 20px rgba(255, 136, 0, 0.4);
-    }
-
-    /* Share Section Ad - Above Share */
-    .share-section-ad {
-      margin-bottom: 24px;
     }
 
     /* Share Section */
@@ -1170,44 +1097,6 @@
       text-align: center;
     }
 
-    /* Footer Ad Container */
-    .footer-ad-container {
-      background: var(--bg-tertiary);
-      border: 1px dashed var(--border);
-      border-radius: var(--radius-md);
-      padding: 16px;
-      text-align: center;
-      margin-bottom: 24px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .footer-ad-container::before {
-      content: 'Advertisement';
-      position: absolute;
-      top: 4px;
-      right: 8px;
-      font-size: 10px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .footer-ad-placeholder {
-      min-height: 90px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-muted);
-      font-size: 14px;
-      gap: 12px;
-    }
-
-    .footer-ad-placeholder i {
-      font-size: 24px;
-      color: var(--accent-primary);
-    }
-
     .footer-copyright {
       font-size: 14px;
       color: var(--text-secondary);
@@ -1340,66 +1229,9 @@
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 20px;
       }
-
-      .header-ad-container {
-        display: none;
-      }
-
-      /* Tablet Ad Responsive */
-      .ad-sidebar {
-        min-height: 200px;
-      }
-
-      .ad-container {
-        padding: 14px;
-      }
-
-      .ad-placeholder {
-        min-height: 80px;
-      }
     }
 
     @media (max-width: 768px) {
-      /* Mobile Ad Responsive Styles */
-      .header-ad-container {
-        display: none;
-      }
-
-      .ad-container {
-        padding: 12px;
-        margin-bottom: 16px;
-      }
-
-      .ad-placeholder {
-        min-height: 50px;
-        font-size: 12px;
-      }
-
-      .ad-placeholder i {
-        font-size: 18px;
-      }
-
-      .ad-sidebar {
-        min-height: 200px;
-      }
-
-      .share-section-ad {
-        margin-bottom: 16px;
-      }
-
-      .footer-ad-container {
-        padding: 12px;
-        margin-bottom: 16px;
-      }
-
-      .footer-ad-placeholder {
-        min-height: 50px;
-        font-size: 12px;
-      }
-
-      .footer-ad-placeholder i {
-        font-size: 18px;
-      }
 
       header {
         padding: 12px 4%;
@@ -1478,57 +1310,7 @@
       .share-section {
         padding: 16px;
       }
-
-      .ad-placeholder {
-        font-size: 11px;
-        min-height: 40px;
-      }
-
-      .ad-container {
-        padding: 10px;
-        margin-bottom: 12px;
-      }
-
-      .ad-container::before {
-        font-size: 9px;
-      }
-
-      .ad-sidebar {
-        min-height: 150px;
-      }
-
-      .share-section-ad {
-        margin-bottom: 12px;
-      }
-
-      .footer-ad-container {
-        padding: 10px;
-        margin-bottom: 12px;
-      }
-
-      .footer-ad-placeholder {
-        min-height: 40px;
-        font-size: 11px;
-      }
     }
-
-    /* Adsterra slots */
-    .adsterra-slot {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      overflow: hidden;
-    }
-    .adsterra-slot iframe {
-      border: 0;
-      display: block;
-      max-width: 100%;
-    }
-    .header-ad-container .adsterra-slot { min-height: 50px; }
-    .ad-container .adsterra-slot,
-    .footer-ad-container .adsterra-slot { min-height: 50px; }
-    .ad-sidebar .adsterra-slot { min-height: 250px; }
   </style>
 <base target="_blank">
 </head>
@@ -1559,9 +1341,6 @@
     </div>
 
     <!-- Header Ad Container -->
-    <div class="header-ad-container">
-      <div class="adsterra-slot" data-ad-key="b2751d092981166abc8dc689e44f2d75" data-ad-width="320" data-ad-height="50"></div>
-    </div>
 
     <div id="file-name">
       <marquee direction="left">$filename</marquee>
@@ -1583,10 +1362,6 @@
   <div class="main-container">
     <!-- Player Section -->
     <div class="player-wrapper">
-      <!-- Top Ad Container -->
-      <div class="ad-container">
-        <div class="adsterra-slot" data-ad-key="15135b1fd5ffd7f92eb192c6cad00633" data-ad-width="728" data-ad-height="90"></div>
-      </div>
 
       <div class="player-container">
         <!-- Video Player -->
@@ -1652,11 +1427,6 @@
             </button>
           </div>
 
-          <!-- Ad Above Share on Social Section -->
-          <div class="ad-container share-section-ad">
-            <div class="adsterra-slot" data-ad-key="15135b1fd5ffd7f92eb192c6cad00633" data-ad-width="728" data-ad-height="90"></div>
-          </div>
-
           <div class="share-section">
             <div class="section-header">
               <div class="share-title">
@@ -1689,10 +1459,6 @@
 
     <!-- Sidebar -->
     <aside class="sidebar">
-      <!-- Sidebar Ad Container -->
-      <div class="ad-container ad-sidebar">
-        <div class="adsterra-slot" data-ad-key="58bb851e2b13a016d24eff6e63eca743" data-ad-width="300" data-ad-height="250"></div>
-      </div>
 
       <div class="sidebar-card">
         <div class="sidebar-title">
@@ -1742,10 +1508,6 @@
   <!-- Footer -->
   <footer>
     <div class="footer-content">
-      <!-- Footer Ad Container -->
-      <div class="footer-ad-container">
-        <div class="adsterra-slot" data-ad-key="15135b1fd5ffd7f92eb192c6cad00633" data-ad-width="728" data-ad-height="90"></div>
-      </div>
 
       <div class="footer-copyright">
         <span>Made with</span>
@@ -2421,82 +2183,5 @@
     });
   </script>
 
-  <!-- Adsterra banner loader: each banner runs inside its own isolated iframe
-       so multiple atOptions blocks on one page cannot overwrite each other. -->
-  <script>
-  (function () {
-    var AD_HOST = 'https://forbesresistread.com';
-    var MOBILE_FALLBACK = { key: 'b2751d092981166abc8dc689e44f2d75', width: 320, height: 50 };
-
-    function pick(slot) {
-      var w = parseInt(slot.getAttribute('data-ad-width'), 10);
-      var h = parseInt(slot.getAttribute('data-ad-height'), 10);
-      var key = slot.getAttribute('data-ad-key');
-      var avail = slot.clientWidth || slot.parentNode.clientWidth || window.innerWidth;
-      // 728x90 units do not fit small screens -> use the 320x50 unit instead
-      if (w > avail && w >= 728) { return MOBILE_FALLBACK; }
-      return { key: key, width: w, height: h };
-    }
-
-    function render(slot) {
-      var cfg = pick(slot);
-      if (slot.dataset.rendered === cfg.key + cfg.width) return;
-      slot.dataset.rendered = cfg.key + cfg.width;
-      slot.innerHTML = '';
-
-      var doc =
-        '<!DOCTYPE html><html><head><meta charset="utf-8">' +
-        '<style>html,body{margin:0;padding:0;overflow:hidden;background:transparent;}</style>' +
-        '</head><body>' +
-        '<script type="text/javascript">' +
-        'window.atOptions={"key":"' + cfg.key + '","format":"iframe","height":' + cfg.height +
-        ',"width":' + cfg.width + ',"params":{}};' +
-        '<\/script>' +
-        '<script type="text/javascript" src="' + AD_HOST + '/' + cfg.key + '/invoke.js"><\/script>' +
-        '</body></html>';
-
-      var f = document.createElement('iframe');
-      f.width = cfg.width;
-      f.height = cfg.height;
-      f.setAttribute('scrolling', 'no');
-      f.setAttribute('frameborder', '0');
-      f.setAttribute('marginwidth', '0');
-      f.setAttribute('marginheight', '0');
-      f.style.width = cfg.width + 'px';
-      f.style.height = cfg.height + 'px';
-      f.style.border = '0';
-      f.title = 'Advertisement';
-      slot.appendChild(f);
-
-      // srcdoc when supported, otherwise write into the iframe document
-      if ('srcdoc' in f) {
-        f.srcdoc = doc;
-      } else {
-        var d = f.contentWindow.document;
-        d.open(); d.write(doc); d.close();
-      }
-    }
-
-    function renderAll() {
-      var slots = document.querySelectorAll('.adsterra-slot');
-      for (var i = 0; i < slots.length; i++) {
-        var s = slots[i];
-        if (s.offsetParent === null && getComputedStyle(s).display === 'none') continue;
-        render(s);
-      }
-    }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', renderAll);
-    } else {
-      renderAll();
-    }
-    var t;
-    window.addEventListener('resize', function () {
-      clearTimeout(t);
-      t = setTimeout(renderAll, 300);
-    });
-  })();
-  </script>
 </body>
 </html>
