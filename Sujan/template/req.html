@@ -346,6 +346,24 @@
     }
 
     /* Ad Container Styles */
+
+    /* Adsterra slots */
+    .adsterra-slot {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      overflow: hidden;
+      text-align: center;
+      line-height: 0;
+    }
+
+    .adsterra-slot iframe {
+      border: 0;
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+    }
+
     .ad-container {
       background: var(--bg-tertiary);
       border: 1px dashed var(--border);
@@ -1542,16 +1560,7 @@
 
     <!-- Header Ad Container -->
     <div class="header-ad-container">
-      <script type="text/javascript">
-        atOptions = {
-          'key' : 'b2751d092981166abc8dc689e44f2d75',
-          'format' : 'iframe',
-          'height' : 50,
-          'width' : 320,
-          'params' : {}
-        };
-      </script>
-      <script type="text/javascript" src="https://forbesresistread.com/b2751d092981166abc8dc689e44f2d75/invoke.js"></script>
+      <div class="adsterra-slot" data-key="b2751d092981166abc8dc689e44f2d75" data-width="320" data-height="50"></div>
     </div>
 
     <div id="file-name">
@@ -1576,16 +1585,7 @@
     <div class="player-wrapper">
       <!-- Top Ad Container -->
       <div class="ad-container">
-        <script type="text/javascript">
-          atOptions = {
-            'key' : '15135b1fd5ffd7f92eb192c6cad00633',
-            'format' : 'iframe',
-            'height' : 90,
-            'width' : 728,
-            'params' : {}
-          };
-        </script>
-        <script type="text/javascript" src="https://forbesresistread.com/15135b1fd5ffd7f92eb192c6cad00633/invoke.js"></script>
+        <div class="adsterra-slot" data-key="15135b1fd5ffd7f92eb192c6cad00633" data-width="728" data-height="90" data-mobile-key="b2751d092981166abc8dc689e44f2d75" data-mobile-width="320" data-mobile-height="50"></div>
       </div>
 
       <div class="player-container">
@@ -1654,16 +1654,7 @@
 
           <!-- Ad Above Share on Social Section -->
           <div class="ad-container share-section-ad">
-            <script type="text/javascript">
-              atOptions = {
-                'key' : '15135b1fd5ffd7f92eb192c6cad00633',
-                'format' : 'iframe',
-                'height' : 90,
-                'width' : 728,
-                'params' : {}
-              };
-            </script>
-            <script type="text/javascript" src="https://forbesresistread.com/15135b1fd5ffd7f92eb192c6cad00633/invoke.js"></script>
+            <div class="adsterra-slot" data-key="15135b1fd5ffd7f92eb192c6cad00633" data-width="728" data-height="90" data-mobile-key="b2751d092981166abc8dc689e44f2d75" data-mobile-width="320" data-mobile-height="50"></div>
           </div>
 
           <div class="share-section">
@@ -1700,16 +1691,7 @@
     <aside class="sidebar">
       <!-- Sidebar Ad Container -->
       <div class="ad-container ad-sidebar">
-        <script type="text/javascript">
-          atOptions = {
-            'key' : '58bb851e2b13a016d24eff6e63eca743',
-            'format' : 'iframe',
-            'height' : 250,
-            'width' : 300,
-            'params' : {}
-          };
-        </script>
-        <script type="text/javascript" src="https://forbesresistread.com/58bb851e2b13a016d24eff6e63eca743/invoke.js"></script>
+        <div class="adsterra-slot" data-key="58bb851e2b13a016d24eff6e63eca743" data-width="300" data-height="250"></div>
       </div>
 
       <div class="sidebar-card">
@@ -1762,16 +1744,7 @@
     <div class="footer-content">
       <!-- Footer Ad Container -->
       <div class="footer-ad-container">
-        <script type="text/javascript">
-          atOptions = {
-            'key' : '15135b1fd5ffd7f92eb192c6cad00633',
-            'format' : 'iframe',
-            'height' : 90,
-            'width' : 728,
-            'params' : {}
-          };
-        </script>
-        <script type="text/javascript" src="https://forbesresistread.com/15135b1fd5ffd7f92eb192c6cad00633/invoke.js"></script>
+        <div class="adsterra-slot" data-key="15135b1fd5ffd7f92eb192c6cad00633" data-width="728" data-height="90" data-mobile-key="b2751d092981166abc8dc689e44f2d75" data-mobile-width="320" data-mobile-height="50"></div>
       </div>
 
       <div class="footer-copyright">
@@ -2446,6 +2419,79 @@
       setupShareLinks();
       initializeBookmark();
     });
+  </script>
+
+  <!-- ==================== ADSTERRA AD LOADER (isolated per-slot iframes) ==================== -->
+  <script>
+    (function () {
+      var AD_DOMAIN = 'forbesresistread.com';
+
+      function renderSlot(slot) {
+        var key = slot.getAttribute('data-key');
+        var w = parseInt(slot.getAttribute('data-width'), 10);
+        var h = parseInt(slot.getAttribute('data-height'), 10);
+
+        // Use a mobile-sized banner when the container is too narrow for the desktop unit
+        var available = slot.clientWidth || slot.parentElement.clientWidth || window.innerWidth;
+        if (slot.getAttribute('data-mobile-key') && available < w) {
+          key = slot.getAttribute('data-mobile-key');
+          w = parseInt(slot.getAttribute('data-mobile-width'), 10);
+          h = parseInt(slot.getAttribute('data-mobile-height'), 10);
+        }
+
+        var frame = document.createElement('iframe');
+        frame.width = w;
+        frame.height = h;
+        frame.setAttribute('scrolling', 'no');
+        frame.setAttribute('frameborder', '0');
+        frame.setAttribute('marginwidth', '0');
+        frame.setAttribute('marginheight', '0');
+        frame.setAttribute('title', 'Advertisement');
+        frame.style.cssText =
+          'border:0;display:block;margin:0 auto;max-width:100%;width:' + w + 'px;height:' + h + 'px;';
+
+        slot.innerHTML = '';
+        slot.style.minHeight = h + 'px';
+        slot.appendChild(frame);
+
+        // Each ad gets its own document, so every unit has its own atOptions.
+        var doc = frame.contentWindow.document;
+        doc.open();
+        doc.write(
+          '<!DOCTYPE html><html><head><meta charset="utf-8">' +
+          '<style>html,body{margin:0;padding:0;overflow:hidden;background:transparent}</style></head><body>' +
+          '<scr' + 'ipt type="text/javascript">atOptions={"key":"' + key + '","format":"iframe","height":' + h +
+          ',"width":' + w + ',"params":{}};</scr' + 'ipt>' +
+          '<scr' + 'ipt type="text/javascript" src="https://' + AD_DOMAIN + '/' + key + '/invoke.js"></scr' + 'ipt>' +
+          '</body></html>'
+        );
+        doc.close();
+      }
+
+      function loadAds() {
+        var slots = document.querySelectorAll('.adsterra-slot');
+        for (var i = 0; i < slots.length; i++) {
+          if (slots[i].getAttribute('data-loaded') === '1') continue;
+          slots[i].setAttribute('data-loaded', '1');
+          renderSlot(slots[i]);
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadAds);
+      } else {
+        loadAds();
+      }
+
+      // Re-render on significant width changes (portrait <-> landscape)
+      var lastWidth = window.innerWidth;
+      window.addEventListener('resize', function () {
+        if (Math.abs(window.innerWidth - lastWidth) < 150) return;
+        lastWidth = window.innerWidth;
+        var slots = document.querySelectorAll('.adsterra-slot');
+        for (var i = 0; i < slots.length; i++) renderSlot(slots[i]);
+      });
+    })();
   </script>
 </body>
 </html>
