@@ -1311,6 +1311,52 @@
         padding: 16px;
       }
     }
+
+
+    /* Mobile player controls: rewind, play, forward, seek, time, settings, PiP, fullscreen */
+    @media (max-width: 768px) {
+      .plyr--video .plyr__controls {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+        pointer-events: auto !important;
+        display: flex !important;
+        align-items: center;
+        gap: 3px;
+        padding: 12px 10px 10px;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.92));
+      }
+
+      .plyr--video.plyr--hide-controls .plyr__controls {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+        pointer-events: auto !important;
+      }
+
+      .plyr__controls .plyr__control {
+        flex: 0 0 auto;
+        min-width: 34px;
+        min-height: 34px;
+        padding: 7px;
+      }
+
+      .plyr__controls .plyr__progress__container {
+        flex: 1 1 72px;
+        min-width: 46px;
+        margin: 0 3px;
+      }
+
+      .plyr__controls .plyr__time {
+        flex: 0 0 auto;
+        padding: 0 3px;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .plyr__controls .plyr__time--duration,
+      .plyr__controls [data-plyr="mute"] {
+        display: none;
+      }
+    }
+
   </style>
 <base target="_blank">
 </head>
@@ -1654,9 +1700,9 @@
     let playerInstance = null;
 
     if (isSmallMobile) {
-      controls = ["play-large", "rewind", "play", "fast-forward", "progress", "current-time", "duration", "settings", "mute", "fullscreen"];
+      controls = ["play-large", "rewind", "play", "fast-forward", "progress", "current-time", "settings", "pip", "fullscreen"];
     } else if (isMobile) {
-      controls = ["play-large", "rewind", "play", "fast-forward", "progress", "current-time", "duration", "settings", "mute", "fullscreen"];
+      controls = ["play-large", "rewind", "play", "fast-forward", "progress", "current-time", "settings", "pip", "fullscreen"];
     } else {
       controls = ["play-large", "rewind", "play", "fast-forward", "progress", "current-time", "duration", "captions", "pip", "airplay", "download", "settings", "mute", "fullscreen"];
     }
