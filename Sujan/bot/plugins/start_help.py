@@ -92,7 +92,7 @@ async def start(b, m):
     if await db.is_user_banned(m.from_user.id):
         await b.send_message(
             chat_id=m.chat.id,
-            text="You are banned from using this bot. Contact support if you believe this is a mistake.",
+            text="🚫 Yᴏᴜ ʜᴀᴠᴇ ʙᴇᴇɴ ʙᴀɴɴᴇᴅ ꜰʀᴏᴍ ᴜꜱɪɴɢ ᴛʜɪꜱ ʙᴏᴛ.\n\n🔞 Tʜɪꜱ ᴀᴄᴛɪᴏɴ ᴡᴀꜱ ᴛᴀᴋᴇɴ ʙᴇᴄᴀᴜꜱᴇ ʏᴏᴜ ɢᴇɴᴇʀᴀᴛᴇᴅ ᴏʀ ᴀᴛᴛᴇᴍᴘᴛᴇᴅ ᴛᴏ ɢᴇɴᴇʀᴀᴛᴇ 18+ ᴄᴏɴᴛᴇɴᴛ ᴜꜱɪɴɢ ᴛʜᴇ ʙᴏᴛ.\n\n📩 Iꜰ ʏᴏᴜ ʙᴇʟɪᴇᴠᴇ ᴛʜɪꜱ ʙᴀɴ ᴡᴀꜱ ɪꜱꜱᴜᴇᴅ ʙʏ ᴍɪꜱᴛᴀᴋᴇ, ᴘʟᴇᴀꜱᴇ ᴄᴏɴᴛᴀᴄᴛ ᴏᴜʀ ꜱᴜᴘᴘᴏʀᴛ ᴛᴇᴀᴍ ꜰᴏʀ ᴀꜱꜱɪꜱᴛᴀɴᴄᴇ @Sujan_Ch.",
             disable_web_page_preview=True
         )
         return
@@ -111,8 +111,8 @@ async def start(b, m):
         if is_banned:
             await b.send_message(
                 chat_id=m.chat.id,
-                text="Sorry, You Are Banned For Using This Bot. Contact @Sujan_Ch\n\n  **He Will Help You**",
-                disable_web_page_preview=True
+                text="Sᴏʀʀʏ, ʏᴏᴜ ᴀʀᴇ ʙᴀɴɴᴇᴅ ꜰᴏʀ ᴜꜱɪɴɢ ᴛʜɪꜱ ʙᴏᴛ. ᴄᴏɴᴛᴀᴄᴛ @Sujan_Ch\n\n  **Hᴇ ᴡɪʟʟ ʜᴇʟᴘ ʏᴏᴜ**",
+                    disable_web_page_preview=True
             )
             return
         
@@ -155,8 +155,7 @@ async def on_help_button(client, callback_query: CallbackQuery):
     await callback_query.answer()
 
     await callback_query.message.edit_text(
-        text="""<b>Send me any file or video and I will give you streamable and download links.</b>\n
-<b> I also support Channels, add me to your Channel, send any media files and see the magic✨\n\nAlso send /list to know all commands.</b>""",
+        text="""<b>Send me any file or video and I will give you streamable and download links.</b>""",
         disable_web_page_preview=True,
         reply_markup=InlineKeyboardMarkup(
             [
@@ -216,7 +215,7 @@ async def help_handler(bot, message):
     if await db.is_user_banned(message.from_user.id):
         await bot.send_message(
             chat_id=message.chat.id,
-            text="You are banned from using this bot. Contact support if you believe this is a mistake.",
+            text="🚫 Yᴏᴜ ʜᴀᴠᴇ ʙᴇᴇɴ ʙᴀɴɴᴇᴅ ꜰʀᴏᴍ ᴜꜱɪɴɢ ᴛʜɪꜱ ʙᴏᴛ.\n\n🔞 Tʜɪꜱ ᴀᴄᴛɪᴏɴ ᴡᴀꜱ ᴛᴀᴋᴇɴ ʙᴇᴄᴀᴜꜱᴇ ʏᴏᴜ ɢᴇɴᴇʀᴀᴛᴇᴅ ᴏʀ ᴀᴛᴛᴇᴍᴘᴛᴇᴅ ᴛᴏ ɢᴇɴᴇʀᴀᴛᴇ 18+ ᴄᴏɴᴛᴇɴᴛ ᴜꜱɪɴɢ ᴛʜᴇ ʙᴏᴛ.\n\n📩 Iꜰ ʏᴏᴜ ʙᴇʟɪᴇᴠᴇ ᴛʜɪꜱ ʙᴀɴ ᴡᴀꜱ ɪꜱꜱᴜᴇᴅ ʙʏ ᴍɪꜱᴛᴀᴋᴇ, ᴘʟᴇᴀꜱᴇ ᴄᴏɴᴛᴀᴄᴛ ᴏᴜʀ ꜱᴜᴘᴘᴏʀᴛ ᴛᴇᴀᴍ ꜰᴏʀ ᴀꜱꜱɪꜱᴛᴀɴᴄᴇ @Sujan_Ch.",
             disable_web_page_preview=True
         )
         return
@@ -251,8 +250,7 @@ async def help_handler(bot, message):
             return
     
     await message.reply_text(
-        text="""<b> Send me any file or video i will give you streamable link and download link.</b>\n
-<b> I also support Channels, add me to you Channel and send any media files and see miracle✨ also send /list to know all commands""",
+        text="""<b> Send me any file or video i will give you streamable link and download link.</b>""",
         
         disable_web_page_preview=True,
         reply_markup=InlineKeyboardMarkup(
@@ -275,8 +273,8 @@ async def on_check_join_button(client, callback_query: CallbackQuery):
 
     if is_banned:
         await callback_query.message.edit_text(
-            text="Sorry, You Are Banned For Using This Bot. Contact @Sujan_Ch\n\n  **He Will Help You**",
-            disable_web_page_preview=True
+            text="Sᴏʀʀʏ, ʏᴏᴜ ᴀʀᴇ ʙᴀɴɴᴇᴅ ꜰᴏʀ ᴜꜱɪɴɢ ᴛʜɪꜱ ʙᴏᴛ. ᴄᴏɴᴛᴀᴄᴛ @Sujan_Ch\n\n  **Hᴇ ᴡɪʟʟ ʜᴇʟᴘ ʏᴏᴜ**",
+                    disable_web_page_preview=True
         )
         return
 
