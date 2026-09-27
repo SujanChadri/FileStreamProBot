@@ -125,7 +125,7 @@ async def ban_user(c: Client, m: Message):
     try:
         await c.send_message(
             chat_id=target_id,
-            text="You have been banned from using this bot. Contact support if you think this is a mistake."
+            text="🚫 Yᴏᴜ ʜᴀᴠᴇ ʙᴇᴇɴ ʙᴀɴɴᴇᴅ ꜰʀᴏᴍ ᴜꜱɪɴɢ ᴛʜɪꜱ ʙᴏᴛ.\n\n🔞 Tʜɪꜱ ᴀᴄᴛɪᴏɴ ᴡᴀꜱ ᴛᴀᴋᴇɴ ʙᴇᴄᴀᴜꜱᴇ ʏᴏᴜ ɢᴇɴᴇʀᴀᴛᴇᴅ ᴏʀ ᴀᴛᴛᴇᴍᴘᴛᴇᴅ ᴛᴏ ɢᴇɴᴇʀᴀᴛᴇ 18+ ᴄᴏɴᴛᴇɴᴛ ᴜꜱɪɴɢ ᴛʜᴇ ʙᴏᴛ.\n\n📩 Iꜰ ʏᴏᴜ ʙᴇʟɪᴇᴠᴇ ᴛʜɪꜱ ʙᴀɴ ᴡᴀꜱ ɪꜱꜱᴜᴇᴅ ʙʏ ᴍɪꜱᴛᴀᴋᴇ, ᴘʟᴇᴀꜱᴇ ᴄᴏɴᴛᴀᴄᴛ ᴏᴜʀ ꜱᴜᴘᴘᴏʀᴛ ᴛᴇᴀᴍ ꜰᴏʀ ᴀꜱꜱɪꜱᴛᴀɴᴄᴇ @Sujan_Ch."
         )
     except Exception:
         pass
@@ -142,7 +142,7 @@ async def unban_user(c: Client, m: Message):
     try:
         await c.send_message(
             chat_id=target_id,
-            text="You have been unbanned. You can use the bot again."
+            text="✅ Yᴏᴜ ʜᴀᴠᴇ ʙᴇᴇɴ ᴜɴʙᴀɴɴᴇᴅ!\n\n🎉 Yᴏᴜʀ ᴀᴄᴄᴇꜱꜱ ᴛᴏ ᴛʜᴇ ʙᴏᴛ ʜᴀꜱ ʙᴇᴇɴ ʀᴇꜱᴛᴏʀᴇᴅ, ᴀɴᴅ ʏᴏᴜ ᴄᴀɴ ᴜꜱᴇ ᴛʜᴇ ʙᴏᴛ ᴀɢᴀɪɴ."
         )
     except Exception:
         pass
