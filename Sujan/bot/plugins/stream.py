@@ -13,7 +13,6 @@ from pyrogram import filters, Client
 from pyrogram.errors import FloodWait, UserNotParticipant
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from Sujan.utils.file_properties import get_name, get_hash, get_media_file_size
-from Sujan.utils.audio_tracks import get_audio_tracks, summarize
 
 db = Database(Var.DATABASE_URL, Var.name)
 
@@ -206,23 +205,7 @@ async def process_file(c: Client, m: Message, queue_msg: Message = None):
         stream_link = f"{Var.URL}watch/{str(log_msg.id)}?hash={get_hash(log_msg)}"
         online_link = f"{Var.URL}dl/{str(log_msg.id)}?hash={get_hash(log_msg)}"
         
-        # 🔊 Dual / Multi audio auto-detection (Japanese, Hindi, English, Tamil, Telugu, Kannada, Malayalam ...)
-        audio_line = ""
-        try:
-            file_hash = get_hash(log_msg)
-            direct_url = f"{Var.URL}{file_hash}{log_msg.id}"
-            tracks = await get_audio_tracks(
-                direct_url,
-                file_name=get_name(log_msg) or "",
-                cache_key=(log_msg.id, file_hash),
-            )
-            summary = summarize(tracks)
-            if summary:
-                audio_line = f"\n\n<b>{summary}</b>"
-        except Exception as e:
-            print(f"Audio detection skipped: {e}")
-
-        msg_text = """<i><u>𝗬𝗼𝘂𝗿 𝗟𝗶𝗻𝗸 𝗚𝗲𝗻𝗲𝗿𝗮𝘁𝗲𝗱 !</u></i>\n\n<b>📂 Fɪʟᴇ ɴᴀᴍᴇ :</b> <code>{}</code>\n\n<b>📦 Fɪʟᴇ ꜱɪᴢᴇ :</b> <code>{}</code>""" + audio_line + """\n\n<b>📥 Dᴏᴡɴʟᴏᴀᴅ :</b> <code>{}</code>\n\n<b> 🖥WATCH  :</b> <code>{}</code>\n\n<b>🚸 Nᴏᴛᴇ : Link Will Expire In 24 Hours</b>"""
+        msg_text = """<i><u>𝗬𝗼𝘂𝗿 𝗟𝗶𝗻𝗸 𝗚𝗲𝗻𝗲𝗿𝗮𝘁𝗲𝗱 !</u></i>\n\n<b>📂 Fɪʟᴇ ɴᴀᴍᴇ :</b> <code>{}</code>\n\n<b>📦 Fɪʟᴇ ꜱɪᴢᴇ :</b> <code>{}</code>\n\n<b>📥 Dᴏᴡɴʟᴏᴀᴅ :</b> <code>{}</code>\n\n<b> 🖥WATCH  :</b> <code>{}</code>\n\n<b>🚸 Nᴏᴛᴇ : Link Will Expire In 24 Hours</b>"""
         
         await log_msg.reply_text(
             text=f"**RᴇQᴜᴇꜱᴛᴇᴅ ʙʏ :** [{m.from_user.first_name}](tg://user?id={m.from_user.id})\n**Uꜱᴇʀ ɪᴅ :** `{m.from_user.id}`\n**Stream ʟɪɴᴋ :** {stream_link}",
