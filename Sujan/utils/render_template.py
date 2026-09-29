@@ -26,14 +26,14 @@ async def render_page(id, secure_hash, audio_sources=None):
         audio_tracks = []
         for idx, entry in enumerate(audio_sources, start=1):
             if "|" in entry:
-                label, src = entry.split("|", 1)
+                label, audio_src = entry.split("|", 1)
                 label = label.strip() or f"Alt Track {idx}"
-                src = src.strip()
+                audio_src = audio_src.strip()
             else:
                 label = f"Alt Track {idx}"
-                src = entry.strip()
-            if src:
-                audio_tracks.append({"label": label, "src": src})
+                audio_src = entry.strip()
+            if audio_src:
+                audio_tracks.append({"label": label, "src": audio_src})
 
         audio_sources_json = html.escape(json.dumps(audio_tracks))
 
@@ -51,9 +51,7 @@ async def render_page(id, secure_hash, audio_sources=None):
                 tag=tag,
                 src=src,
                 audio_sources=audio_sources_json,
-                file_id=str(id),
-                file_hash=secure_hash,
-                api_base=Var.URL
+                stream_key=f"{secure_hash}{id}"
             )
 
         else:
