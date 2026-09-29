@@ -7,17 +7,17 @@ load_dotenv()
 
 class Var(object):
     MULTI_CLIENT = False
-    API_ID = int(getenv('API_ID', '20077744'))  #Required
-    API_HASH = str(getenv('API_HASH', '64f8e1cce4c865e981a8000f4ae33820')) #Required
-    BOT_TOKEN = str(getenv('BOT_TOKEN', '8020187926:AAHKh6eOIiW4MM5hvp6cYTBqGJsAJYnBz4Q')) #Required
+    API_ID = int(getenv('API_ID', '0'))  #Required
+    API_HASH = str(getenv('API_HASH', '')) #Required
+    BOT_TOKEN = str(getenv('BOT_TOKEN', '')) #Required
     name = str(getenv('name', 'FileStreamBot')) #Optional
     SLEEP_THRESHOLD = int(getenv('SLEEP_THRESHOLD', '60')) #Leave as it is.
     WORKERS = int(getenv('WORKERS', '4')) #Leave as it is.
-    BIN_CHANNEL = int(getenv('BIN_CHANNEL', '-1001929954249')) #Required
+    BIN_CHANNEL = int(getenv('BIN_CHANNEL', '0')) #Required
     PORT = int(getenv('PORT', '8080')) #Leave as it is.
     BIND_ADRESS = str(getenv('WEB_SERVER_BIND_ADDRESS', '0.0.0.0')) #Leave as it is.
     PING_INTERVAL = int(environ.get("PING_INTERVAL", "1200"))  # 20 minutes
-    OWNER_ID = set(int(x) for x in os.environ.get("OWNER_ID", "5123039648").split())  #Required
+    OWNER_ID = set(int(x) for x in os.environ.get("OWNER_ID", "").split())  #Required
     NO_PORT = bool(getenv('NO_PORT', True)) #Leave as it is.
     APP_NAME = None
     OWNER_USERNAME = str(getenv('OWNER_USERNAME', 'Sujan_Ch')) #Required
@@ -40,7 +40,7 @@ class Var(object):
     if not URL.endswith('/'):
         URL = URL + '/'
         
-    DATABASE_URL = str(getenv('DATABASE_URL', 'mongodb+srv://puhhej12:puhhej12@cluster0.xoewzkz.mongodb.net/?retryWrites=true&w=majority')) #Required
+    DATABASE_URL = str(getenv('DATABASE_URL', '')) #Required
     
     # Multiple UPDATE CHANNELS Support - Comma separated channel usernames/IDs without @
     # Example: UPDATES_CHANNEL = "channel1,channel2,channel3" or "channel1" for single channel
