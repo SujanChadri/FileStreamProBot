@@ -136,3 +136,16 @@ You can deploy this bot on:
 This project is for educational and personal use.
 Please use your own API keys and database credentials.
 Redistribution of private tokens is not allowed.
+
+## 🔊 Dual / Multi Audio
+
+The bot auto-detects every audio track inside a file (Japanese, Hindi, English, Tamil, Telugu, Kannada, Malayalam, Bengali, Korean and many more).
+
+- Detected languages are shown in the generated link message (e.g. `Dual Audio (2) : Hindi, English`).
+- The watch page shows an **Audio Track** dropdown to switch language while playing.
+- Detection uses `ffprobe`; if it is missing it falls back to reading the filename.
+
+**Requirement:** install ffmpeg on the server.
+- Heroku: add the buildpack `heroku-community/apt` (the included `Aptfile` installs ffmpeg).
+- VPS/Docker: `apt install -y ffmpeg`.
+- Endpoints added: `GET /api/audio/<id>?hash=<hash>` (track list) and `GET /track/<n>/<hash><id>` (stream one selected audio track).
