@@ -7,13 +7,13 @@ load_dotenv()
 
 class Var(object):
     MULTI_CLIENT = False
-    API_ID = int(getenv('API_ID', '0'))  #Required
-    API_HASH = str(getenv('API_HASH', ' ')) #Required
-    BOT_TOKEN = str(getenv('BOT_TOKEN', ' ')) #Required
+    API_ID = int(getenv('API_ID', '20077744'))  #Required
+    API_HASH = str(getenv('API_HASH', '64f8e1cce4c865e981a8000f4ae33820')) #Required
+    BOT_TOKEN = str(getenv('BOT_TOKEN', '8020187926:AAHKh6eOIiW4MM5hvp6cYTBqGJsAJYnBz4Q')) #Required
     name = str(getenv('name', 'FileStreamBot')) #Optional
     SLEEP_THRESHOLD = int(getenv('SLEEP_THRESHOLD', '60')) #Leave as it is.
     WORKERS = int(getenv('WORKERS', '4')) #Leave as it is.
-    BIN_CHANNEL = int(getenv('BIN_CHANNEL', '-1002337612955')) #Required
+    BIN_CHANNEL = int(getenv('BIN_CHANNEL', '-1001870515303')) #Required
     PORT = int(getenv('PORT', '8080')) #Leave as it is.
     BIND_ADRESS = str(getenv('WEB_SERVER_BIND_ADDRESS', '0.0.0.0')) #Leave as it is.
     PING_INTERVAL = int(environ.get("PING_INTERVAL", "1200"))  # 20 minutes
@@ -40,6 +40,28 @@ class Var(object):
     if not URL.endswith('/'):
         URL = URL + '/'
         
-    DATABASE_URL = str(getenv('DATABASE_URL', 'mongodb+srv://xyzcinema4:xyzcinema4@cluster0.zg2ewlh.mongodb.net/?appName=Cluster0')) #Required
-    UPDATES_CHANNEL = str(getenv('UPDATES_CHANNEL', 'Airdrop_News_Update')) #Required without @
+    DATABASE_URL = str(getenv('DATABASE_URL', 'mongodb+srv://puhhej12:puhhej12@cluster0.xoewzkz.mongodb.net/?retryWrites=true&w=majority')) #Required
+    
+    # Multiple UPDATE CHANNELS Support - Comma separated channel usernames/IDs without @
+    # Example: UPDATES_CHANNEL = "channel1,channel2,channel3" or "channel1" for single channel
+    # Set to "None" to disable update channel check
+    UPDATES_CHANNEL = str(getenv('UPDATES_CHANNEL', 'Sujan_Ch,Sujan_BotZ')) #Required without @
+    
+    # Parse multiple update channels into a list
+    @classmethod
+    def get_update_channels(cls):
+        """Get list of update channels from comma-separated string"""
+        if not cls.UPDATES_CHANNEL or cls.UPDATES_CHANNEL == "None":
+            return []
+        # Split by comma and strip whitespace
+        channels = [ch.strip() for ch in cls.UPDATES_CHANNEL.split(',') if ch.strip()]
+        return channels
+    
+    # Backward compatibility - single channel
+    @classmethod
+    def get_first_update_channel(cls):
+        """Get first update channel for backward compatibility"""
+        channels = cls.get_update_channels()
+        return channels[0] if channels else None
+    
     BANNED_CHANNELS = list(set(int(x) for x in str(getenv("BANNED_CHANNELS", "-1001362659779")).split())) #Leave as it is.
