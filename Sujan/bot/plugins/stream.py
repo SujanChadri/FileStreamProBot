@@ -324,7 +324,7 @@ async def private_receive_handler(c: Client, m: Message):
     
     if await db.is_user_banned(user_id):
         await m.reply_text(
-            "You are banned from using this bot. Contact support if you believe this is a mistake."
+            "🚫 Yᴏᴜ ʜᴀᴠᴇ ʙᴇᴇɴ ʙᴀɴɴᴇᴅ ꜰʀᴏᴍ ᴜꜱɪɴɢ ᴛʜɪꜱ ʙᴏᴛ.\n\n🔞 Tʜɪꜱ ᴀᴄᴛɪᴏɴ ᴡᴀꜱ ᴛᴀᴋᴇɴ ʙᴇᴄᴀᴜꜱᴇ ʏᴏᴜ ɢᴇɴᴇʀᴀᴛᴇᴅ ᴏʀ ᴀᴛᴛᴇᴍᴘᴛᴇᴅ ᴛᴏ ɢᴇɴᴇʀᴀᴛᴇ 18+ ᴄᴏɴᴛᴇɴᴛ ᴜꜱɪɴɢ ᴛʜᴇ ʙᴏᴛ.\n\n📩 Iꜰ ʏᴏᴜ ʙᴇʟɪᴇᴠᴇ ᴛʜɪꜱ ʙᴀɴ ᴡᴀꜱ ɪꜱꜱᴜᴇᴅ ʙʏ ᴍɪꜱᴛᴀᴋᴇ, ᴘʟᴇᴀꜱᴇ ᴄᴏɴᴛᴀᴄᴛ ᴏᴜʀ ꜱᴜᴘᴘᴏʀᴛ ᴛᴇᴀᴍ ꜰᴏʀ ᴀꜱꜱɪꜱᴛᴀɴᴄᴇ @Sujan_Ch."
         )
         return
     if MY_PASS:
