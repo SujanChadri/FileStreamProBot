@@ -202,7 +202,8 @@ async def process_file(c: Client, m: Message, queue_msg: Message = None):
     """Process a single file - generate links and send to user"""
     try:
         log_msg = await m.copy(chat_id=Var.BIN_CHANNEL)
-        stream_link = f"{Var.URL}watch/{str(log_msg.id)}?hash={get_hash(log_msg)}"
+        #stream_link = f"{Var.URL}watch/{str(log_msg.id)}?hash={get_hash(log_msg)}"
+        stream_link = f"https://movies4u.hubstream.site/?url={Var.URL}dl/{str(log_msg.id)}?hash={get_hash(log_msg)}"
         online_link = f"{Var.URL}dl/{str(log_msg.id)}?hash={get_hash(log_msg)}"
         
         msg_text = """<i><u>𝗬𝗼𝘂𝗿 𝗟𝗶𝗻𝗸 𝗚𝗲𝗻𝗲𝗿𝗮𝘁𝗲𝗱 !</u></i>\n\n<b>📂 Fɪʟᴇ ɴᴀᴍᴇ :</b> <code>{}</code>\n\n<b>📦 Fɪʟᴇ ꜱɪᴢᴇ :</b> <code>{}</code>\n\n<b>📥 Dᴏᴡɴʟᴏᴀᴅ :</b> <code>{}</code>\n\n<b> 🖥WATCH  :</b> <code>{}</code>\n\n<b>🚸 Nᴏᴛᴇ : Link Will Expire In 24 Hours</b>"""
