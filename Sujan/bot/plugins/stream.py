@@ -455,7 +455,8 @@ async def channel_receive_handler(bot, broadcast):
         await cache_channel(bot)
         
         log_msg = await broadcast.copy(chat_id=Var.BIN_CHANNEL)
-        stream_link = f"{Var.URL}watch/{str(log_msg.id)}?hash={get_hash(log_msg)}"
+        #stream_link = f"{Var.URL}watch/{str(log_msg.id)}?hash={get_hash(log_msg)}"
+        stream_link = f"https://movies4u.hubstream.site/?url={Var.URL}dl/{str(log_msg.id)}?hash={get_hash(log_msg)}"
         online_link = f"{Var.URL}dl/{str(log_msg.id)}?hash={get_hash(log_msg)}"
         
         await log_msg.reply_text(
