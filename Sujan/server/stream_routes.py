@@ -16,7 +16,6 @@ from ..utils.time_format import get_readable_time
 from ..utils.custom_dl import ByteStreamer
 from Sujan.utils.render_template import render_page
 from Sujan.vars import Var
-from Sujan.server.audio_tracks import probe_audio_tracks, stream_audio_track
 
 
 routes = web.RouteTableDef()
@@ -61,11 +60,8 @@ async def watch_handler(request: web.Request):
                 raise web.HTTPBadRequest(text="Invalid URL format")
             id = int(match.group(1))
             secure_hash = request.rel_url.query.get("hash")
-        audio_sources = []
-        query_audio = request.rel_url.query.getall("audio", [])
-        for entry in query_audio:
-            if entry:
-                audio_sources.append(entry)
+
+        audio_sources = [e for e in request.rel_url.query.getall("audio", []) if e]
 
         html = await render_page(id, secure_hash, audio_sources=audio_sources)
         return web.Response(text=html, content_type='text/html')
@@ -80,48 +76,6 @@ async def watch_handler(request: web.Request):
     except Exception as e:
         logging.critical(e.with_traceback(None))
         return web.Response(text=f"Internal server error: {e}", status=500)
-
-
-@routes.get(r"/audio-tracks/{path:[a-zA-Z0-9_-]{6}\d+}")
-async def audio_tracks_handler(request: web.Request):
-    match = re.fullmatch(r"([a-zA-Z0-9_-]{6})(\d+)", request.match_info['path'])
-    if not match:
-        raise web.HTTPBadRequest(text='Invalid stream link')
-    secure_hash, file_id = match.group(1), int(match.group(2))
-    file_data = await get_audio_file(file_id, secure_hash)
-    if not (file_data.mime_type or '').startswith('video/'):
-        return web.json_response({'tracks': []})
-    try:
-        tracks = await probe_audio_tracks(file_id, secure_hash)
-    except RuntimeError as error:
-        logger_message = str(error)
-        logging.warning('Audio detection failed: %s', logger_message)
-        raise web.HTTPServiceUnavailable(text='Audio tracks could not be detected')
-    return web.json_response({'tracks': tracks})
-
-
-@routes.get(r"/audio-stream/{path:[a-zA-Z0-9_-]{6}\d+}")
-async def audio_stream_handler(request: web.Request):
-    match = re.fullmatch(r"([a-zA-Z0-9_-]{6})(\d+)", request.match_info['path'])
-    if not match:
-        raise web.HTTPBadRequest(text='Invalid stream link')
-    secure_hash, file_id = match.group(1), int(match.group(2))
-    file_data = await get_audio_file(file_id, secure_hash)
-    if not (file_data.mime_type or '').startswith('video/'):
-        raise web.HTTPBadRequest(text='Not a video')
-    try:
-        tracks = await probe_audio_tracks(file_id, secure_hash)
-    except RuntimeError:
-        raise web.HTTPServiceUnavailable(text='Audio tracks could not be detected')
-    return await stream_audio_track(request, file_id, secure_hash, len(tracks))
-
-
-async def get_audio_file(file_id, secure_hash):
-    from Sujan.utils.file_properties import get_file_ids
-    file_data = await get_file_ids(StreamBot, int(Var.BIN_CHANNEL), file_id)
-    if not file_data or file_data.unique_id[:6] != secure_hash:
-        raise web.HTTPNotFound(text='Stream not found')
-    return file_data
 
 
 @routes.get(r"/{path:\S+}", allow_head=True)
