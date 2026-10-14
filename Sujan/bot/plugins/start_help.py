@@ -120,7 +120,7 @@ async def start(b, m):
             channel_text = "Cʜᴀɴɴᴇʟs" if len(not_joined) > 1 else "Cʜᴀɴɴᴇʟ"
             await StreamBot.send_photo(
                 chat_id=m.chat.id,
-                photo="https://ibb.co/x8JTcqTz",
+                photo="https://i.postimg.cc/7YnLFDt8/IMG-20251227-182207-346.jpg",
                 caption=f"**J𝙾𝙸𝙽 Uᴘᴅᴀᴛᴇs {channel_text} To U𝚂𝙴 Tʜɪs Bᴏᴛ!**\n\nDᴜᴇ Tᴏ Oᴠᴇʀʟᴏᴀᴅ, Oɴʟʏ Cʜᴀɴɴᴇʟ Sᴜʙsᴄʀɪʙᴇʀs Cᴀɴ Usᴇ Tʜᴇ Bᴏᴛ!",
                 reply_markup=get_join_channels_markup(not_joined),
             )
@@ -128,7 +128,7 @@ async def start(b, m):
     
     await StreamBot.send_photo(
     chat_id=m.chat.id,
-    photo="https://ibb.co/x8JTcqTz",
+    photo="https://i.postimg.cc/7YnLFDt8/IMG-20251227-182207-346.jpg",
     caption=f'''
 Hey {m.from_user.mention(style="md")}! 🎉
 
@@ -243,7 +243,7 @@ async def help_handler(bot, message):
             channel_text = "Cʜᴀɴɴᴇʟs" if len(not_joined) > 1 else "Cʜᴀɴɴᴇʟ"
             await StreamBot.send_photo(
                 chat_id=message.chat.id,
-                photo="https://ibb.co/x8JTcqTz",
+                photo="https://i.postimg.cc/7YnLFDt8/IMG-20251227-182207-346.jpg",
                 caption=f"**J𝙾𝙸𝙽 Uᴘᴅᴀᴛᴇs {channel_text} To U𝚂𝙴 Tʜɪs Bᴏᴛ!**\n\nDᴜᴇ Tᴏ Oᴠᴇʀʟᴏᴀᴅ, Oɴʟʏ Cʜᴀɴɴᴇʟ Sᴜʙsᴄʀɪʙᴇʀs Cᴀɴ Usᴇ Tʜᴇ Bᴏᴛ!",
                 reply_markup=get_join_channels_markup(not_joined),
             )
