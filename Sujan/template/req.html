@@ -320,6 +320,13 @@
     }
 
     /* Audio Track Selector */
+    .avp-container { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 12px; overflow: hidden; }
+    .avp-container canvas, .avp-container video { width: 100% !important; height: 100% !important; object-fit: contain; }
+    .avp-controls { display: none; align-items: center; gap: 10px; flex-wrap: wrap; padding: 10px 4px; }
+    .avp-controls button { background: rgba(255,255,255,.08); color: inherit; border: 1px solid rgba(255,255,255,.18); border-radius: 8px; padding: 6px 12px; cursor: pointer; font-size: 14px; }
+    .avp-controls input[type=range] { flex: 1; min-width: 120px; }
+    .avp-time { font-size: 13px; opacity: .8; font-variant-numeric: tabular-nums; }
+    .avp-switch-btn { background: rgba(255,255,255,.08); color: inherit; border: 1px solid rgba(255,255,255,.18); border-radius: 8px; padding: 6px 12px; cursor: pointer; font-size: 13px; }
     .audio-track-selector {
       display: flex;
       align-items: center;
@@ -355,62 +362,6 @@
     .audio-track-selector select:focus {
       border-color: var(--accent-primary);
       box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
-    }
-
-    /* Embedded multi-audio detector and switcher */
-    .multi-audio-panel {
-      display: none;
-      margin-top: 18px;
-      padding: 20px;
-      border: 2px solid var(--accent-primary);
-      border-radius: var(--radius-lg);
-      background: rgba(139, 92, 246, 0.08);
-      box-shadow: var(--shadow-glow);
-    }
-
-    .multi-audio-panel.active { display: block; }
-
-    .multi-audio-heading {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--accent-secondary);
-      font-size: 16px;
-      font-weight: 800;
-      text-transform: uppercase;
-      margin-bottom: 14px;
-    }
-
-    .multi-audio-status {
-      color: var(--text-secondary);
-      font-size: 13px;
-      margin-left: auto;
-      text-transform: none;
-      font-weight: 500;
-    }
-
-    .multi-audio-tracks { display: flex; flex-wrap: wrap; gap: 10px; }
-
-    .audio-track-chip {
-      appearance: none;
-      border: 1px solid var(--border);
-      background: var(--bg-tertiary);
-      color: var(--text-secondary);
-      border-radius: 999px;
-      padding: 9px 15px;
-      font: 600 14px/1 'Inter', sans-serif;
-      cursor: pointer;
-      transition: border-color .2s ease, background .2s ease, color .2s ease;
-    }
-
-    .audio-track-chip:hover { border-color: var(--accent-primary); color: var(--text-primary); }
-    .audio-track-chip.active { background: var(--accent-primary); color: var(--text-primary); border-color: var(--accent-secondary); }
-    .audio-track-chip:disabled { cursor: wait; opacity: .6; }
-
-    @media (max-width: 600px) {
-      .multi-audio-panel { padding: 16px; }
-      .multi-audio-heading { align-items: flex-start; flex-wrap: wrap; }
-      .multi-audio-status { width: 100%; margin-left: 32px; }
     }
 
     /* Video Info */
@@ -1467,7 +1418,7 @@
 
       <div class="player-container">
         <!-- Video Player -->
-        <$tag src="$src" class="player" id="videoPlayer" controls data-audio-sources="$audio_sources" data-stream-key="$stream_key"></$tag>
+        <$tag src="$src" class="player" id="videoPlayer" controls data-audio-sources="$audio_sources"></$tag>
 
         <div class="audio-track-selector" id="audioTrackSelector" style="display: none;">
           <label for="audioTrackSelect">
@@ -1475,16 +1426,23 @@
             Audio Track
           </label>
           <select id="audioTrackSelect" aria-label="Select audio track"></select>
+          <button type="button" class="avp-switch-btn" id="avpEnableBtn" style="display:none;">
+            <i class="fas fa-headphones"></i> Load Dual Audio
+          </button>
         </div>
 
-        <section class="multi-audio-panel" id="multiAudioPanel" aria-live="polite">
-          <div class="multi-audio-heading">
-            <i class="fas fa-headphones"></i>
-            <span>Audio available</span>
-            <span class="multi-audio-status" id="multiAudioStatus">Detecting tracks…</span>
-          </div>
-          <div class="multi-audio-tracks" id="multiAudioTracks"></div>
-        </section>
+        <!-- AVPlayer (libmedia) container for multi audio track playback -->
+        <div class="avp-container" id="avpContainer" style="display:none;"></div>
+        <div class="avp-controls" id="avpControls">
+          <button type="button" id="avpPlayBtn" aria-label="Play/Pause"><i class="fas fa-play"></i></button>
+          <button type="button" id="avpBackBtn" aria-label="Back 10s"><i class="fas fa-backward"></i> 10</button>
+          <button type="button" id="avpFwdBtn" aria-label="Forward 10s">10 <i class="fas fa-forward"></i></button>
+          <input type="range" id="avpSeek" min="0" max="1000" value="0" step="1" aria-label="Seek">
+          <span class="avp-time" id="avpTime">0:00 / 0:00</span>
+          <input type="range" id="avpVol" min="0" max="100" value="100" style="max-width:90px;flex:none;" aria-label="Volume">
+          <button type="button" id="avpFsBtn" aria-label="Fullscreen"><i class="fas fa-expand"></i></button>
+          <button type="button" id="avpExitBtn" aria-label="Back to normal player">Normal Player</button>
+        </div>
 
         <div class="video-info">
           <div class="video-header">
@@ -1802,7 +1760,7 @@
       }
 
       initAudioTracks();
-      initEmbeddedAudioTracks();
+      initDualAudio();
     }
 
     // ==================== FULLSCREEN ORIENTATION ====================
@@ -2149,140 +2107,244 @@
       });
     }
 
-    // ==================== EMBEDDED VIDEO AUDIO TRACKS ====================
-    const languageNames = {
-      eng: 'English', en: 'English', hin: 'Hindi', hi: 'Hindi',
-      nep: 'Nepali', ne: 'Nepali', spa: 'Spanish', es: 'Spanish',
-      fra: 'French', fre: 'French', fr: 'French', deu: 'German', ger: 'German', de: 'German',
-      jpn: 'Japanese', ja: 'Japanese', kor: 'Korean', ko: 'Korean',
-      tam: 'Tamil', ta: 'Tamil', tel: 'Telugu', te: 'Telugu',
-      ben: 'Bengali', bn: 'Bengali', und: 'Track'
-    };
-    let alternateAudio = null;
-    let activeEmbeddedTrack = 0;
-    let syncTimer = null;
-    let audioStartOffset = 0;
-    let selectedVolume = 1;
-    let previousMuted = false;
+    // ==================== DUAL AUDIO (AVPlayer / libmedia) ====================
+    // Browsers only play the first audio track of MKV/MP4 files. AVPlayer
+    // demuxes the file in the browser so every embedded audio track can be chosen.
+    const AVP_URLS = [
+      '/static/avp/avplayer.js',
+      'https://cdn.jsdelivr.net/npm/@libmedia/avplayer@1.3.1/dist/umd/avplayer.js'
+    ];
+    let avpLoading = null;
+    let avp = null;
+    let avpActive = false;
+    let avpDuration = 0;
+    let avpCurrent = 0;
+    let avpPaused = true;
+    let avpSeeking = false;
 
-    function embeddedTrackLabel(track, position) {
-      const code = String(track.language || 'und').toLowerCase();
-      const language = languageNames[code] || code.toUpperCase();
-      const title = String(track.title || '').trim();
-      if (title && title.toLowerCase() !== language.toLowerCase()) return `${language} · ${title}`;
-      return language === 'Track' ? `Audio ${position + 1}` : language;
+    function loadAVPlayer() {
+      if (window.AVPlayer) return Promise.resolve(window.AVPlayer);
+      if (avpLoading) return avpLoading;
+      avpLoading = new Promise((resolve, reject) => {
+        const tryLoad = (i) => {
+          if (i >= AVP_URLS.length) { avpLoading = null; return reject(new Error('AVPlayer failed to load')); }
+          const sc = document.createElement('script');
+          sc.src = AVP_URLS[i];
+          sc.crossOrigin = 'anonymous';
+          sc.onload = () => window.AVPlayer ? resolve(window.AVPlayer) : tryLoad(i + 1);
+          sc.onerror = () => { sc.remove(); tryLoad(i + 1); };
+          document.head.appendChild(sc);
+        };
+        tryLoad(0);
+      });
+      return avpLoading;
     }
 
-    function stopAlternateAudio(video) {
-      if (syncTimer) window.clearInterval(syncTimer);
-      syncTimer = null;
-      if (alternateAudio) {
-        alternateAudio.pause();
-        alternateAudio.removeAttribute('src');
-        alternateAudio.load();
-      }
-      alternateAudio = null;
-      video.muted = previousMuted;
-      video.volume = selectedVolume;
+    function avpFmt(sec) {
+      sec = Math.max(0, Math.floor(sec || 0));
+      const h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), x = sec % 60;
+      const mm = h ? String(m).padStart(2, '0') : String(m);
+      return (h ? h + ':' : '') + mm + ':' + String(x).padStart(2, '0');
     }
 
-    function alternateAudioUrl(track, start) {
-      const key = document.getElementById('videoPlayer').dataset.streamKey;
-      return `/audio-stream/${key}?track=${track}&start=${Math.max(0, start).toFixed(2)}`;
+    function avpToSec(v) {
+      try { return Number(v) / 1000; } catch (e) { return 0; }
     }
 
-    function startAlternateAudio(video, track) {
-      if (!alternateAudio) previousMuted = video.muted;
-      selectedVolume = alternateAudio ? alternateAudio.volume : video.volume;
-      stopAlternateAudio(video);
-      activeEmbeddedTrack = track;
-      audioStartOffset = video.currentTime;
-      alternateAudio = new Audio(alternateAudioUrl(track, audioStartOffset));
-      alternateAudio.playbackRate = video.playbackRate;
-      alternateAudio.preload = 'auto';
-      alternateAudio.volume = selectedVolume;
-      alternateAudio.muted = false;
-      video.muted = true;
-      if (!video.paused) alternateAudio.play().catch(() => {});
-      syncTimer = window.setInterval(() => {
-        if (!alternateAudio || video.paused) return;
-        const expected = video.currentTime;
-        const actual = audioStartOffset + alternateAudio.currentTime;
-        if (Number.isFinite(actual) && Math.abs(actual - expected) > 0.45) {
-          alternateAudio.currentTime = Math.max(0, expected - audioStartOffset);
-        }
-      }, 1000);
-    }
-
-    async function initEmbeddedAudioTracks() {
-      const video = document.getElementById('videoPlayer');
-      const panel = document.getElementById('multiAudioPanel');
-      const trackList = document.getElementById('multiAudioTracks');
-      const status = document.getElementById('multiAudioStatus');
-      if (!video || video.tagName.toLowerCase() !== 'video' || !panel || !trackList || !status) return;
-
-      panel.classList.add('active');
+    function avpAudioStreams() {
+      if (!avp || !avp.getStreams) return [];
       try {
-        const mediaPath = video.dataset.streamKey;
-        const response = await fetch(`/audio-tracks/${mediaPath}`, { headers: { Accept: 'application/json' } });
-        if (!response.ok) throw new Error(await response.text());
-        const payload = await response.json();
-        const tracks = Array.isArray(payload.tracks) ? payload.tracks : [];
-        if (tracks.length < 2) {
-          panel.classList.remove('active');
-          return;
-        }
+        return (avp.getStreams() || []).filter(t => t && t.mediaType === 1);
+      } catch (e) { return []; }
+    }
 
-        status.textContent = `${tracks.length} tracks detected`;
-        trackList.replaceChildren();
-        tracks.forEach((track, position) => {
-          const button = document.createElement('button');
-          button.type = 'button';
-          button.className = `audio-track-chip${position === 0 ? ' active' : ''}`;
-          button.textContent = embeddedTrackLabel(track, position);
-          button.setAttribute('aria-pressed', position === 0 ? 'true' : 'false');
-          button.addEventListener('click', () => {
-            if (position === activeEmbeddedTrack) return;
-            trackList.querySelectorAll('.audio-track-chip').forEach((item) => {
-              item.classList.remove('active');
-              item.setAttribute('aria-pressed', 'false');
-            });
-            button.classList.add('active');
-            button.setAttribute('aria-pressed', 'true');
-            if (position === 0) {
-              activeEmbeddedTrack = 0;
-              stopAlternateAudio(video);
-            } else {
-              startAlternateAudio(video, position);
-            }
-            status.textContent = `Playing ${embeddedTrackLabel(track, position)}`;
-            showToast('Audio Updated', `Switched to ${embeddedTrackLabel(track, position)}`, 'success');
-          });
-          trackList.appendChild(button);
+    function avpStreamDuration() {
+      try {
+        const list = avp.getStreams() || [];
+        let best = 0;
+        list.forEach(t => {
+          const d = Number(t.duration || 0) * (t.timeBase ? t.timeBase.num / t.timeBase.den : 0);
+          if (d > best) best = d;
         });
+        if (!best && avp.getDuration) best = avpToSec(avp.getDuration());
+        return best;
+      } catch (e) { return 0; }
+    }
 
-        video.addEventListener('play', () => {
-          if (alternateAudio) alternateAudio.play().catch(() => {});
-        });
-        video.addEventListener('pause', () => { if (alternateAudio) alternateAudio.pause(); });
-        video.addEventListener('seeking', () => {
-          if (activeEmbeddedTrack > 0) startAlternateAudio(video, activeEmbeddedTrack);
-        });
-        video.addEventListener('ratechange', () => {
-          if (alternateAudio) alternateAudio.playbackRate = video.playbackRate;
-        });
-        video.addEventListener('volumechange', () => {
-          if (alternateAudio && !video.muted) {
-            selectedVolume = video.volume;
-            alternateAudio.volume = video.volume;
-          }
-        });
-        video.addEventListener('ended', () => { if (alternateAudio) alternateAudio.pause(); });
-      } catch (error) {
-        console.error('Audio detection failed:', error);
-        status.textContent = 'Detection unavailable';
-        window.setTimeout(() => panel.classList.remove('active'), 2500);
+    function avpLabel(t, i) {
+      const m = t.metadata || {};
+      const bits = [];
+      if (m.title) bits.push(m.title);
+      if (m.language) bits.push(String(m.language).toUpperCase());
+      return bits.length ? bits.join(' · ') : 'Audio ' + (i + 1);
+    }
+
+    function avpUpdateUi() {
+      const seek = document.getElementById('avpSeek');
+      const time = document.getElementById('avpTime');
+      const btn = document.getElementById('avpPlayBtn');
+      if (seek && !avpSeeking && avpDuration > 0) seek.value = String(Math.round(avpCurrent / avpDuration * 1000));
+      if (time) time.textContent = avpFmt(avpCurrent) + ' / ' + avpFmt(avpDuration);
+      if (btn) btn.innerHTML = avpPaused ? '<i class="fas fa-play"></i>' : '<i class="fas fa-pause"></i>';
+    }
+
+    async function avpSeekTo(sec) {
+      if (!avp) return;
+      sec = Math.max(0, Math.min(avpDuration || sec, sec));
+      try { await avp.seek(BigInt(Math.round(sec * 1000))); }
+      catch (e) { try { await avp.seek(Math.round(sec * 1000)); } catch (e2) { console.warn('[avp] seek', e2); } }
+      avpCurrent = sec;
+      avpUpdateUi();
+    }
+
+    function fillAvpAudioSelect() {
+      const select = document.getElementById('audioTrackSelect');
+      const selector = document.getElementById('audioTrackSelector');
+      const list = avpAudioStreams();
+      select.innerHTML = '';
+      let current = null;
+      try { current = avp.getSelectedAudioStream ? avp.getSelectedAudioStream() : null; } catch (e) { }
+      list.forEach((t, i) => {
+        const o = document.createElement('option');
+        o.value = String(t.id);
+        o.textContent = avpLabel(t, i);
+        if (current && current.id === t.id) o.selected = true;
+        select.appendChild(o);
+      });
+      select.style.display = list.length ? '' : 'none';
+      selector.style.display = 'flex';
+      if (list.length <= 1) showToast('Audio', list.length ? 'This file has only one audio track' : 'No audio track found', 'success');
+      else showToast('Dual Audio Ready', list.length + ' audio tracks found', 'success');
+    }
+
+    async function startDualAudio() {
+      const playerElement = document.querySelector('.player');
+      const container = document.getElementById('avpContainer');
+      const controlsBar = document.getElementById('avpControls');
+      const enableBtn = document.getElementById('avpEnableBtn');
+      if (!playerElement || !container || avpActive) return;
+      const src = playerElement.currentSrc || playerElement.getAttribute('src');
+      let resumeAt = 0;
+      try { resumeAt = playerInstance ? (playerInstance.currentTime || 0) : (playerElement.currentTime || 0); } catch (e) { }
+      try { if (playerInstance) playerInstance.pause(); else playerElement.pause(); } catch (e) { }
+
+      enableBtn.disabled = true;
+      enableBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading…';
+      try {
+        const AVPlayer = await loadAVPlayer();
+        const plyrBox = playerElement.closest('.plyr') || playerElement;
+        plyrBox.style.display = 'none';
+        container.style.display = 'block';
+        controlsBar.style.display = 'flex';
+
+        avp = new AVPlayer({ container: container, isLive: false });
+        avp.on('time', (pts) => { avpCurrent = avpToSec(pts); avpUpdateUi(); });
+        avp.on('played', () => { avpPaused = false; avpUpdateUi(); });
+        avp.on('playing', () => { avpPaused = false; avpUpdateUi(); });
+        avp.on('paused', () => { avpPaused = true; avpUpdateUi(); });
+        avp.on('ended', () => { avpPaused = true; avpUpdateUi(); });
+        avp.on('error', (e) => console.error('[avp] error', e));
+
+        await avp.load(src);
+        avpActive = true;
+        avpDuration = avpStreamDuration();
+        fillAvpAudioSelect();
+        await avp.play();
+        avpPaused = false;
+        if (resumeAt > 1) await avpSeekTo(resumeAt);
+        avpUpdateUi();
+        enableBtn.style.display = 'none';
+      } catch (e) {
+        console.error('[avp] start failed', e);
+        showToast('Error', 'Dual audio player could not open this file', 'error');
+        await stopDualAudio(true);
+      } finally {
+        enableBtn.disabled = false;
+        enableBtn.innerHTML = '<i class="fas fa-headphones"></i> Load Dual Audio';
       }
+    }
+
+    async function stopDualAudio(silent) {
+      const playerElement = document.querySelector('.player');
+      const container = document.getElementById('avpContainer');
+      const controlsBar = document.getElementById('avpControls');
+      const enableBtn = document.getElementById('avpEnableBtn');
+      const select = document.getElementById('audioTrackSelect');
+      const at = avpCurrent;
+      if (avp) { try { await avp.destroy(); } catch (e) { } }
+      avp = null; avpActive = false; avpCurrent = 0; avpDuration = 0; avpPaused = true;
+      container.innerHTML = '';
+      container.style.display = 'none';
+      controlsBar.style.display = 'none';
+      select.innerHTML = '';
+      select.style.display = 'none';
+      enableBtn.style.display = '';
+      const plyrBox = playerElement.closest('.plyr') || playerElement;
+      plyrBox.style.display = '';
+      if (!silent && at > 1) {
+        try { if (playerInstance) playerInstance.currentTime = at; else playerElement.currentTime = at; } catch (e) { }
+      }
+    }
+
+    function initDualAudio() {
+      const playerElement = document.querySelector('.player');
+      const selector = document.getElementById('audioTrackSelector');
+      const select = document.getElementById('audioTrackSelect');
+      const enableBtn = document.getElementById('avpEnableBtn');
+      if (!playerElement || !selector || !enableBtn) return;
+      if (playerElement.tagName.toLowerCase() !== 'video') return;
+
+      select.style.display = 'none';
+      enableBtn.style.display = '';
+      selector.style.display = 'flex';
+      enableBtn.addEventListener('click', startDualAudio);
+
+      select.addEventListener('change', async (event) => {
+        if (!avpActive || !avp) return;
+        const id = Number(event.target.value);
+        const at = avpCurrent;
+        try {
+          await avp.selectAudio(id);
+          let now = at;
+          try { now = avpToSec(avp.currentTime); } catch (e) { }
+          if (Math.abs(now - at) > 2) await avpSeekTo(at);
+          showToast('Audio Updated', event.target.options[event.target.selectedIndex].textContent, 'success');
+        } catch (e) {
+          console.error('[avp] selectAudio', e);
+          showToast('Error', 'That audio track could not be decoded', 'error');
+        }
+      });
+
+      document.getElementById('avpPlayBtn').addEventListener('click', async () => {
+        if (!avp) return;
+        try {
+          if (avpPaused) { await avp.play(); avpPaused = false; }
+          else { await avp.pause(); avpPaused = true; }
+        } catch (e) { console.warn('[avp] play/pause', e); }
+        avpUpdateUi();
+      });
+      document.getElementById('avpBackBtn').addEventListener('click', () => avpSeekTo(avpCurrent - 10));
+      document.getElementById('avpFwdBtn').addEventListener('click', () => avpSeekTo(avpCurrent + 10));
+      const seek = document.getElementById('avpSeek');
+      seek.addEventListener('input', () => {
+        avpSeeking = true;
+        document.getElementById('avpTime').textContent = avpFmt(seek.value / 1000 * avpDuration) + ' / ' + avpFmt(avpDuration);
+      });
+      seek.addEventListener('change', async () => {
+        await avpSeekTo(seek.value / 1000 * avpDuration);
+        avpSeeking = false;
+      });
+      document.getElementById('avpVol').addEventListener('input', (e) => {
+        if (avp && avp.setVolume) { try { avp.setVolume(Number(e.target.value) / 100); } catch (x) { } }
+      });
+      document.getElementById('avpFsBtn').addEventListener('click', () => {
+        const c = document.getElementById('avpContainer');
+        if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+        else if (c.requestFullscreen) c.requestFullscreen().then(() => orientationManager.lockLandscape()).catch(() => {});
+      });
+      document.getElementById('avpExitBtn').addEventListener('click', () => stopDualAudio(false));
+      document.getElementById('avpContainer').addEventListener('dblclick', () => document.getElementById('avpFsBtn').click());
+      window.addEventListener('beforeunload', () => { if (avp) { try { avp.destroy(); } catch (e) { } } });
     }
 
     // ==================== DOWNLOAD FUNCTION ====================
